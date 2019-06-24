@@ -4,6 +4,9 @@
 
 class Init(object):
 
+    def make_parser(self):
+        pass
+
     def run(self, args):
         print("in db init {}".format(args))
 
