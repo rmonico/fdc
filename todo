@@ -1,0 +1,5 @@
+- Terminar de montar as classes que vão ser chamadas na linha de comando
+- Fazer a estrutura do banco de dados
+- Implementar as regras de negócio
+- Fazer os comandos de rm de lanc, conta, etc (agora só está listando e adicionando)
+- Opcional: extrair uma classe de listagem tabular
