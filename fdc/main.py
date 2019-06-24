@@ -3,7 +3,7 @@
 
 import argparse
 from datetime import date, datetime
-from fdc import db, lanc
+from fdc import lanc
 
 
 def _date_parser(s):
@@ -102,11 +102,38 @@ def _make_contrato_parser(parent_parser):
     _make_contrato_add_parser(subparsers)
 
 
+def locate_command_classes():
+    import importlib
+
+    command_module = importlib.import_module(".command", __package__)
+
+    import pkgutil
+    import inspect
+
+    classes = []
+    for importer, modulename, ispkg in pkgutil.iter_modules(command_module.__path__):
+        submodule = importlib.import_module(
+            "{}.command.{}".format(__package__, modulename))
+        for class_name, clazz in inspect.getmembers(submodule, predicate=inspect.isclass):
+            for method_name, method in inspect.getmembers(clazz, predicate=inspect.isfunction):
+                if method_name == "make_parser":
+                    classes.append(clazz)
+                    break
+
+    return classes
+
+
+def make_command_parsers(command_classes):
+    print(command_classes)
+
+
 def parse_command_line():
     parser = argparse.ArgumentParser()
     subparsers = parser.add_subparsers()
 
-    _make_db_parser(subparsers)
+    command_classes = locate_command_classes()
+
+    make_command_parsers(command_classes)
 
     _make_lanc_parser(subparsers)
 
