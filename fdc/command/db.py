@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+from . import connection
+
+
 class DBCommand(object):
 
     def make_parser(parent_parser):
@@ -19,7 +22,20 @@ class DBCommand(object):
 class DBInit(object):
 
     def run(self, args):
-        print("in db init {}".format(args))
+        import os
+
+        os.remove(connection.Factory.database_path())
+
+        conn = connection.Factory.create()
+
+        conn.executescript(
+            "create table conta (nome text not null, contabilizavel boolean not null, fechamento date);")
+
+        # FIXME Não armazenar monetários como float
+        conn.executescript(
+            "create table contrato (compra date not null, conta, total_parcelas integer, valor_parcela float, observacao text, foreign key(conta) references conta);")
+
+        conn.executescript("create table lancamento (debito date not null, compra date, valor float, valor_local float not null, origem, destino, parcela integer not null, observacao text not null, foreign key(origem) references conta, foreign key(destino) references conta);")
 
 
 class DBRestore(object):
