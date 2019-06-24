@@ -10,16 +10,6 @@ def _date_parser(s):
     return datetime.strptime(s, '%Y-%m-%d')
 
 
-def _make_db_parser(parent_parser):
-    db_parser = parent_parser.add_parser("db", help="Database commands")
-    subparsers = db_parser.add_subparsers()
-
-    subparsers.add_parser(
-        "init", help="Inicializa o banco de dados em fdc.db").set_defaults(func=db.Init())
-    subparsers.add_parser("restore", help="Restore fdc.dump to fdc.db")
-    subparsers.add_parser("dump", help="Dump fdc.db to fdc.dump")
-
-
 def _make_lanc_add_parser(parent_parser):
     lanc_add_parser = parent_parser.add_parser(
         "add", help="Cria um novo lançamento")
@@ -123,8 +113,9 @@ def locate_command_classes():
     return classes
 
 
-def make_command_parsers(command_classes):
-    print(command_classes)
+def make_command_parsers(command_classes, parent_parser):
+    for command_class in command_classes:
+        command_class.make_parser(parent_parser)
 
 
 def parse_command_line():
@@ -133,7 +124,7 @@ def parse_command_line():
 
     command_classes = locate_command_classes()
 
-    make_command_parsers(command_classes)
+    make_command_parsers(command_classes, subparsers)
 
     _make_lanc_parser(subparsers)
 
@@ -147,7 +138,7 @@ def parse_command_line():
 def main():
     args = parse_command_line()
 
-    args.func.run(args)
+    args.clazz().run(args)
 
 if __name__ == '__main__':
     main()
