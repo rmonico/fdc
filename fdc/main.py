@@ -55,6 +55,7 @@ def locate_command_classes():
     return classes
 
 
+# TODO Extract a visitor
 def make_command_parsers(command_classes, parent_parser):
     for command_class in command_classes:
         command_class.make_parser(parent_parser)

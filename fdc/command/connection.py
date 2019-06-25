@@ -6,6 +6,7 @@ import sqlite3
 from fdc import log
 
 
+# TODO Move these methods to module
 class Factory(object):
 
     def database_folder():

@@ -39,6 +39,7 @@ class DBInit(object):
 
         conn.executescript("create table lancamento (debito date not null, compra date, valor float, valor_local float not null, origem, destino, parcela integer not null, observacao text not null, foreign key(origem) references conta, foreign key(destino) references conta);")
 
+        # TODO Commit and handle errors
 
 class DBRestore(object):
 

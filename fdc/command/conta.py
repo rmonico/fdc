@@ -42,6 +42,7 @@ class ContaList(object):
 class ContaAdd(object):
 
     def run(self, args):
+        # TODO Extract these code to a InsertBuilder class (maybe on connection module, not sure yet)
         fields = args.nome, args.contabilizavel
         field_names = ["nome", "contabilizavel"]
         value_mask = "?, ?"
