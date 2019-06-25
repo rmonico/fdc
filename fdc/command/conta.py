@@ -42,4 +42,16 @@ class ContaList(object):
 class ContaAdd(object):
 
     def run(self, args):
-        print("TODO")
+        fields = args.nome, args.contabilizavel
+        field_names = ["nome", "contabilizavel"]
+        value_mask = "?, ?"
+
+        if hasattr(args, "fechamento"):
+            fields += args.fechamento,
+            field_names += ["fechamento"]
+            value_mask += ", ?"
+
+        sql = "insert into conta ({fields}) values ({value_mask});".format(
+            fields=", ".join(field_names), value_mask=value_mask)
+
+        connection.execute(sql, fields)
