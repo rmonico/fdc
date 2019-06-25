@@ -26,7 +26,7 @@ class ContaCommand(object):
 
         conta_add_parser.set_defaults(clazz=ContaAdd)
 
-        conta_add_parser.add_argument("-c", "--contabilizavel", action="store_true",
+        conta_add_parser.add_argument("-c", "--contabilizavel", default=False, action="store_true",
                                       help="Marca a nova conta como contabilizável (o saldo é calculado nas listagens)")
         conta_add_parser.add_argument(
             "--df", "--fechamento", help="Data de fechamento da conta")
