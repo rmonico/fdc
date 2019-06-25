@@ -5,30 +5,6 @@ import argparse
 from .parsers.date_parser import date_parser
 
 
-def _make_conta_list_parser(parent_parser):
-    conta_list_parser = parent_parser.add_parser(
-        "list", help="Lista as contas existentes")
-
-
-def _make_conta_add_parser(parent_parser):
-    conta_add_parser = parent_parser.add_parser(
-        "add", help="Adiciona uma nova conta")
-
-    conta_add_parser.add_argument("-c", "--contabilizavel", action="store_true",
-                                  help="Marca a nova conta como contabilizável (o saldo é calculado nas listagens)")
-    conta_add_parser.add_argument(
-        "--df", "--fechamento", help="Data de fechamento da conta")
-    conta_add_parser.add_argument("nome", help="Nome da conta a ser criada")
-
-
-def _make_conta_parser(parent_parser):
-    conta_parser = parent_parser.add_parser("conta", help="Comandos de conta")
-    subparsers = conta_parser.add_subparsers()
-
-    _make_conta_list_parser(subparsers)
-    _make_conta_add_parser(subparsers)
-
-
 def _make_contrato_list_parser(parent_parser):
     contrato_list_parser = parent_parser.add_parser(
         "list", help="Lista os contratos existentes")
@@ -91,8 +67,6 @@ def parse_command_line():
     command_classes = locate_command_classes()
 
     make_command_parsers(command_classes, subparsers)
-
-    _make_conta_parser(subparsers)
 
     _make_contrato_parser(subparsers)
 
