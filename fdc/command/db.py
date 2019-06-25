@@ -14,9 +14,9 @@ class DBCommand(object):
             "init", help="Inicializa o banco de dados em fdc.db").set_defaults(clazz=DBInit)
 
         subparsers.add_parser("restore", help="Restore fdc.dump to fdc.db").set_defaults(
-            command=DBRestore)
+            clazz=DBRestore)
         subparsers.add_parser(
-            "dump", help="Dump fdc.db to fdc.dump").set_defaults(command=DBDump)
+            "dump", help="Dump fdc.db to fdc.dump").set_defaults(clazz=DBDump)
 
 
 class DBInit(object):

@@ -20,7 +20,7 @@ class LancCommand(object):
     def _make_lanc_add_parser(parent_parser):
         lanc_add_parser = parent_parser.add_parser(
             "add", help="Cria um novo lançamento")
-        lanc_add_parser.set_defaults(func=LancAdd)
+        lanc_add_parser.set_defaults(clazz=LancAdd)
 
         lanc_add_parser.add_argument("-dd", "--data", type=date_parser, default=date.today(
         ), help="Data de débito da movimentação. Se omitido usa a data atual. Formato: AAAA-MM-DD")
