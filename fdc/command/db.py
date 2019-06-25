@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from . import connection
+from .connection import Factory
 
 
 class DBCommand(object):
@@ -26,8 +26,9 @@ class DBInit(object):
 
         os.remove(connection.Factory.database_path())
 
-        conn = connection.Factory.create()
+        conn = Factory.create_connection()
 
+        # TODO Move this to ContaCommand class (may that class should be renamed)
         conn.executescript(
             "create table conta (nome text not null, contabilizavel boolean not null, fechamento date);")
 

@@ -17,7 +17,7 @@ class Factory(object):
         # line switches, etc)
         return "{}/database.db".format(Factory.database_folder())
 
-    def create():
+    def create_connection():
         import os
 
         os.makedirs(Factory.database_folder(), exist_ok=True)
