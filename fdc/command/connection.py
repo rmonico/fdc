@@ -23,3 +23,6 @@ class Factory(object):
         os.makedirs(Factory.database_folder(), exist_ok=True)
 
         return sqlite3.connect(Factory.database_path())
+
+    def create_cursor():
+        return create_connection().cursor()
