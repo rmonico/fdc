@@ -5,7 +5,6 @@ from . import connection
 from fdc.parsers.date_parser import date_parser
 from datetime import date
 
-
 class ContaCommand(object):
 
     def make_parser(parent_parser):

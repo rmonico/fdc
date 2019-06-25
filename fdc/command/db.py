@@ -24,11 +24,12 @@ class DBInit(object):
     def run(self, args):
         import os
 
-        os.remove(connection.Factory.database_path())
+        os.remove(Factory.database_path())
 
         conn = Factory.create_connection()
 
-        # TODO Move this to ContaCommand class (may that class should be renamed)
+        # TODO Move this to ContaCommand class (may that class should be
+        # renamed)
         conn.executescript(
             "create table conta (nome text not null, contabilizavel boolean not null, fechamento date);")
 

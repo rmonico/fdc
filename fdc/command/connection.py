@@ -3,6 +3,7 @@
 
 
 import sqlite3
+from fdc import log
 
 
 class Factory(object):
@@ -24,5 +25,21 @@ class Factory(object):
 
         return sqlite3.connect(Factory.database_path())
 
-    def create_cursor():
-        return create_connection().cursor()
+
+def execute(sql, parameters):
+    connection = Factory.create_connection()
+
+    # FIXME Handle transaction
+
+    cursor = connection.cursor()
+
+    log.info("Executing", sql)
+    log.info("  with parameters", parameters)
+
+    cursor.execute(sql, parameters)
+
+    cursor.close()
+
+    connection.commit()
+
+    connection.close()
