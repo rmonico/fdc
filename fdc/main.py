@@ -2,12 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import argparse
-from datetime import date, datetime
 from fdc import lanc
-
-
-def _date_parser(s):
-    return datetime.strptime(s, '%Y-%m-%d')
+from .parsers.date_parser import date_parser
 
 
 def _make_lanc_add_parser(parent_parser):
@@ -73,7 +69,7 @@ def _make_contrato_add_parser(parent_parser):
         "add", help="Adiciona um novo contrato")
 
     contrato_add_parser.add_argument(
-        "data-compra", type=_date_parser, help="Data da compra. Formato: AAAA-MM-DD")
+        "data-compra", type=date_parser, help="Data da compra. Formato: AAAA-MM-DD")
     contrato_add_parser.add_argument("conta", help="Conta associada")
     contrato_add_parser.add_argument(
         "total-parcelas", type=int, help="Total de parcelas")
