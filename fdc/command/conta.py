@@ -4,6 +4,7 @@
 from . import connection
 from fdc.parsers.date_parser import date_parser
 from datetime import date
+from .tableprinter import TablePrinter
 
 
 class ContaCommand(object):
@@ -39,13 +40,12 @@ class ContaList(object):
     def run(self, args):
         fields = "nome", "contabilizavel", "fechamento"
 
-        results = connection.execute(
-            "select {fields} from conta;".format(fields = ", ".join(fields)))
+        result_set = connection.execute(
+            "select {fields} from conta;".format(fields=", ".join(fields)))
 
-        print(fields)
+        printer = TablePrinter(fields, result_set)
 
-        for row in results:
-            print(row)
+        printer.print()
 
 
 class ContaAdd(object):
