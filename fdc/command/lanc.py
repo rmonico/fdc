@@ -13,7 +13,8 @@ class LancCommand(object):
             "lanc", help="Lançamento commands")
         subparsers = lanc_parser.add_subparsers()
 
-        subparsers.add_parser("list", help="List lançamentos")
+        subparsers.add_parser(
+            "list", help="List lançamentos").set_defaults(clazz=LancList)
 
         LancCommand._make_lanc_add_parser(subparsers)
 
@@ -35,6 +36,12 @@ class LancCommand(object):
         lanc_add_parser.add_argument("destino", help="Conta de destino")
         lanc_add_parser.add_argument(
             "valor", type=float, help="Valor (na moeda da movimentação)")
+
+
+class LancList(object):
+
+    def run(self, args):
+        print("TODO")
 
 
 class LancAdd(object):
