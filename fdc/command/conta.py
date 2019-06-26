@@ -5,7 +5,7 @@ from . import connection
 from fdc.parsers.date_parser import date_parser
 from datetime import date
 from .tableprinter import TablePrinter
-
+from fdc.dao.conta import Conta, ContaDao
 
 class ContaCommand(object):
 
@@ -51,18 +51,13 @@ class ContaList(object):
 class ContaAdd(object):
 
     def run(self, args):
-        # TODO Extract these code to a InsertBuilder class (maybe on connection
-        # module, not sure yet)
-        fields = args.nome, args.contabilizavel
-        field_names = ["nome", "contabilizavel"]
-        value_mask = "?, ?"
+        conta = Conta()
 
+        conta.nome = args.nome
+        conta.contabilizavel = args.contabilizavel
         if hasattr(args, "fechamento"):
-            fields += args.fechamento,
-            field_names += ["fechamento"]
-            value_mask += ", ?"
+            conta.fechamento = args.fechamento
 
-        sql = "insert into conta ({fields}) values ({value_mask});".format(
-            fields=", ".join(field_names), value_mask=value_mask)
+        dao = ContaDao()
 
-        connection.execute(sql, fields, True)
+        dao.insert(conta)
