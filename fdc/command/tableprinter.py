@@ -51,8 +51,6 @@ class TablePrinter(object):
 
         header_printed = False
 
-        # import ipdb; ipdb.set_trace()
-
         for row in self._data:
             column = 0
 
@@ -64,6 +62,7 @@ class TablePrinter(object):
                 column += 1
 
             formatted_line = "| {} |".format(" | ".join(line))
+
             print(formatted_line)
 
             if not header_printed:
