@@ -37,7 +37,15 @@ class ContaCommand(object):
 class ContaList(object):
 
     def run(self, args):
-        print("TODO")
+        fields = "nome", "contabilizavel", "fechamento"
+
+        results = connection.execute(
+            "select {fields} from conta;".format(fields = ", ".join(fields)))
+
+        print(fields)
+
+        for row in results:
+            print(row)
 
 
 class ContaAdd(object):
