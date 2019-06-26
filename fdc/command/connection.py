@@ -27,7 +27,7 @@ class Factory(object):
         return sqlite3.connect(Factory.database_path())
 
 
-def execute(sql, parameters):
+def execute(sql, parameters=None, commit_and_close=False):
     connection = Factory.create_connection()
 
     # FIXME Handle transaction
@@ -35,12 +35,16 @@ def execute(sql, parameters):
     cursor = connection.cursor()
 
     log.info("Executing", sql)
-    log.info("  with parameters", parameters)
 
-    cursor.execute(sql, parameters)
+    if parameters:
+        log.info("  with parameters", parameters)
+        result = cursor.execute(sql, parameters)
+    else:
+        result = cursor.execute(sql)
 
-    cursor.close()
+    if commit_and_close:
+        cursor.close()
+        connection.commit()
+        connection.close()
 
-    connection.commit()
-
-    connection.close()
+    return result
