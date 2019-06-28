@@ -3,7 +3,7 @@
 
 import argparse
 from .parsers.date_parser import date_parser
-from .classvisitor import ClassVisitor
+from .classvisitor import ClassVisitor, has_method
 
 
 def _make_contrato_list_parser(parent_parser):
@@ -39,7 +39,7 @@ def parse_command_line():
     parser = argparse.ArgumentParser()
     subparsers = parser.add_subparsers()
 
-    visitor = ClassVisitor("command")
+    visitor = ClassVisitor("command", lambda clazz: has_method(clazz, 'make_parser'))
 
     visitor.visit(lambda command_class: command_class.make_parser(subparsers))
 
