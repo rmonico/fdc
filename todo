@@ -1,3 +1,6 @@
+:: TODO
+
+- Usar classvisitor para montar os parsers dos subcomandos
 - Terminar de montar as classes que vão ser chamadas na linha de comando
 - Fazer a estrutura do banco de dados
 - Implementar as regras de negócio
