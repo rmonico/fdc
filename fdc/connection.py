@@ -3,11 +3,16 @@
 
 
 import sqlite3
-from fdc import log
 
 
 # TODO Move these methods to module
 class Factory(object):
+
+    def injectable_resource():
+        return 'connection_factory'
+
+    def set_logger(self, logger):
+        self._logger = logger
 
     def database_folder():
         import os
@@ -34,7 +39,7 @@ def execute(sql, parameters=None, commit_and_close=False):
 
     cursor = connection.cursor()
 
-    log.info("Executing", sql)
+    self._logger.info("Executing: {}", sql)
 
     if parameters:
         log.info("  with parameters", parameters)
