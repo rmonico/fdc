@@ -1,10 +1,19 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+import inspect
+
+
+def has_member(clazz, name, kind):
+    return hasattr(clazz, name) and kind(getattr(clazz, name))
+
+
+def has_function(clazz, function_name):
+    return has_member(clazz, function_name, inspect.isfunction)
+
 
 def has_method(clazz, method_name):
-    import inspect
-    return hasattr(clazz, method_name) and inspect.isfunction(getattr(clazz, method_name))
+    return has_member(clazz, method_name, inspect.ismethod)
 
 
 class ClassVisitor(object):
