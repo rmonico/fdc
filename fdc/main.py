@@ -2,8 +2,9 @@
 # -*- coding: utf-8 -*-
 
 import argparse
-from .parsers.date_parser import date_parser
-from .classvisitor import ClassVisitor, has_method
+from argparse_helpers.parsers.date_parser import date_parser
+from di_container.classvisitor import ClassVisitor, has_method
+from di_container.injector import injector
 
 
 def _make_contrato_list_parser(parent_parser):
@@ -39,7 +40,7 @@ def parse_command_line():
     parser = argparse.ArgumentParser()
     subparsers = parser.add_subparsers()
 
-    visitor = ClassVisitor("fdc.command", lambda clazz: has_method(clazz, 'make_parser'))
+    visitor = ClassVisitor("fdc.command", lambda clazz: has_function(clazz, 'make_parser'))
 
     visitor.visit(lambda command_class: command_class.make_parser(subparsers))
 
@@ -48,10 +49,19 @@ def parse_command_line():
     return parser.parse_args()
 
 
-def main():
-    args = parse_command_line()
+def main(self):
+    injector.instance.load_resources(__package__)
 
-    args.clazz().run(args)
+    injector.instance.inject_resources(self)
+
+    args = self.parse_command_line()
+
+    command_instance = args.clazz()
+
+    injector.instance.inject_resources(command_instance)
+
+    command_instance.run(args)
+
 
 if __name__ == '__main__':
     main()
