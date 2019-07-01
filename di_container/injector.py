@@ -47,4 +47,4 @@ class Injector(object):
             injection_method(instance)
 
 
-injector = Injector()
+di_container = Injector()

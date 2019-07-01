@@ -4,7 +4,7 @@
 import argparse
 from argparse_helpers.parsers.date_parser import date_parser
 from di_container.classvisitor import ClassVisitor, has_method
-from di_container.injector import injector
+from di_container.injector import di_container
 
 
 class Main(object):
@@ -16,13 +16,13 @@ class Main(object):
         return {'name': 'root_command_subparser', 'instance': None}
 
     def main(self):
-        injector.load_resources(__package__)
+        di_container.load_resources(__package__)
 
         args = self.parse_command_line()
 
         command_instance = args.clazz()
 
-        injector.inject_resources(command_instance)
+        di_container.inject_resources(command_instance)
 
         command_instance.run(args)
 
