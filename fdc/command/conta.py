@@ -9,7 +9,7 @@ from fdc.dao.conta import Conta, ContaDao
 
 class ContaCommand(object):
 
-    def make_parser(parent_parser):
+    def root_parser_created_event_handler(self, parent_parser):
         conta_parser = parent_parser.add_parser(
             "conta", help="Comandos de conta")
         subparsers = conta_parser.add_subparsers()

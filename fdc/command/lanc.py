@@ -8,7 +8,7 @@ from datetime import date
 
 class LancCommand(object):
 
-    def make_parser(parent_parser):
+    def root_parser_created_event_handler(self, parent_parser):
         lanc_parser = parent_parser.add_parser(
             "lanc", help="Lançamento commands")
         subparsers = lanc_parser.add_subparsers()

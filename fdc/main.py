@@ -3,7 +3,6 @@
 
 import argparse
 from argparse_helpers.parsers.date_parser import date_parser
-from di_container.classvisitor import ClassVisitor, has_method
 from di_container.injector import di_container
 
 
@@ -11,9 +10,6 @@ class Main(object):
 
     def __init__(self):
         self._root_commands = []
-
-    def injectable_resource(self):
-        return {'name': 'root_command_subparser', 'instance': None}
 
     def main(self):
         di_container.load_resources(__package__)
@@ -31,9 +27,9 @@ class Main(object):
 
         subparsers = parser.add_subparsers()
 
-        visitor = ClassVisitor("fdc.command", lambda clazz: has_function(clazz, 'make_parser'))
+        di_container.create_resource(name='root_parser', instance=subparsers)
 
-        visitor.visit(lambda command_class: command_class.make_parser(subparsers))
+        di_container.event('root_parser_created')
 
         _make_contrato_parser(subparsers)
 

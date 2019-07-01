@@ -6,7 +6,7 @@ from .connection import Factory
 
 class DBCommand(object):
 
-    def make_parser(parent_parser):
+    def root_parser_created_event_handler(self, parent_parser):
         db_parser = parent_parser.add_parser("db", help="Database commands")
         subparsers = db_parser.add_subparsers()
 
