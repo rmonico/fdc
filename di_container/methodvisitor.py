@@ -21,7 +21,7 @@ class MethodVisitor(object):
     _classes = []
     _modules = []
 
-    def __init__(self, module, filter=lambda clazz: True):
+    def __init__(self, module, filter=lambda method_name, method: True):
         self._module = module
         self._filter = filter
 
@@ -41,9 +41,7 @@ class MethodVisitor(object):
             submodule = importlib.import_module(
                 "{}.{}".format(self._module, modulename))
             for class_name, clazz in inspect.getmembers(submodule, predicate=inspect.isclass):
-                for method_name, method in inspect.getmembers(clazz, predicate=inspect.isfunction):
-                    classes.append(clazz)
-                    break
+                classes.append(clazz)
 
         ClassVisitor._classes += classes
         ClassVisitor._modules += [self._module]
@@ -64,5 +62,6 @@ class MethodVisitor(object):
 
         for clazz in ClassVisitor._classes:
             if self._is_at_module(clazz):
-                if self._filter(clazz):
-                    visitor(clazz)
+                for method_name, method in inspect.getmembers(clazz, predicate=inspect.isfunction):
+                    if self._filter(method_name, method):
+                        visitor(clazz)
