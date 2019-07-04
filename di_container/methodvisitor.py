@@ -16,7 +16,7 @@ def has_method(clazz, method_name):
     return has_member(clazz, method_name, inspect.ismethod)
 
 
-class ClassVisitor(object):
+class MethodVisitor(object):
 
     _classes = []
     _modules = []
