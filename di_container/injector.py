@@ -21,7 +21,7 @@ class Injector(object):
         self._resource_classes.append(resource_properties)
 
     def load_resources(self, package):
-        visitor = ClassVisitor(package, lambda clazz: has_function(clazz, 'injectable_resource'))
+        visitor = ClassVisitor(self.package, lambda clazz: has_function(clazz, 'injectable_resource'))
 
         visitor.visit(self.load_resource)
 
@@ -45,6 +45,5 @@ class Injector(object):
                 instance = properties['instance'] = properties['class']()
 
             injection_method(instance)
-
 
 di_container = Injector()

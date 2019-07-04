@@ -4,6 +4,7 @@
 import argparse
 from argparse_helpers.parsers.date_parser import date_parser
 from di_container.injector import di_container
+from di_container.controller import controller
 
 
 class Main(object):
@@ -13,6 +14,7 @@ class Main(object):
 
     def main(self):
         di_container.load_resources(__package__)
+        controller.load_listeners(__package__)
 
         args = self.parse_command_line()
 
@@ -27,9 +29,7 @@ class Main(object):
 
         subparsers = parser.add_subparsers()
 
-        di_container.create_resource(name='root_parser', instance=subparsers)
-
-        di_container.event('root_parser_created')
+        controller.event('root_parser_created', root_parser=subparsers)
 
         _make_contrato_parser(subparsers)
 
