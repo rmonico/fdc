@@ -9,6 +9,6 @@ setup(name='fdc',
       license='GPL3',
       packages=['fdc', 'fdc.command', 'fdc.dao', 'di_container', 'argparse_helpers.parsers', ], 
       entry_points={
-          'console_scripts': ['fdc=fdc.main:main'],
+          'console_scripts': ['fdc=fdc.main:entry_point'],
       },
       zip_safe=False)
