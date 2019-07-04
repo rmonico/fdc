@@ -13,15 +13,15 @@ class Injector(object):
     def set_logger(self, logger):
         self._logger = logger
 
-    def load_resource(self, injectable_class):
-        resource_name = injectable_class.injectable_resource()
+    def load_resource(self, method):
+        resource_name = method()
 
-        resource_properties = {'name': resource_name, 'class': injectable_class, 'instance': None}
+        resource_properties = {'name': resource_name, 'class': method.__class__, 'instance': None}
 
         self._resource_classes.append(resource_properties)
 
     def load_resources(self, package):
-        visitor = ClassVisitor(package, lambda clazz: has_function(clazz, 'injectable_resource'))
+        visitor = ClassVisitor(package, lambda method_name, method: method_name == 'injectable_resource')
 
         visitor.visit(self.load_resource)
 
