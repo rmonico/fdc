@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from . import connection
-from fdc.parsers.date_parser import date_parser
 from datetime import date
 
 
