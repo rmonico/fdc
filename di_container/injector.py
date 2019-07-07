@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 
-from .classvisitor import ClassVisitor, has_method, has_function
+from .methodvisitor import MethodVisitor
 
 
 class Injector(object):
@@ -21,7 +21,7 @@ class Injector(object):
         self._resource_classes.append(resource_properties)
 
     def load_resources(self, package):
-        visitor = ClassVisitor(package, lambda method_name, method: method_name == 'injectable_resource')
+        visitor = MethodVisitor(package, lambda method_name, method: method_name == 'injectable_resource')
 
         visitor.visit(self.load_resource)
 
@@ -34,7 +34,7 @@ class Injector(object):
         for properties in self._resource_classes:
             injection_method_name = 'set_' + properties['name']
 
-            if (not has_method(client, injection_method_name)):
+            if (not hasattr(client, injection_method_name)):
                 continue
 
             injection_method = getattr(client, injection_method_name)

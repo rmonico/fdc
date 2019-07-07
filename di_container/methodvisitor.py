@@ -14,7 +14,7 @@ class MethodVisitor(object):
         self._filter = filter
 
     def _load_classes(self):
-        if self._module in ClassVisitor._modules:
+        if self._module in MethodVisitor._modules:
             return
 
         import importlib
@@ -31,8 +31,8 @@ class MethodVisitor(object):
             for class_name, clazz in inspect.getmembers(submodule, predicate=inspect.isclass):
                 classes.append(clazz)
 
-        ClassVisitor._classes += classes
-        ClassVisitor._modules += [self._module]
+        MethodVisitor._classes += classes
+        MethodVisitor._modules += [self._module]
 
     def _parent_module_name(self, module):
         module_name = str(module)
@@ -48,7 +48,7 @@ class MethodVisitor(object):
     def visit(self, visitor):
         self._load_classes()
 
-        for clazz in ClassVisitor._classes:
+        for clazz in MethodVisitor._classes:
             if self._is_at_module(clazz):
                 for method_name, method in inspect.getmembers(clazz, predicate=inspect.isfunction):
                     if self._filter(method_name, method):
