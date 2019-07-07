@@ -4,18 +4,6 @@
 import inspect
 
 
-def has_member(clazz, name, kind):
-    return hasattr(clazz, name) and kind(getattr(clazz, name))
-
-
-def has_function(clazz, function_name):
-    return has_member(clazz, function_name, inspect.isfunction)
-
-
-def has_method(clazz, method_name):
-    return has_member(clazz, method_name, inspect.ismethod)
-
-
 class MethodVisitor(object):
 
     _classes = []
