@@ -13,12 +13,10 @@ class Main(object):
         self._root_commands = []
 
     def main(self):
-        di_container.load_resources(__package__)
-        di_container.load_resources(__package__ + '.command')
-        di_container.load_resources(__package__ + '.dao')
-        controller.load_listeners(__package__)
-        controller.load_listeners(__package__ + '.command')
-        controller.load_listeners(__package__ + '.dao')
+        packages = [__package__, __package__ + '.command', __package__ + '.dao']
+
+        di_container.load_resources(packages)
+        controller.load_listeners(packages)
 
         args = self.parse_command_line()
 
