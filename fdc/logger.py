@@ -15,4 +15,4 @@ class Logger(object):
 
     def info(self, message, *args, **kwargs):
         if self._verbosity_level >= _INFO:
-            print(message.format(args, **kwargs))
+            print(message.format(*args, **kwargs))
