@@ -14,7 +14,11 @@ class Main(object):
 
     def main(self):
         di_container.load_resources(__package__)
+        di_container.load_resources(__package__ + '.command')
+        di_container.load_resources(__package__ + '.dao')
         controller.load_listeners(__package__)
+        controller.load_listeners(__package__ + '.command')
+        controller.load_listeners(__package__ + '.dao')
 
         args = self.parse_command_line()
 
