@@ -13,7 +13,7 @@ class Injector(object):
     def set_logger(self, logger):
         self._logger = logger
 
-    def load_resource(self, method):
+    def load_resource(self, clazz, method):
         resource_name = method()
 
         resource_properties = {'name': resource_name, 'class': method.__class__, 'instance': None}
