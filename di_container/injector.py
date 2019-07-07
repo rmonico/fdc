@@ -20,8 +20,8 @@ class Injector(object):
 
         self._resource_classes.append(resource_properties)
 
-    def load_resources(self, package):
-        visitor = MethodVisitor(package, lambda method_name, method: method_name == 'injectable_resource')
+    def load_resources(self, packages):
+        visitor = MethodVisitor(packages, lambda clazz, method: method.__name__ == 'injectable_resource')
 
         visitor.visit(self.load_resource)
 

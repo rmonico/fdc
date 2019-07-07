@@ -52,4 +52,4 @@ class MethodVisitor(object):
             if self._is_at_module(clazz):
                 for method_name, method in inspect.getmembers(clazz, predicate=inspect.isfunction):
                     if self._filter(clazz, method):
-                        visitor(method)
+                        visitor(clazz, method)
