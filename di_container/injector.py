@@ -16,7 +16,7 @@ class Injector(object):
     def load_resource(self, clazz, method):
         resource_name = method()
 
-        resource_properties = {'name': resource_name, 'class': method.__class__, 'instance': None}
+        resource_properties = {'name': resource_name, 'class': clazz, 'instance': None}
 
         self._resource_classes.append(resource_properties)
 
