@@ -10,6 +10,9 @@ class Controller(object):
     def __init__(self):
         self._listeners = []
 
+    def set_logger(self, logger):
+        self._logger = logger
+
     def _get_instance_for(self, clazz, method):
         for listener, instance in self._listeners:
             if instance and instance.__class__ == clazz:
