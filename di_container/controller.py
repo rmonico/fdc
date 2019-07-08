@@ -24,7 +24,7 @@ class Controller(object):
     def _load_listeners_from(self, clazz, method):
         instance = self._get_instance_for(clazz)
 
-        self._listeners.append({'listener': getattr(instance, method.__name__), 'instance': instance})
+        self._listeners.append((getattr(instance, method.__name__), instance))
 
     def load_listeners(self, packages):
         visitor = MethodVisitor(packages, lambda clazz, method: method.__name__.endswith('_handler'))
