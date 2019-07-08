@@ -30,7 +30,8 @@ class MethodVisitor(object):
                 submodule = importlib.import_module(
                     "{}.{}".format(module, modulename))
                 for class_name, clazz in inspect.getmembers(submodule, predicate=inspect.isclass):
-                    classes.append(clazz)
+                    if not clazz in classes:
+                        classes.append(clazz)
 
             MethodVisitor._classes += classes
             MethodVisitor._modules += [module]
