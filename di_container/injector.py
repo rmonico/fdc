@@ -28,7 +28,8 @@ class Injector(object):
         self.inject_resources(self)
 
         for resource in self._resource_classes:
-            self._logger.info('Loaded resource: {name} (of {class})', **resource)
+            if hasattr(self, "_logger"):
+                self._logger.info('Loaded resource: {name} (of {class})', **resource)
 
     def inject_resources(self, client):
         for properties in self._resource_classes:
