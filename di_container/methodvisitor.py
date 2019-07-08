@@ -9,30 +9,31 @@ class MethodVisitor(object):
     _classes = []
     _modules = []
 
-    def __init__(self, module, filter=lambda: True):
-        self._module = module
+    def __init__(self, modules, filter=lambda: True):
+        self._modules = modules
         self._filter = filter
 
     def _load_classes(self):
-        if self._module in MethodVisitor._modules:
-            return
+        for module in self._modules:
+            if module in MethodVisitor._modules:
+                return
 
-        import importlib
+            import importlib
 
-        command_module = importlib.import_module(self._module)
+            command_module = importlib.import_module(module)
 
-        import pkgutil
-        import inspect
+            import pkgutil
+            import inspect
 
-        classes = []
-        for importer, modulename, ispkg in pkgutil.iter_modules(command_module.__path__):
-            submodule = importlib.import_module(
-                "{}.{}".format(self._module, modulename))
-            for class_name, clazz in inspect.getmembers(submodule, predicate=inspect.isclass):
-                classes.append(clazz)
+            classes = []
+            for importer, modulename, ispkg in pkgutil.iter_modules(command_module.__path__):
+                submodule = importlib.import_module(
+                    "{}.{}".format(module, modulename))
+                for class_name, clazz in inspect.getmembers(submodule, predicate=inspect.isclass):
+                    classes.append(clazz)
 
-        MethodVisitor._classes += classes
-        MethodVisitor._modules += [self._module]
+            MethodVisitor._classes += classes
+            MethodVisitor._modules += [module]
 
     def _parent_module_name(self, module):
         module_name = str(module)
@@ -42,8 +43,11 @@ class MethodVisitor(object):
     def _is_at_module(self, clazz):
         clazz_parent_module_name = self._parent_module_name(clazz.__module__)
 
-        # TODO Create a flag to disable for submodules
-        return clazz_parent_module_name.startswith(self._module)
+        for module in self._modules:
+            if clazz_parent_module_name.startswith(module):
+                return True
+
+        return False
 
     def visit(self, visitor):
         self._load_classes()
