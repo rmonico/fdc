@@ -9,6 +9,7 @@ class Injector(object):
 
     def __init__(self):
         self._resource_classes = []
+        self._logger = None
 
     def set_logger(self, logger):
         self._logger = logger
@@ -35,7 +36,7 @@ class Injector(object):
         for properties in self._resource_classes:
             injection_method_name = 'set_' + properties['name']
 
-            if (not hasattr(client, injection_method_name)):
+            if not hasattr(client, injection_method_name):
                 continue
 
             injection_method = getattr(client, injection_method_name)

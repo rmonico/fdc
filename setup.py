@@ -11,4 +11,4 @@ setup(name='fdc',
       entry_points={
           'console_scripts': ['fdc=fdc.main:entry_point'],
       },
-      zip_safe=False)
+      zip_safe=False, install_requires=['ipdb'])

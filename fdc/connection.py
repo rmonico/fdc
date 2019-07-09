@@ -5,20 +5,22 @@
 import sqlite3
 
 
-# TODO Move these methods to module
-class Factory(object):
+class ConnectionFactory(object):
 
+    @staticmethod
     def injectable_resource():
         return 'connection_factory'
 
     def set_logger(self, logger):
         self._logger = logger
 
+    @staticmethod
     def database_folder():
         import os
 
         return "{HOME}/.config/fdc".format(**os.environ)
 
+    @staticmethod
     def database_path():
         # TODO CHeck this in other places (like environment variables, command
         # line switches, etc)

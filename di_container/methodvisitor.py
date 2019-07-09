@@ -8,9 +8,9 @@ class MethodVisitor(object):
     _classes = []
     _modules = []
 
-    def __init__(self, modules, filter=lambda: True):
+    def __init__(self, modules, _filter=lambda: True):
         self._modules = modules
-        self._filter = filter
+        self._filter = _filter
 
     def _load_classes(self):
         for module in self._modules:

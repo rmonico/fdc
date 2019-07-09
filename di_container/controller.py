@@ -10,6 +10,7 @@ class Controller(object):
 
     def __init__(self):
         self._listeners = []
+        self._logger = None
 
     def set_logger(self, logger):
         self._logger = logger
@@ -34,7 +35,7 @@ class Controller(object):
         di_container.inject_resources(self)
 
         for listener in self._listeners:
-            if hasattr(self, '_logger'):
+            if self._logger:
                 self._logger.info('Loaded listener: {}', listener[0].__qualname__)
 
     def event(self, event_name, *args, **kwargs):
