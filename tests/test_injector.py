@@ -9,7 +9,7 @@ from di_container.injector import di_container
 
 class InjectorTestCase(TestCase):
 
-    def test_dependency_injected(self):
+    def test_internal_dependency_injection(self):
         di_container.load_resources([__package__])
 
         injected = Injected()
