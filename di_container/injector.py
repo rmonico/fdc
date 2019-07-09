@@ -14,23 +14,25 @@ class Injector(object):
     def set_logger(self, logger):
         self._logger = logger
 
-    def load_resource(self, clazz, method):
+    def load_resources(self, packages):
+        self._load_internal_resources(packages)
+
+        self.inject_resources(self)
+
+        for resource in self._resource_classes:
+            if self._logger:
+                self._logger.info('Loaded resource: {name} (of {class})', **resource)
+
+    def _load_internal_resources(self, packages):
+        visitor = MethodVisitor(packages, lambda clazz, method: method.__name__ == 'injectable_resource')
+        visitor.visit(self._load_resource)
+
+    def _load_resource(self, clazz, method):
         resource_name = method()
 
         resource_properties = {'name': resource_name, 'class': clazz, 'instance': None}
 
         self._resource_classes.append(resource_properties)
-
-    def load_resources(self, packages):
-        visitor = MethodVisitor(packages, lambda clazz, method: method.__name__ == 'injectable_resource')
-
-        visitor.visit(self.load_resource)
-
-        self.inject_resources(self)
-
-        for resource in self._resource_classes:
-            if hasattr(self, "_logger"):
-                self._logger.info('Loaded resource: {name} (of {class})', **resource)
 
     def inject_resources(self, client):
         for properties in self._resource_classes:
