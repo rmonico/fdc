@@ -40,5 +40,6 @@ class ControllerTestCase(TestCase):
 
         self.assertEqual(_test_event_parameter, 41)
 
+
 if __name__ == '__main__':
     unittest.main()

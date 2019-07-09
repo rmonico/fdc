@@ -42,4 +42,5 @@ class Controller(object):
             if listener.__name__ == (event_name + '_handler'):
                 listener(*args, **kwargs)
 
+
 controller = Controller()

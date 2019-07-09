@@ -22,13 +22,15 @@ class MethodVisitorTestCase(TestCase):
         self._visited = []
 
     def test_visit(self):
-        visitor = MethodVisitor([__package__], lambda clazz, method: clazz.__name__ == 'VisitedClass' and method.__name__ == 'visited_method')
+        visitor = MethodVisitor([__package__], lambda clazz,
+                                                      method: clazz.__name__ == 'VisitedClass' and method.__name__ == 'visited_method')
 
         self._reset_visited_method_list()
 
         visitor.visit(self._update_visited_method_list)
 
         self.assertEqual(self._visited, [('VisitedClass', 'visited_method')])
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -5,7 +5,6 @@ import inspect
 
 
 class MethodVisitor(object):
-
     _classes = []
     _modules = []
 

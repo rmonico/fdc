@@ -71,5 +71,6 @@ def _make_contrato_parser(parent_parser):
 def entry_point():
     Main().main()
 
+
 if __name__ == '__main__':
     entry_point()

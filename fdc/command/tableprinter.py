@@ -24,7 +24,7 @@ class TablePrinter(object):
             formatted_row = ()
 
             for cell in row:
-                formatted_row += (self._format_cell(cell), )
+                formatted_row += (self._format_cell(cell),)
 
             self._data += [formatted_row]
 
