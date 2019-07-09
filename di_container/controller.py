@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 
 
-from .methodvisitor import MethodVisitor
 from .injector import di_container
+from .methodvisitor import MethodVisitor
 
 
 class Controller(object):

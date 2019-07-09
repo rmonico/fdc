@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from datetime import date
-from .tableprinter import TablePrinter
+from di_container.controller import controller
 from fdc.dao.conta import Conta, ContaDao
+from .tableprinter import TablePrinter
+
 
 class ContaCommand(object):
 

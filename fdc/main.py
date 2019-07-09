@@ -2,9 +2,10 @@
 # -*- coding: utf-8 -*-
 
 import argparse
+
 from argparse_helpers.parsers.date_parser import date_parser
-from di_container.injector import di_container
 from di_container.controller import controller
+from di_container.injector import di_container
 
 
 class Main(object):
