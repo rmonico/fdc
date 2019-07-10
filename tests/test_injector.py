@@ -21,7 +21,7 @@ class InjectorTestCase(TestCase):
     def test_external_dependency_injection(self):
         di_container.load_resources([__package__])
 
-        injected = Injected()
+        injected = InjectedExternal()
 
         di_container.inject_resources(injected)
 
@@ -43,11 +43,25 @@ class Dependency(object):
     def injectable_resource():
         return 'dependency_name'
 
+
+class InjectedExternal(object):
+
+    def __init__(self):
+        self._external_dependency = None
+
+    def set_external_dependency(self, dependency):
+        self._external_dependency = dependency
+
+
+class ExternalDependency(object):
+
     @staticmethod
     def get_external_resources():
         return [{'name': 'external_dependency',
-                 'creator': DependencyToBeInjected.callable_who_will_return_dependency_instance_when_injected}]
+                 'creator_factory': ExternalDependency,
+                 'creator': ExternalDependency.callable_who_will_return_dependency_instance_when_injected}]
 
-        @staticmethod
-        def callable_who_will_return_dependency_instance_when_injected():
-            return 'external dependency instance'
+    def callable_who_will_return_dependency_instance_when_injected(self):
+        return 'external dependency instance'
+
+
