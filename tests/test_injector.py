@@ -16,7 +16,7 @@ class InjectorTestCase(TestCase):
 
         di_container.inject_resources(injected)
 
-        self.assertIsInstance(injected._dependency, DependencyToBeInjected)
+        self.assertIsInstance(injected._dependency, Dependency)
 
     def test_external_dependency_injection(self):
         di_container.load_resources([__package__])
@@ -32,16 +32,12 @@ class Injected(object):
 
     def __init__(self):
         self._dependency = None
-        self._external_dependency = None
 
     def set_dependency_name(self, dependency):
         self._dependency = dependency
 
-    def set_external_dependency(self, dependency):
-        self._external_dependency = dependency
 
-
-class DependencyToBeInjected(object):
+class Dependency(object):
 
     @staticmethod
     def injectable_resource():
