@@ -27,6 +27,15 @@ class InjectorTestCase(TestCase):
 
         self.assertEqual(injected._external_dependency, 'external dependency instance')
 
+    def test_transient_dependency_injection(self):
+        di_container.load_resources([__package__])
+
+        injected = InjectedTransient()
+
+        di_container.inject_resources(injected)
+
+        self.assertEqual(injected._dependency_with_transient._transient_dependency, 'transient dependency instance')
+
 
 class Injected(object):
 
@@ -65,3 +74,30 @@ class ExternalDependency(object):
         return 'external dependency instance'
 
 
+class InjectedTransient(object):
+
+    def __init__(self):
+        self._dependency_with_transient = None
+
+    def set_dependency_with_transient(self, dependency):
+        self._dependency_with_transient = dependency
+
+
+class DependencyWithTransient(object):
+
+    def __init__(self):
+        self._transient_dependency = None
+
+    def set_transient_dependency(self, dependency):
+        self._transient_dependency = dependency
+
+    @staticmethod
+    def injectable_resource():
+        return 'dependency_with_transient'
+
+
+class TransientDependency(object):
+
+    @staticmethod
+    def injectable_resource():
+        return 'transient_dependency'
