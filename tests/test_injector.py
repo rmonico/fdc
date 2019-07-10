@@ -34,7 +34,7 @@ class InjectorTestCase(TestCase):
 
         di_container.inject_resources(injected)
 
-        self.assertEqual(injected._dependency_with_transient._transient_dependency, 'transient dependency instance')
+        self.assertIsInstance(injected._dependency_with_transient._transient_dependency, TransientDependency)
 
 
 class Injected(object):
