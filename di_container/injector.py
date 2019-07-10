@@ -66,6 +66,8 @@ class Injector(object):
                 else:
                     instance = properties['instance'] = properties['creator']()
 
+            self.inject_resources(instance)
+
             injection_method(instance)
 
 
