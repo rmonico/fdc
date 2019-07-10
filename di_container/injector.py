@@ -22,7 +22,7 @@ class Injector(object):
 
         for resource in self._resource_classes:
             if self._logger:
-                self._logger.info('Loaded resource: {name} (of {class})', **resource)
+                self._logger.info('Loaded resource: {name} (of {creator})', **resource)
 
     def _load_internal_resources(self, packages):
         visitor = MethodVisitor(packages, lambda clazz, method: method.__name__ == 'injectable_resource')
