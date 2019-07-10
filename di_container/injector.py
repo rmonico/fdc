@@ -31,7 +31,7 @@ class Injector(object):
     def _load_internal_resource(self, clazz, method):
         resource_name = method()
 
-        resource_properties = {'name': resource_name, 'creator': clazz, 'instance': None}
+        resource_properties = {'name': resource_name, 'factory': None, 'creator': clazz, 'instance': None}
 
         self._resource_classes.append(resource_properties)
 
@@ -44,6 +44,7 @@ class Injector(object):
 
         for resource in resources:
             resource.setdefault('instance', None)
+            resource.setdefault('factory', clazz)
 
         self._resource_classes += resources
 
@@ -59,7 +60,11 @@ class Injector(object):
             instance = properties['instance']
 
             if not instance:
-                instance = properties['instance'] = properties['creator']()
+                if properties['factory']:
+                    factory = properties['factory']()
+                    instance = properties['instance'] = properties['creator'](factory)
+                else:
+                    instance = properties['instance'] = properties['creator']()
 
             injection_method(instance)
 
