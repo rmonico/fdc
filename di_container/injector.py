@@ -16,6 +16,7 @@ class Injector(object):
 
     def load_resources(self, packages):
         self._load_internal_resources(packages)
+        self._load_external_resources(packages)
 
         self.inject_resources(self)
 
@@ -25,14 +26,26 @@ class Injector(object):
 
     def _load_internal_resources(self, packages):
         visitor = MethodVisitor(packages, lambda clazz, method: method.__name__ == 'injectable_resource')
-        visitor.visit(self._load_resource)
+        visitor.visit(self._load_internal_resource)
 
-    def _load_resource(self, clazz, method):
+    def _load_internal_resource(self, clazz, method):
         resource_name = method()
 
-        resource_properties = {'name': resource_name, 'class': clazz, 'instance': None}
+        resource_properties = {'name': resource_name, 'creator': clazz, 'instance': None}
 
         self._resource_classes.append(resource_properties)
+
+    def _load_external_resources(self, packages):
+        visitor = MethodVisitor(packages, lambda clazz, method: method.__name__ == 'get_external_resources')
+        visitor.visit(self._load_external_resource)
+
+    def _load_external_resource(self, clazz, method):
+        resources = method()
+
+        for resource in resources:
+            resource.setdefault('instance', None)
+
+        self._resource_classes += resources
 
     def inject_resources(self, client):
         for properties in self._resource_classes:
@@ -46,7 +59,7 @@ class Injector(object):
             instance = properties['instance']
 
             if not instance:
-                instance = properties['instance'] = properties['class']()
+                instance = properties['instance'] = properties['creator']()
 
             injection_method(instance)
 
