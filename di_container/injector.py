@@ -62,6 +62,9 @@ class Injector(object):
             if not instance:
                 if properties['factory']:
                     factory = properties['factory']()
+
+                    self.inject_resources(factory)
+
                     instance = properties['instance'] = properties['creator'](factory)
                 else:
                     instance = properties['instance'] = properties['creator']()
