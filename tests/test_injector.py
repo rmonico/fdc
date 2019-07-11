@@ -36,6 +36,15 @@ class InjectorTestCase(TestCase):
 
         self.assertIsInstance(injected._dependency_with_transient._transient_dependency, TransientDependency)
 
+    def test_inject_into_factory_for_external_dependencies(self):
+        di_container.load_resources([__package__])
+
+        injected = InjectedWithExternalTransient()
+
+        di_container.inject_resources(injected)
+
+        self.assertTrue(injected._was_set)
+
 
 class Injected(object):
 
@@ -101,3 +110,29 @@ class TransientDependency(object):
     @staticmethod
     def injectable_resource():
         return 'transient_dependency'
+
+
+class InjectedWithExternalTransient(object):
+
+    def __init__(self):
+        self._was_set = None
+
+    def set_dependency_of_external_dependency_was_set(self, was_set):
+        self._was_set = was_set
+
+
+class ExternalDependencyWithTransient(object):
+
+    def __init__(self):
+        self._dependency = None
+
+    @staticmethod
+    def get_external_resources():
+        return [{'name': 'dependency_of_external_dependency_was_set',
+                 'creator': ExternalDependencyWithTransient.check_if_dependency_of_external_was_created}]
+
+    def set_transient_dependency(self, dependency):
+        self._dependency = dependency
+
+    def check_if_dependency_of_external_was_created(self):
+        return self._dependency is not None
