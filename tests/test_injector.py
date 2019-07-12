@@ -45,6 +45,15 @@ class InjectorTestCase(TestCase):
 
         self.assertTrue(injected._was_set)
 
+    def test_run_before_injection(self):
+        di_container.load_resources([__package__])
+
+        injected = InjectedWithCodeRunningBeforeInjection()
+
+        di_container.inject_resources(injected)
+
+        self.assertTrue(injected._before_injection_ran)
+
 
 class Injected(object):
 
@@ -136,3 +145,12 @@ class ExternalDependencyWithTransient(object):
 
     def check_if_dependency_of_external_was_created(self):
         return self._dependency is not None
+
+
+class InjectedWithCodeRunningBeforeInjection(object):
+
+    def __init__(self):
+        self._before_injection_ran = False
+
+    def before_inject(self):
+        self._before_injection_ran = True
