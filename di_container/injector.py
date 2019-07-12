@@ -49,6 +49,12 @@ class Injector(object):
         self._resource_classes += resources
 
     def inject_resources(self, client):
+        import inspect
+
+        if hasattr(client, 'before_inject'):
+            if inspect.ismethod(getattr(client, 'before_inject')):
+                client.before_inject()
+
         for properties in self._resource_classes:
             injection_method_name = 'set_' + properties['name']
 
