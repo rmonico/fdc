@@ -63,21 +63,31 @@ class Injector(object):
 
             injection_method = getattr(client, injection_method_name)
 
-            instance = properties['instance']
-
-            if not instance:
-                if properties['factory']:
-                    factory = properties['factory']()
-
-                    self.inject_resources(factory)
-
-                    instance = properties['instance'] = properties['creator'](factory)
-                else:
-                    instance = properties['instance'] = properties['creator']()
+            instance = self._get_instance(properties)
 
             self.inject_resources(instance)
 
             injection_method(instance)
+
+    def get_resource(self, resource_name):
+        for properties in self._resource_classes:
+            if properties['name'] == resource_name:
+                return self._get_instance(properties)
+
+    def _get_instance(self, properties):
+        instance = properties['instance']
+
+        if not instance:
+            if properties['factory']:
+                factory = properties['factory']()
+
+                self.inject_resources(factory)
+
+                instance = properties['instance'] = properties['creator'](factory)
+            else:
+                instance = properties['instance'] = properties['creator']()
+
+        return instance
 
 
 di_container = Injector()
