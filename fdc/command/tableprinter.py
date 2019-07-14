@@ -44,6 +44,10 @@ class TablePrinter(object):
                 column += 1
 
     def _print(self):
+        if len(self._data) == 1:
+            print('No data')
+            return
+
         column_mask = []
 
         for column in range(0, len(self._data[0])):
