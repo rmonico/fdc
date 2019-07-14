@@ -45,7 +45,7 @@ class Controller(object):
     def event(self, event_name, *args, **kwargs):
         for listener, instance in self._listeners:
             if listener.__name__ == (event_name + '_handler'):
-                listener(*args, **kwargs)
+                return listener(*args, **kwargs)
 
 
 controller = Controller()
