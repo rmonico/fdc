@@ -39,10 +39,11 @@ class Controller(object):
         di_container.inject_resources(self)
 
         for listener in self._listeners:
-            if self._logger:
-                self._logger.info('Loaded listener: {}', listener[0].__qualname__)
+            self._logger.info('Loaded listener: {}', listener[0].__qualname__)
 
     def event(self, event_name, *args, **kwargs):
+        self._logger.info('Running {} with args "{}" and kwargs "{}"', event_name, args, kwargs)
+
         for listener, instance in self._listeners:
             if listener.__name__ == (event_name + '_handler'):
                 return listener(*args, **kwargs)
