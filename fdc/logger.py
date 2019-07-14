@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-
+_NONE = 0
 _INFO = 1
 
 
 class Logger(object):
 
     def __init__(self):
-        self._verbosity_level = _INFO
+        self._verbosity_level = _NONE
 
     def injectable_resource():
         return 'logger'
