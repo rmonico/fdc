@@ -20,7 +20,11 @@ class Controller(object):
             if instance and instance.__class__ == clazz:
                 return instance
 
-        return clazz()
+        instance = clazz()
+
+        di_container.inject_resources(instance)
+
+        return instance
 
     def _load_listeners_from(self, clazz, method):
         instance = self._get_instance_for(clazz)
