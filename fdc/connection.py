@@ -43,7 +43,7 @@ class Configurations(object):
 
         self._logger.info('Loaded configs:')
 
-        self._visit_configs(lambda key, value: self._logger.info('{}={}'.format(key, value)))
+        self._visit_configs(lambda key, value: self._logger.info('  {}={}'.format(key, value)))
 
         return self._configs
 
