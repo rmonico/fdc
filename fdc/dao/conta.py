@@ -4,9 +4,10 @@
 
 class Conta(object):
 
-    def __init__(self, conta_row):
-        for field in _fields:
-            setattr(self, '_' + field, conta_row[field])
+    def __init__(self):
+        self.nome = None
+        self.contabilizavel = False
+        self.fechamento = None
 
 
 class ContaDao(object):
@@ -25,6 +26,16 @@ class ContaDao(object):
     def fields():
         return [{'name': 'nome'}, {'name': 'contabilizavel'}, {'name': 'fechamento'}]
 
+    @staticmethod
+    def _load_from_cursor(row):
+        instance = Conta()
+
+        for i, field in enumerate(ContaDao.fields()):
+            value = row[i]
+            setattr(instance, field['name'], value)
+
+        return instance
+
     def list(self):
         cursor = self._connection.execute(
             "select {fields} from conta;".format(fields=", ".join(field['name'] for field in self.fields())))
@@ -32,7 +43,7 @@ class ContaDao(object):
         conta_list = []
 
         for row in cursor:
-            conta = Conta(conta_row=row)
+            conta = self._load_from_cursor(row)
 
             conta_list.append(conta)
 
