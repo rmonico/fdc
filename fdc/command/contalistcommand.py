@@ -21,7 +21,7 @@ class ContaListCommand(object):
         conta_parser.add_parser("list", aliases=['l', 'ls'], help="Lista as contas existentes").set_defaults(
             event='conta_list_command')
 
-    def conta_list_command_handler(self):
+    def conta_list_command_handler(self, args):
         contas = self._dao.list()
 
         return 'ok', contas
