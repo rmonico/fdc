@@ -47,6 +47,8 @@ class ContaDao(object):
 
             conta_list.append(conta)
 
+        cursor.close()
+
         return conta_list
 
     def insert(self, conta):
@@ -64,4 +66,8 @@ class ContaDao(object):
         sql = "insert into conta ({fields}) values ({value_mask});".format(
             fields=", ".join(field_names), value_mask=value_mask)
 
-        connection.execute(sql, fields, True)
+        cursor = self._connection.execute(sql, fields)
+
+        self._connection.commit()
+
+        cursor.close()
