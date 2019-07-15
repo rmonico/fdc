@@ -4,7 +4,6 @@ from fdc.command.tableprinter import TablePrinter
 
 
 class ContaListCommand(object):
-    _fields = "nome", "contabilizavel", "fechamento"
 
     def __init__(self):
         self._dao = None
@@ -23,6 +22,6 @@ class ContaListCommand(object):
         return 'ok', contas
 
     def conta_list_command_ok_handler(self, contas):
-        printer = TablePrinter(ContaListCommand._fields, contas)
+        printer = TablePrinter(self._dao.fields(), contas)
 
         printer.print()

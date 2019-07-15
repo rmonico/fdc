@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-_fields = "nome", "contabilizavel", "fechamento"
-
 
 class Conta(object):
 
@@ -23,9 +21,13 @@ class ContaDao(object):
     def set_connection(self, connection):
         self._connection = connection
 
+    @staticmethod
+    def fields():
+        return [{'name': 'nome'}, {'name': 'contabilizavel'}, {'name': 'fechamento'}]
+
     def list(self):
         cursor = self._connection.execute(
-            "select {fields} from conta;".format(fields=", ".join(_fields)))
+            "select {fields} from conta;".format(fields=", ".join(field['name'] for field in self.fields())))
 
         conta_list = []
 
