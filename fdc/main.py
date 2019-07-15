@@ -19,13 +19,16 @@ class Main(object):
         di_container.load_resources(packages)
         controller.load_listeners(packages)
 
+        di_container.inject_resources(self)
+
         args = self.parse_command_line()
 
-        command_instance = args.clazz()
+        command_results = controller.event(args.event)
 
-        di_container.inject_resources(command_instance)
+        command_status = command_results[0]
+        command_args = command_results[1:]
 
-        command_instance.run(args)
+        controller.event(args.event + '_' + command_status, *command_args)
 
     def parse_command_line(self):
         parser = argparse.ArgumentParser()
