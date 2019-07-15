@@ -16,19 +16,26 @@ class TablePrinter(object):
         self._print()
 
     def _load_and_format_data(self):
-        self._data = []
-
-        self._data += [self._fields]
+        self._data = [[field['name'] for field in self._fields]]
 
         for row in self._result_set:
             formatted_row = ()
 
-            for cell in row:
+            for cell in self._get_cells(row):
                 formatted_row += (self._format_cell(cell),)
 
             self._data += [formatted_row]
 
-    def _format_cell(self, cell):
+    def _get_cells(self, row):
+        cells = []
+
+        for field in self._fields:
+            cells.append(getattr(row, field['name']))
+
+        return cells
+
+    @staticmethod
+    def _format_cell(cell):
         return str(cell)
 
     def _calculate_column_widths(self):
@@ -36,12 +43,9 @@ class TablePrinter(object):
 
         for row in self._data:
 
-            column = 0
-            for cell in row:
+            for column, cell in enumerate(row):
                 if len(cell) > self._column_widths[column]:
                     self._column_widths[column] = len(cell)
-
-                column += 1
 
     def _print(self):
         if len(self._data) == 1:
