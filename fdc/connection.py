@@ -66,26 +66,3 @@ class ConnectionFactory(object):
         os.makedirs(self._configs['db']['folder'], exist_ok=True)
 
         return sqlite3.connect(self._configs['db']['path'])
-
-
-def execute(sql, parameters=None, commit_and_close=False):
-    connection = Factory.create_connection()
-
-    # FIXME Handle transaction
-
-    cursor = connection.cursor()
-
-    self._logger.info("Executing: {}", sql)
-
-    if parameters:
-        log.info("  with parameters", parameters)
-        result = cursor.execute(sql, parameters)
-    else:
-        result = cursor.execute(sql)
-
-    if commit_and_close:
-        cursor.close()
-        connection.commit()
-        connection.close()
-
-    return result
