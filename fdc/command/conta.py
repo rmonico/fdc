@@ -3,7 +3,6 @@
 
 from di_container.controller import controller
 from fdc.dao.conta import Conta, ContaDao
-from .tableprinter import TablePrinter
 
 
 class ContaCommand(object):
@@ -13,12 +12,9 @@ class ContaCommand(object):
             "conta", aliases=['c', 'ct', 'cta'], help="Comandos de conta")
         subparsers = conta_parser.add_subparsers()
 
-        ContaCommand._make_conta_list_parser(subparsers)
-        ContaCommand._make_conta_add_parser(subparsers)
+        controller.event('conta_parser_created', conta_parser=subparsers)
 
-    def _make_conta_list_parser(parent_parser):
-        conta_list_parser = parent_parser.add_parser(
-            "list", help="Lista as contas existentes").set_defaults(clazz=ContaList)
+        ContaCommand._make_conta_add_parser(subparsers)
 
     def _make_conta_add_parser(parent_parser):
         conta_add_parser = parent_parser.add_parser(
@@ -32,19 +28,6 @@ class ContaCommand(object):
             "--df", "--fechamento", help="Data de fechamento da conta")
         conta_add_parser.add_argument(
             "nome", help="Nome da conta a ser criada")
-
-
-class ContaList(object):
-
-    def run(self, args):
-        fields = "nome", "contabilizavel", "fechamento"
-
-        result_set = connection.execute(
-            "select {fields} from conta;".format(fields=", ".join(fields)))
-
-        printer = TablePrinter(fields, result_set)
-
-        printer.print()
 
 
 class ContaAdd(object):
