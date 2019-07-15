@@ -10,7 +10,7 @@ class ContaCommand(object):
 
     def root_parser_created_handler(self, root_parser):
         conta_parser = root_parser.add_parser(
-            "conta", help="Comandos de conta")
+            "conta", aliases=['c', 'ct', 'cta'], help="Comandos de conta")
         subparsers = conta_parser.add_subparsers()
 
         ContaCommand._make_conta_list_parser(subparsers)
