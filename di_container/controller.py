@@ -44,9 +44,15 @@ class Controller(object):
     def event(self, event_name, *args, **kwargs):
         self._logger.info('Running {} with args "{}" and kwargs "{}"', event_name, args, kwargs)
 
+        results = ()
         for listener, instance in self._listeners:
             if listener.__name__ == (event_name + '_handler'):
-                return listener(*args, **kwargs)
+                results += listener(*args, **kwargs),
+
+        if len(results) == 1:
+            return results[0]
+        else:
+            return results
 
 
 controller = Controller()
