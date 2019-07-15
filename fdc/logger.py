@@ -10,6 +10,7 @@ class Logger(object):
     def __init__(self):
         self._verbosity_level = _NONE
 
+    @staticmethod
     def injectable_resource():
         return 'logger'
 
