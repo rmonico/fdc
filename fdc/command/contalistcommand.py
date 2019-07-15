@@ -7,11 +7,7 @@ class ContaListCommand(object):
     _fields = "nome", "contabilizavel", "fechamento"
 
     def __init__(self):
-        self._connection = None
         self._dao = None
-
-    def set_connection(self, connection):
-        self._connection = connection
 
     def set_conta_dao(self, conta_dao):
         self._dao = conta_dao
