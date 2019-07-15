@@ -23,7 +23,7 @@ class Main(object):
 
         args = self.parse_command_line()
 
-        command_results = controller.event(args.event)
+        command_results = controller.event(args.event, args=args)
 
         command_status = command_results[0]
         command_args = command_results[1:]
