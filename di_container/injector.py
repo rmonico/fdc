@@ -8,7 +8,7 @@ from .methodvisitor import MethodVisitor
 class Inject(object):
 
     def __init__(self, name):
-        self._name = name
+        self.dependency_name = name
 
 
 class Injector(object):
@@ -62,17 +62,24 @@ class Injector(object):
                 client.before_inject()
 
         for attribute, value in client.__dict__.items():
-            if isinstance(value, Inject):
-                instance = self._get_instance(attribute)
+            if not isinstance(value, Inject):
+                continue
 
-                self.inject_resources(instance)
+            instance = self._get_instance_by_name(value.dependency_name)
 
-                client.__dict__[attribute] = instance
+            self.inject_resources(instance)
+
+            client.__dict__[attribute] = instance
 
     def get_resource(self, resource_name):
         for properties in self._resource_classes:
             if properties['name'] == resource_name:
                 return self._get_instance(properties)
+
+    def _get_instance_by_name(self, dependency_name):
+        # TODO Continuar daqui
+        # Recuperar quais os campos que o properties tem
+        pass
 
     def _get_instance(self, properties):
         instance = properties['instance']
