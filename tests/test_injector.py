@@ -4,6 +4,7 @@
 
 from unittest import TestCase
 
+from di_container.injector import Inject
 from di_container.injector import di_container
 
 
@@ -53,6 +54,15 @@ class InjectorTestCase(TestCase):
         di_container.inject_resources(injected)
 
         self.assertTrue(injected._before_injection_ran)
+
+    def test_inject_via_attribute(self):
+        di_container.load_resources([__package__])
+
+        injected = InjectedViaAttribute()
+
+        di_container.inject_resources(injected)
+
+        self.assertIsInstance(injected._dependency, Dependency)
 
 
 class Injected(object):
@@ -154,3 +164,9 @@ class InjectedWithCodeRunningBeforeInjection(object):
 
     def before_inject(self):
         self._before_injection_ran = True
+
+
+class InjectedViaAttribute(object):
+
+    def __init__(self):
+        self._dependency = Inject('dependency_name')
