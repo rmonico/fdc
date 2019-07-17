@@ -5,6 +5,12 @@
 from .methodvisitor import MethodVisitor
 
 
+class Inject(object):
+
+    def __init__(self, name):
+        self._name = name
+
+
 class Injector(object):
 
     def __init__(self):
@@ -55,19 +61,13 @@ class Injector(object):
             if inspect.ismethod(getattr(client, 'before_inject')):
                 client.before_inject()
 
-        for properties in self._resource_classes:
-            injection_method_name = 'set_' + properties['name']
+        for attribute, value in client.__dict__.items():
+            if isinstance(value, Inject):
+                instance = self._get_instance(attribute)
 
-            if not hasattr(client, injection_method_name):
-                continue
+                self.inject_resources(instance)
 
-            injection_method = getattr(client, injection_method_name)
-
-            instance = self._get_instance(properties)
-
-            self.inject_resources(instance)
-
-            injection_method(instance)
+                client.__dict__[attribute] = instance
 
     def get_resource(self, resource_name):
         for properties in self._resource_classes:
