@@ -99,19 +99,13 @@ class ExternalDependency(object):
 class InjectedTransient(object):
 
     def __init__(self):
-        self._dependency_with_transient = None
-
-    def set_dependency_with_transient(self, dependency):
-        self._dependency_with_transient = dependency
+        self._dependency_with_transient = Inject('dependency_with_transient')
 
 
 class DependencyWithTransient(object):
 
     def __init__(self):
-        self._transient_dependency = None
-
-    def set_transient_dependency(self, dependency):
-        self._transient_dependency = dependency
+        self._transient_dependency = Inject('transient_dependency')
 
     @staticmethod
     def injectable_resource():
