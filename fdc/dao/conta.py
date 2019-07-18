@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+from di_container.injector import Inject
 
 
 class Conta(object):
@@ -13,14 +14,11 @@ class Conta(object):
 class ContaDao(object):
 
     def __init__(self):
-        self._connection = None
+        self._connection = Inject('database connection')
 
     @staticmethod
     def injectable_resource():
-        return 'conta_dao'
-
-    def set_connection(self, connection):
-        self._connection = connection
+        return 'conta dao'
 
     @staticmethod
     def fields():

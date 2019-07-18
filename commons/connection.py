@@ -4,18 +4,17 @@
 
 import sqlite3
 
+from di_container.injector import Inject
+
 
 class Configurations(object):
 
     def __init__(self):
-        self._logger = None
+        self._logger = Inject('logger')
 
     @staticmethod
     def get_external_resources():
-        return [{'name': 'configs', 'creator': Configurations._load_configurations}]
-
-    def set_logger(self, logger):
-        self._logger = logger
+        return [{'name': 'app configuration', 'creator': Configurations._load_configurations}]
 
     def _visit_configs(self, visitor):
         self._visit_config(None, self._configs, visitor)
@@ -51,14 +50,11 @@ class Configurations(object):
 class ConnectionFactory(object):
 
     def __init__(self):
-        self._configs = None
+        self._configs = Inject('app configuration')
 
     @staticmethod
     def get_external_resources():
-        return [{'name': 'connection', 'creator': ConnectionFactory.create_connection}]
-
-    def set_configs(self, configs):
-        self._configs = configs
+        return [{'name': 'database connection', 'creator': ConnectionFactory.create_connection}]
 
     def create_connection(self):
         import os
