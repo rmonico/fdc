@@ -6,6 +6,7 @@ import unittest
 from unittest import TestCase
 
 from di_container.controller import controller
+from di_container.injector import di_container
 
 
 class TestEventHandler(object):
@@ -22,6 +23,7 @@ class TestEventHandler(object):
 class ControllerTestCase(TestCase):
 
     def test_event_triggered(self):
+        di_container.load_resources(['commons'])
         controller.load_listeners([__package__])
 
         global _test_event_handled
@@ -32,6 +34,7 @@ class ControllerTestCase(TestCase):
         self.assertTrue(_test_event_handled)
 
     def test_parametrized_event_trigger(self):
+        di_container.load_resources(['commons'])
         controller.load_listeners([__package__])
 
         global _test_event_parameter
