@@ -81,10 +81,7 @@ class Dependency(object):
 class InjectedExternal(object):
 
     def __init__(self):
-        self._external_dependency = None
-
-    def set_external_dependency(self, dependency):
-        self._external_dependency = dependency
+        self._external_dependency = Inject('external_dependency')
 
 
 class ExternalDependency(object):
