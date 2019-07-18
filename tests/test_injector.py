@@ -122,24 +122,18 @@ class TransientDependency(object):
 class InjectedWithExternalTransient(object):
 
     def __init__(self):
-        self._was_set = None
-
-    def set_dependency_of_external_dependency_was_set(self, was_set):
-        self._was_set = was_set
+        self._was_set = Inject('dependency_of_external_dependency_was_set')
 
 
 class ExternalDependencyWithTransient(object):
 
     def __init__(self):
-        self._dependency = None
+        self._dependency = Inject('transient_dependency')
 
     @staticmethod
     def get_external_resources():
         return [{'name': 'dependency_of_external_dependency_was_set',
                  'creator': ExternalDependencyWithTransient.check_if_dependency_of_external_was_created}]
-
-    def set_transient_dependency(self, dependency):
-        self._dependency = dependency
 
     def check_if_dependency_of_external_was_created(self):
         return self._dependency is not None
