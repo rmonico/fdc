@@ -65,21 +65,21 @@ class Injector(object):
             if not isinstance(value, Inject):
                 continue
 
-            instance = self._get_instance_by_name(value.dependency_name)
+            dependency = self._get_dependency_by_name(value.dependency_name)
 
-            self.inject_resources(instance)
+            self.inject_resources(dependency)
 
-            client.__dict__[attribute] = instance
+            client.__dict__[attribute] = dependency
 
     def get_resource(self, resource_name):
         for properties in self._resource_classes:
             if properties['name'] == resource_name:
                 return self._get_instance(properties)
 
-    def _get_instance_by_name(self, dependency_name):
-        # TODO Continuar daqui
-        # Recuperar quais os campos que o properties tem
-        pass
+    def _get_dependency_by_name(self, dependency_name):
+        for dependency in self._resource_classes:
+            if dependency['name'] == dependency_name:
+                return self._get_instance(dependency)
 
     def _get_instance(self, properties):
         instance = properties['instance']
