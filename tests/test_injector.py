@@ -68,10 +68,7 @@ class InjectorTestCase(TestCase):
 class Injected(object):
 
     def __init__(self):
-        self._dependency = None
-
-    def set_dependency_name(self, dependency):
-        self._dependency = dependency
+        self._dependency = Inject('dependency_name')
 
 
 class Dependency(object):
