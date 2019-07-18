@@ -80,9 +80,14 @@ class Injector(object):
                 return self._get_instance(properties)
 
     def _get_dependency_by_name(self, dependency_name):
+        dependency_found = False
+
         for dependency in self._resource_classes:
             if dependency['name'] == dependency_name:
                 return self._get_instance(dependency)
+
+        if not dependency_found:
+            raise Exception('Dependency not found: "{}"'.format(dependency_name))
 
     def _get_instance(self, properties):
         instance = properties['instance']
