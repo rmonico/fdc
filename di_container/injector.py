@@ -61,6 +61,9 @@ class Injector(object):
             if inspect.ismethod(getattr(client, 'before_inject')):
                 client.before_inject()
 
+        if not hasattr(client, '__dict__'):
+            return
+
         for attribute, value in client.__dict__.items():
             if not isinstance(value, Inject):
                 continue
