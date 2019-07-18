@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 
+import unittest
 from unittest import TestCase
 
 from di_container.controller import controller
