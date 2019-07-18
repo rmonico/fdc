@@ -64,6 +64,17 @@ class InjectorTestCase(TestCase):
 
         self.assertIsInstance(injected._dependency, Dependency)
 
+    def test_should_trow_exception_when_unexisting_dependency_is_found(self):
+        di_container.load_resources([__package__])
+
+        injected = InjectNotExistingDependency()
+
+        with self.assertRaises(Exception) as context:
+            di_container.inject_resources(injected)
+
+        self.assertIsInstance(context.exception, Exception)
+        self.assertEqual('Dependency not found: "dependency which doesnt exists"', str(context.exception))
+
 
 class Injected(object):
 
@@ -152,3 +163,9 @@ class InjectedViaAttribute(object):
 
     def __init__(self):
         self._dependency = Inject('dependency_name')
+
+
+class InjectNotExistingDependency(object):
+
+    def __init__(self):
+        self._dependency = Inject('dependency which doesnt exists')
