@@ -4,16 +4,14 @@
 
 from .injector import di_container
 from .methodvisitor import MethodVisitor
+from .injector import Inject
 
 
 class Controller(object):
 
     def __init__(self):
         self._listeners = []
-        self._logger = None
-
-    def set_logger(self, logger):
-        self._logger = logger
+        self._logger = Inject('logger')
 
     def _get_instance_for(self, clazz):
         for listener, instance in self._listeners:
