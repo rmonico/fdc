@@ -1,5 +1,6 @@
 :: TODO
 
-- Checar dependências cíclicas
+- Portar os comandos de lançamento e conta para a nova estrutura
 - Fazer os comandos de rm de lanc, conta, etc (agora só está listando e adicionando)
+- Checar dependências cíclicas
 
