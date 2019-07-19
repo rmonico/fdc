@@ -1,16 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-
-from fdc.dao.conta import Conta, ContaDao
+from di_container.injector import Inject
+from fdc.dao.conta import Conta
 
 
 class ContaAddCommand(object):
 
     def __init__(self):
-        self._dao = None
-
-    def set_conta_dao(self, conta_dao):
-        self._dao = conta_dao
+        self._dao = Inject('conta dao')
 
     @staticmethod
     def conta_parser_created_handler(conta_parser):
