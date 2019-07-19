@@ -1,33 +1,16 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-
-from di_container.injector import di_container
+from di_container.injector import Inject, di_container
 
 
-class DBCommand(object):
-
-    def root_parser_created_handler(self, root_parser):
-        db_parser = root_parser.add_parser("db", help="Database commands")
-        subparsers = db_parser.add_subparsers()
-
-        subparsers.add_parser(
-            "init", help="Inicializa o banco de dados em fdc.db").set_defaults(clazz=DBInit)
-
-        subparsers.add_parser("restore", help="Restore fdc.dump to fdc.db").set_defaults(
-            clazz=DBRestore)
-        subparsers.add_parser(
-            "dump", help="Dump fdc.db to fdc.dump").set_defaults(clazz=DBDump)
-
-
-class DBInit(object):
+class DatabaseInitCommand(object):
 
     def __init__(self):
-        self._configs = None
+        self._configs = Inject('app configuration')
 
-    def set_configs(self, configs):
-        self._configs = configs
+    def database_parser_created_handler(self, db_parser):
+        db_parser.add_parser(
+            "init", help="Inicializa o banco de dados em fdc.db").set_defaults(event='database_init_command')
 
-    def run(self, args):
+    def database_init_command_handler(self, args):
         import os
 
         if os.path.exists(self._configs['db']['path']):
@@ -49,15 +32,4 @@ class DBInit(object):
 
         # TODO Commit and handle errors
 
-
-class DBRestore(object):
-
-    def run(self, args):
-        # Usar iterdump do sqlite3
-        print("in db restore {}".format(args))
-
-
-class DBDump(object):
-
-    def run(self, args):
-        print("in db dump {}".format(args))
+        return 'ok'

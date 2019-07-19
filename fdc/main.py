@@ -14,7 +14,7 @@ class Main(object):
         self._root_commands = []
 
     def main(self):
-        packages = [__package__, __package__ + '.conta', __package__ + '.command', 'commons', ]
+        packages = [__package__, __package__ + '.conta', __package__ + '.database', __package__ + '.command', 'commons', ]
 
         di_container.load_resources(packages)
         controller.load_listeners(packages)
