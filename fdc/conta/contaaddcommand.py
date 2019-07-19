@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 from di_container.injector import Inject
-from fdc.dao.conta import Conta
+from fdc.conta.contadao import Conta
 
 
 class ContaAddCommand(object):

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 from di_container.injector import Inject
-from fdc.command.tableprinter import TablePrinter
+from commons.tableprinter import TablePrinter
 
 
 class ContaListCommand(object):
