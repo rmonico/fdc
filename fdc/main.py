@@ -73,9 +73,5 @@ def _make_contrato_parser(parent_parser):
     _make_contrato_add_parser(subparsers)
 
 
-def entry_point():
-    Main().main()
-
-
 if __name__ == '__main__':
-    entry_point()
+    Main().main()
