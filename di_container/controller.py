@@ -7,6 +7,14 @@ from .methodvisitor import MethodVisitor
 from .injector import Inject
 
 
+class ControllerEventResult(object):
+
+    def __init__(self, status, data=None, kwdata=None):
+        self.status = status
+        self.data = data
+        self.kwdata = kwdata
+
+
 class Controller(object):
 
     def __init__(self):
@@ -42,15 +50,27 @@ class Controller(object):
     def event(self, event_name, *args, **kwargs):
         self._logger.info('Running {} with args "{}" and kwargs "{}"', event_name, args, kwargs)
 
-        results = ()
+        results = []
         for listener, instance in self._listeners:
             if listener.__name__ == (event_name + '_handler'):
-                results += listener(*args, **kwargs),
+                raw_result = listener(*args, **kwargs)
 
-        if len(results) == 1:
-            return results[0]
-        else:
-            return results
+                if isinstance(raw_result, tuple):
+                    status = raw_result[0]
+                    if isinstance(raw_result[1], dict):
+                        kwdata = raw_result[1]
+                        data = raw_result[2:]
+                    else:
+                        kwdata = {}
+                        data = raw_result[1:]
+                else:
+                    status = raw_result
+                    data = []
+                    kwdata = {}
+
+                results += [ControllerEventResult(status, data, kwdata)]
+
+        return results
 
 
 controller = Controller()
