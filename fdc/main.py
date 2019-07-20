@@ -5,10 +5,13 @@ import argparse
 
 from argparse_helpers.parsers.date_parser import date_parser
 from di_container.controller import controller
-from di_container.injector import di_container
+from di_container.injector import di_container, Inject
 
 
 class Main(object):
+
+    def __init__(self):
+        self._logger = Inject('logger')
 
     def main(self):
         packages = [__package__, __package__ + '.conta', __package__ + '.lancamento', __package__ + '.database',
@@ -21,12 +24,13 @@ class Main(object):
 
         args = self.parse_command_line()
 
-        command_results = controller.event(args.event, args=args)
+        event_results = controller.event(args.event, args=args)
 
-        command_status = command_results[0]
-        command_args = command_results[1:]
+        for result in event_results:
+            self._logger.info('Calling front end for "{}" with data "{}, {}" due to status "{}"' + args.event, result.kwdata, result.data,
+                              result.status)
 
-        controller.event(args.event + '_' + command_status, *command_args)
+            controller.event(args.event + '_' + result.status, *result.data, **result.kwdata)
 
     def parse_command_line(self):
         parser = argparse.ArgumentParser()
