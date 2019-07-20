@@ -35,7 +35,17 @@ class Controller(object):
     def _load_listeners_from(self, clazz, method):
         instance = self._get_instance_for(clazz)
 
-        self._listeners.append((getattr(instance, method.__name__), instance))
+        attribute = getattr(instance, method.__name__)
+
+        if not self._is_already_loaded(attribute, instance):
+            self._listeners.append((attribute, instance))
+
+    def _is_already_loaded(self, attribute, instance_to_be_loaded):
+        for listener, instance in self._listeners:
+            if listener == attribute and instance == instance_to_be_loaded:
+                return True
+
+        return False
 
     def load_listeners(self, packages):
         visitor = MethodVisitor(packages, lambda clazz, method: method.__name__.endswith('_handler'))
