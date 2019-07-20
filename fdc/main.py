@@ -10,9 +10,6 @@ from di_container.injector import di_container
 
 class Main(object):
 
-    def __init__(self):
-        self._root_commands = []
-
     def main(self):
         packages = [__package__, __package__ + '.conta', __package__ + '.database', __package__ + '.command', 'commons', ]
 
