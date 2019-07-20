@@ -1,7 +1,4 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-
-
+import unittest
 from unittest import TestCase
 
 from di_container.methodvisitor import MethodVisitor
@@ -29,6 +26,7 @@ class MethodVisitorTestCase(TestCase):
 
         visitor.visit(self._update_visited_method_list)
 
+        self.assertEqual(len(self._visited), 1)
         self.assertEqual(self._visited, [('VisitedClass', 'visited_method')])
 
 
