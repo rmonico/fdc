@@ -11,7 +11,8 @@ from di_container.injector import di_container
 class Main(object):
 
     def main(self):
-        packages = [__package__, __package__ + '.conta', __package__ + '.database', __package__ + '.command', 'commons', ]
+        packages = [__package__, __package__ + '.conta', __package__ + '.lancamento', __package__ + '.database',
+                    __package__ + '.command', 'commons']
 
         di_container.load_resources(packages)
         controller.load_listeners(packages)
