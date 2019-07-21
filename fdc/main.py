@@ -22,12 +22,17 @@ class Main(object):
 
         di_container.inject_resources(self)
 
+        self._logger.info('Loaded resources and listeners from packages: {}', packages)
+
         args = self.parse_command_line()
+
+        self._logger.info('Command line parsed: {}', args)
 
         event_results = controller.event(args.event, args=args)
 
         for result in event_results:
-            self._logger.info('Calling front end for "{}" with data "{}, {}" due to status "{}"' + args.event, result.kwdata, result.data,
+            self._logger.info('Calling front end for "{}" with data "{}, {}" due to status "{}"' + args.event,
+                              result.kwdata, result.data,
                               result.status)
 
             controller.event(args.event + '_' + result.status, *result.data, **result.kwdata)
