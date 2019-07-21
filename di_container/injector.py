@@ -73,7 +73,9 @@ class Injector(object):
     def get_resource(self, resource_name, optional=False):
         for properties in self._resource_classes:
             if properties['name'] == resource_name:
-                return self._get_instance(properties)
+                instance = self._get_instance(properties)
+                self.inject_resources(instance)
+                return instance
 
         if not optional:
             raise Exception('Dependency not found: "{}"'.format(resource_name))
