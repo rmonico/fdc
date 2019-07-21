@@ -52,6 +52,6 @@ class ConfigurationFactory(object):
         db_folder = '{HOME}/.config/fdc'.format(**os.environ)
         db_path = '{}/database.db'.format(db_folder)
 
-        log_level = 'INFO'
+        log_level = 'DEBUG'
 
         return Configurations({'db': {'folder': db_folder, 'path': db_path}, 'log': {'verbosity': log_level}})
