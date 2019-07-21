@@ -7,6 +7,7 @@ class ConnectionFactory(object):
 
     def __init__(self):
         self._configs = Inject('app configuration')
+        self._logger = Inject('logger')
 
     @staticmethod
     def get_external_resources():
@@ -17,4 +18,8 @@ class ConnectionFactory(object):
 
         os.makedirs(self._configs['db.folder'], exist_ok=True)
 
-        return sqlite3.connect(self._configs['db.path'])
+        connection = sqlite3.connect(self._configs['db.path'])
+
+        self._logger.info('Connected to database at {}', self._configs['db.path'])
+
+        return connection
