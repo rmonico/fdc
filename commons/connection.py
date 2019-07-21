@@ -15,6 +15,6 @@ class ConnectionFactory(object):
     def create_connection(self):
         import os
 
-        os.makedirs(self._configs['db']['folder'], exist_ok=True)
+        os.makedirs(self._configs['db.folder'], exist_ok=True)
 
-        return sqlite3.connect(self._configs['db']['path'])
+        return sqlite3.connect(self._configs['db.path'])

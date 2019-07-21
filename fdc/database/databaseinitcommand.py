@@ -13,8 +13,8 @@ class DatabaseInitCommand(object):
     def database_init_command_handler(self, args):
         import os
 
-        if os.path.exists(self._configs['db']['path']):
-            os.remove(self._configs['db']['path'])
+        if os.path.exists(self._configs['db.path']):
+            os.remove(self._configs['db.path'])
 
         connection = di_container.get_resource('connection')
 

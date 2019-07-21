@@ -47,4 +47,4 @@ class ConfigurationFactory(object):
 
         log_level = 'INFO'
 
-        return {'db': {'folder': db_folder, 'path': db_path}, 'log': {'verbosity': log_level}}
+        return Configurations({'db': {'folder': db_folder, 'path': db_path}, 'log': {'verbosity': log_level}})
