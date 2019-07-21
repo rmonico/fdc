@@ -1,10 +1,35 @@
+class KeyNotFoundException(Exception):
+
+    def __init__(self, key=None):
+        if key:
+            super(super.__class__).__init__('Configuration key not found: "{}"'.format(key))
+        else:
+            super(super.__class__).__init__()
+
+
 class Configurations(object):
 
     def __init__(self, configs):
         self._configs = configs
 
-    def get(self, qualified_key):
-        return self._configs[qualified_key]
+    def get(self, key):
+        try:
+            value = self._get(self._configs, key.split('.'))
+        except KeyNotFoundException:
+            raise KeyNotFoundException(key)
+
+        return value
+
+    def _get(self, current_dict, remaining_keys):
+        value = current_dict[remaining_keys[0]]
+
+        if len(remaining_keys) == 1:
+            return value
+
+        if not isinstance(value, dict):
+            raise KeyNotFoundException()
+
+        return self._get(value, remaining_keys[1:])
 
 
 class ConfigurationFactory(object):
