@@ -16,7 +16,7 @@ class DatabaseInitCommand(object):
         if os.path.exists(self._configs['db.path']):
             os.remove(self._configs['db.path'])
 
-        connection = di_container.get_resource('connection')
+        connection = di_container.get_resource('database connection')
 
         # TODO Move this to ContaCommand class (may that class should be
         # renamed)
