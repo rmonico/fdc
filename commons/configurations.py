@@ -4,18 +4,7 @@ class Configurations(object):
         self._configs = configs
 
     def get(self, qualified_key):
-        return 'value'
-
-    def _get(self, value, remaining_key):
-        if isinstance(value, dict):
-            dot_index = remaining_key.index('.')
-
-
-            first_key = remaining_key[0:dot_index]
-            subvalue = value[first_key]
-            return self._get()
-        else:
-            return value
+        return self._configs[qualified_key]
 
 
 class ConfigurationFactory(object):
