@@ -25,14 +25,13 @@ class Main(object):
 
         self._logger.info('Command line parsed: {}', args)
 
-        event_results = controller.event(args.event, args=args)
+        event_results = controller.event(args.event, inject_dependencies=True, args=args)
 
         for result in event_results:
-            self._logger.info('Calling front end for "{}" with data "{}, {}" due to status "{}"' + args.event,
-                              result.kwdata, result.data,
-                              result.status)
+            self._logger.info('Calling front end for "{}" with data "{}, {}" due to status "{}"', args.event,
+                              result.kwdata, result.data, result.status)
 
-            controller.event(args.event + '_' + result.status, *result.data, **result.kwdata)
+            controller.event(args.event + '_' + result.status, inject_dependencies=True, *result.data, **result.kwdata)
 
     def parse_command_line(self):
         parser = argparse.ArgumentParser()

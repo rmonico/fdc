@@ -22,11 +22,7 @@ class Controller(object):
             if instance and instance.__class__ == clazz:
                 return instance
 
-        instance = clazz()
-
-        di_container.inject_resources(instance)
-
-        return instance
+        return clazz()
 
     def _load_listeners_from(self, clazz, method):
         instance = self._get_instance_for(clazz)
@@ -53,12 +49,15 @@ class Controller(object):
         for listener in self._listeners:
             self._logger.info('Loaded listener: {}', listener[0].__qualname__)
 
-    def event(self, event_name, *args, **kwargs):
+    def event(self, event_name, inject_dependencies=False, *args, **kwargs):
         self._logger.info('Running {} with args "{}" and kwargs "{}"', event_name, args, kwargs)
 
         results = []
         for listener, instance in self._listeners:
             if listener.__name__ == (event_name + '_handler'):
+                if inject_dependencies:
+                    di_container.inject_resources(instance)
+
                 raw_result = listener(*args, **kwargs)
 
                 if isinstance(raw_result, tuple):
