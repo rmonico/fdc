@@ -70,12 +70,13 @@ class Injector(object):
 
             client.__dict__[attribute] = dependency
 
-    def get_resource(self, resource_name):
+    def get_resource(self, resource_name, optional=False):
         for properties in self._resource_classes:
             if properties['name'] == resource_name:
                 return self._get_instance(properties)
 
-        raise Exception('Dependency not found: "{}"'.format(resource_name))
+        if not optional:
+            raise Exception('Dependency not found: "{}"'.format(resource_name))
 
     def _get_dependency_by_name(self, dependency_name):
         dependency_found = False
