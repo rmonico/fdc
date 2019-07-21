@@ -12,7 +12,7 @@ class Configurations(object):
     def __init__(self, configs):
         self._configs = configs
 
-    def get(self, key):
+    def __getitem__(self, key):
         try:
             value = self._get(self._configs, key.split('.'))
         except KeyNotFoundException:
