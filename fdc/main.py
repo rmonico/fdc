@@ -9,6 +9,7 @@ class Main(object):
 
     def __init__(self):
         self._logger = Inject('logger')
+        self._configs = Inject('app configuration')
 
     def main(self):
         packages = [__package__, __package__ + '.conta', __package__ + '.lancamento', __package__ + '.database',
@@ -20,6 +21,8 @@ class Main(object):
         di_container.inject_resources(self)
 
         self._logger.info('Loaded resources and listeners from packages: {}', packages)
+
+        self._logger.debug('Using configurations: {}', self._configs.dump())
 
         args = self.parse_command_line()
 

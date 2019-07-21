@@ -31,6 +31,13 @@ class Configurations(object):
 
         return self._get(value, remaining_keys[1:])
 
+    def dump(self):
+        result = ''
+        for key, value in self._configs.items():
+            result += '{}: {}\n'.format(key, value)
+
+        return result
+
 
 class ConfigurationFactory(object):
 
