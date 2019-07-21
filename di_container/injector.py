@@ -11,20 +11,16 @@ class Injector(object):
 
     def __init__(self):
         self._resource_classes = []
-        self._logger = None
-
-    def set_logger(self, logger):
-        self._logger = logger
 
     def load_resources(self, packages):
         self._load_internal_resources(packages)
         self._load_external_resources(packages)
 
-        self.inject_resources(self)
+        logger = self.get_resource('logger', optional=True)
 
-        for resource in self._resource_classes:
-            if self._logger:
-                self._logger.info('Loaded resource: {name} (of {creator})', **resource)
+        if logger:
+            for resource in self._resource_classes:
+                logger.info('Loaded resource: {name} (of {creator})'.format(**resource))
 
     def _load_internal_resources(self, packages):
         visitor = MethodVisitor(packages, lambda clazz, method: method.__name__ == 'injectable_resource')
