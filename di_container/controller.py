@@ -1,7 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-
-
 from .injector import di_container
 from .methodvisitor import MethodVisitor
 from .injector import Inject

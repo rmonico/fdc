@@ -1,6 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-
 import argparse
 
 from argparse_helpers.parsers.date_parser import date_parser
