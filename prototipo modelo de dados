@@ -1,0 +1,73 @@
+Conta -- Entidade abstrata para movimentação
+--
+titulo
+descricao
+propriedades -- Uma lista dos valores "contabilizar" e "saldo" separados por ;
+observacao (opcional)
+
+
+Orcamento
+--
+nome
+descricao
+
+
+OrcamentoLancamento
+--
+orcamento -> Orcamento
+regra_data_vencimento -- Algo como "mensal, primeiro dia util após dia 5" ou "quintas, se feriado ignorar"
+regra_periodo -- Algo como "mês anterior ao vencimento" ou "início no dia 5 do mês de vencimento, fim no dia 5 do mês seguinte de fechamento"
+origem -> Conta
+destino -> Conta
+valor
+cotacao (opcional) -> Cotacao -- Se não informado é brl
+contrato (opcional) -> Contrato
+produto (opcional) -> Produto
+quantidade (opcional)
+observacao
+
+
+Contrato -> Conta
+--
+data_aquisicao
+regra_data_fechamento_período (opcional) -- Algo como "mensal, no dia 6 do mês do vencimento"
+
+
+Lancamento
+--
+data
+origem -> Conta
+destino -> Conta
+valor
+cotacao (opcional) -> Cotacao -- Se não informado é brl
+contrato (opcional) -> Contrato
+referencia_inicio (opcional) -- data inicial do período de referência
+referencia_fim (opcional)
+realizado -- boolean, usado para parcelas futuras de contratos
+produto (opcional) -> Produto
+quantidade (opcional)
+observacao
+
+
+Cotacao
+--
+data
+moeda
+valor
+
+
+Produto
+--
+tipo -> ProdutoTipo
+fornecedor -> Fornecedor { nome }
+marca -> Marca { nome }
+fabricante -> Fabricante { nome }
+medida -- quantidade na unidade discrimida abaixo
+unidade -- litros, gramas, etc
+
+
+ProdutoTipo
+--
+descricao -- Noex 100mg, Puran 25mcg, etc
+categoria -> ProdutoCategoria { nome } -- Remédio, bebida, lanche, etc
+
