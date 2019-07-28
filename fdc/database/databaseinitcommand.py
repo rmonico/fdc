@@ -9,7 +9,9 @@ class FDCInitCommand(object):
 
     def database_parser_created_handler(self, db_parser):
         db_parser.add_parser(
-            "init", help="Inicializa o banco de dados em fdc.db").set_defaults(event='database_init_command')
+            "init",
+            help="Inicializa a pasta do FDC e o banco de dados com uma estrutura vazia. Se houver um banco de dados já "
+                 "existente o mesmo será excluído e reiniciado.").set_defaults(event='database_init_command')
 
     def database_init_command_handler(self, args):
         import os
