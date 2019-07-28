@@ -1,11 +1,12 @@
 :: TODO
 
-- Entender os tipos de lançamento previstos - Conferir com as informações da planilha de gastos fixos no docs
-  - Serviço: não tem data para acabar, datas de vencimento calculadas, valor da parcela pode mudar
-  - Contrato: tem datas definidas de pagamento, tem data para acabar, valor da parcela não muda
-  - Receita: Recebimento previsto, pode ou não ter data para acabar, valor pode ou não mudar
-- Terminar definição da estrutura de dados
-  - Está quase lá, falta conferir se existe alguma situação que não condiz com a estrutura montada
+- Dividir recommit do histórico
+- Montar um comando no fdc para ler os arquivos de controle de gastos
+  - Validar formato de data
+  - Validar conta origem e destino
+  - Validar formato de valor
+  - Definir posição dos demais campos (observação, fornecedor, etc)
+  - Criar uma flag para confirmar a importação (por default deve apenas verificar se os arquivos são válidos e mostrar o que será importado em tela)
 - Portar os comandos de lançamento para a nova estrutura
 - Fazer os comandos de rm de lanc, conta, etc (agora só está listando e adicionando)
 - Checar dependências cíclicas
