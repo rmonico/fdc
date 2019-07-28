@@ -49,9 +49,9 @@ class ConfigurationFactory(object):
         # TODO Load this from file
         import os
 
-        db_folder = '{HOME}/.config/fdc'.format(**os.environ)
-        db_path = '{}/database.db'.format(db_folder)
+        fdc_folder = '{HOME}/.config/fdc'.format(**os.environ)
+        db_file_name = 'database.db'
 
         log_level = 'DEBUG'
 
-        return Configurations({'db': {'folder': db_folder, 'path': db_path}, 'log': {'verbosity': log_level}})
+        return Configurations({'fdc': {'folder': fdc_folder, 'db_file_name': db_file_name}, 'log': {'verbosity': log_level}})
