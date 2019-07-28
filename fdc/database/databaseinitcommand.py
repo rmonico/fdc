@@ -1,7 +1,8 @@
 from di_container.injector import Inject, di_container
 
 
-class DatabaseInitCommand(object):
+
+class FDCInitCommand(object):
 
     def __init__(self):
         self._configs = Inject('app configuration')
