@@ -54,4 +54,5 @@ class ConfigurationFactory(object):
 
         log_level = 'DEBUG'
 
-        return Configurations({'fdc': {'folder': fdc_folder, 'db_file_name': db_file_name}, 'log': {'verbosity': log_level}})
+        return Configurations(
+            {'fdc': {'folder': fdc_folder, 'db_file_name': db_file_name}, 'log': {'verbosity': log_level}})
