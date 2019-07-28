@@ -37,18 +37,21 @@ class GitWrapper(object):
         return output[0]
 
     def _git(self, *args):
-        return subprocess.run([self._git_binary] + list(args), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-
-    def repository_exists_at_folder(self, folder):
         current_directory = os.getcwd()
 
-        os.chdir(folder)
+        os.chdir(self.repository_folder)
 
-        process = self._git('status')
+        process = subprocess.run([self._git_binary] + list(args), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
         os.chdir(current_directory)
 
-        return process.returncode == 0
+        return process
+
+    def is_repository(self):
+        return self._git('status').returncode == 0
+
+    def init(self):
+        return self._git('init', '.').returncode == 0
 
 
 class GitWrapperException(Exception):
