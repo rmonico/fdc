@@ -15,12 +15,14 @@ class GitWrapperFactory(object):
         return [{'name': 'git wrapper', 'creator': GitWrapperFactory.create_wrapper}]
 
     def create_wrapper(self):
-        return GitWrapper()
+        # TODO This could be parametrized somewhere else to get more flexible...
+        return GitWrapper(self._configs['fdc.folder'])
 
 
 class GitWrapper(object):
 
-    def __init__(self):
+    def __init__(self, repository_folder):
+        self.repository_folder = repository_folder
         self._git_binary = self._get_git_binary()
 
     @staticmethod
