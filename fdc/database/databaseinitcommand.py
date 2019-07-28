@@ -1,11 +1,14 @@
 from di_container.injector import Inject, di_container
 
+import os
 
 
 class FDCInitCommand(object):
 
     def __init__(self):
         self._configs = Inject('app configuration')
+        self._git = Inject('git wrapper')
+        self._logger = Inject('logger')
 
     def database_parser_created_handler(self, db_parser):
         db_parser.add_parser(
@@ -14,25 +17,56 @@ class FDCInitCommand(object):
                  "existente o mesmo será excluído e reiniciado.").set_defaults(event='database_init_command')
 
     def database_init_command_handler(self, args):
-        import os
+        # TODO Verificar se o arquivo de banco de dados é um SQLITE válido!
 
-        if os.path.exists(self._configs['db.path']):
-            os.remove(self._configs['db.path'])
+        self._ensure_fdc_folder_exists()
+
+        self._ensure_fdc_folder_is_git_repository()
+
+        self._ensure_database_structure_with_no_data()
+
+        return 'ok'
+
+    def _ensure_fdc_folder_exists(self):
+        if not os.path.isdir(self._configs['fdc.folder']):
+            self._logger.info('Creating fdc folder at "{}"', self._configs['fdc.folder'])
+            os.makedirs(self._configs['fdc.folder'], exist_ok=True)
+        else:
+            self._logger.info('fdc folder found at "{}"', self._configs['fdc.folder'])
+
+    def _ensure_fdc_folder_is_git_repository(self):
+        if not self._git.is_repository():
+            self._logger.info('Git repository not found at fdc folder, creating it...')
+            if not self._git.init():
+                raise FDCInitializationException('Error initializing git repository at "{}"',
+                                                 self._git.repository_folder)
+
+    def _ensure_database_structure_with_no_data(self):
+        if os.path.isfile(self._configs['fdc.dbpath']):
+            self._logger.warn('Database file "{}" found, removing it...', self._configs['fdc.dbpath'])
+            os.remove(self._configs['fdc.dbpath'])
 
         connection = di_container.get_resource('database connection')
 
-        # TODO Move this to ContaCommand class (may that class should be
-        # renamed)
+        # TODO Create these tables via controller events to centralize table handling in specialized classes
+        self._logger.debug('Creating table "conta"...')
         connection.executescript(
             "create table conta (nome text not null, contabilizavel boolean not null, fechamento date);")
 
-        # FIXME Não armazenar monetários como float
+        # FIXME Dont store currency values as float
+        self._logger.debug('Creating table "contrato"...')
         connection.executescript(
             "create table contrato (compra date not null, conta, total_parcelas integer, valor_parcela float, observacao text, foreign key(conta) references conta);")
 
+        self._logger.debug('Creating table "lancamento"...')
         connection.executescript(
             "create table lancamento (debito date not null, compra date, valor float, valor_local float not null, origem, destino, parcela integer not null, observacao text not null, foreign key(origem) references conta, foreign key(destino) references conta);")
 
-        # TODO Commit and handle errors
+        # TODO Handle errors
 
-        return 'ok'
+    def database_init_command_ok_handler(self):
+        print('Structure created successfully')
+
+
+class FDCInitializationException(Exception):
+    pass
