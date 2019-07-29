@@ -47,6 +47,13 @@ class ContaDao(object):
 
         return conta_list
 
+    def exists(self, conta_name):
+        cursor = self._connection.execute("select count(*) from conta where nome=?;", (conta_name,))
+
+        data = cursor.fetchone()
+
+        return data[0] == 1
+
     def insert(self, conta):
         # TODO Extract these code to a InsertBuilder class (maybe on connection
         # module, not sure yet)
