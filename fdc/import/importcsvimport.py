@@ -53,6 +53,9 @@ class ImportCSVCommand(object):
 
             self._assert(self._valor_ok(valor), 'valor "{}" is not in valid format', valor)
 
+            if produto:
+                self._assert(self._produto_dao.exists(produto), 'produto "{}" not found', produto)
+
         return self._status, {'filename': args.filename}
 
     def _assert(self, assertion, message, *message_args, **message_kwargs):

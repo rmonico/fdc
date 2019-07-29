@@ -1,12 +1,17 @@
 :: TODO
 
-- Dividir recommit do histórico
 - Montar um comando no fdc para ler os arquivos de controle de gastos
-  - Validar formato de data
-  - Validar conta origem e destino
-  - Validar formato de valor
-  - Definir posição dos demais campos (observação, fornecedor, etc)
+  ok Validar formato de data
+  ok Validar conta origem e destino
+  ok Validar formato de valor
+  ok Definir posição dos demais campos (observação, fornecedor, etc)
+  - Atualizar estrutura do banco de dados (pegar do database_structure no docs)
+  - Fazer dao de produto (com método exists)
+  - Validar se produto é válido
+  - Validar se fornecedor é válido
   - Criar uma flag para confirmar a importação (por default deve apenas verificar se os arquivos são válidos e mostrar o que será importado em tela)
+  - Refatorar a classe de comando, está muito grande
+
 - Portar os comandos de lançamento para a nova estrutura
 - Fazer os comandos de rm de lanc, conta, etc (agora só está listando e adicionando)
 - Checar dependências cíclicas
