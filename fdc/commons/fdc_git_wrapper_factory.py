@@ -1,4 +1,5 @@
 from commons.git_wrapper import GitWrapper
+from di_container.injector import Inject
 
 
 class FDCGitWrapperFactory(object):
