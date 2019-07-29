@@ -37,22 +37,3 @@ class Configurations(object):
             result += '{}: {}\n'.format(key, value)
 
         return result
-
-
-class ConfigurationFactory(object):
-
-    @staticmethod
-    def get_external_resources():
-        return [{'name': 'app configuration', 'creator': ConfigurationFactory._load_configurations}]
-
-    def _load_configurations(self):
-        # TODO Load this from file
-        import os
-
-        fdc_folder = '{HOME}/.config/fdc'.format(**os.environ)
-        db_file_name = 'database.db'
-
-        log_level = 'DEBUG'
-
-        return Configurations(
-            {'fdc': {'folder': fdc_folder, 'db_file_name': db_file_name}, 'log': {'verbosity': log_level}})
