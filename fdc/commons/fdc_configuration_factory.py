@@ -9,6 +9,7 @@ class FDCConfigurationFactory(object):
 
     def _load_configurations(self):
         # TODO Load this from file
+        # fdc.db_full_path is a "virtual attribute", should be created here!
         import os
 
         fdc_folder = '{HOME}/.config/fdc'.format(**os.environ)
@@ -17,4 +18,5 @@ class FDCConfigurationFactory(object):
         log_level = 'DEBUG'
 
         return Configurations(
-            {'fdc': {'folder': fdc_folder, 'db_file_name': db_file_name}, 'log': {'verbosity': log_level}})
+            {'fdc': {'folder': fdc_folder, 'db_file_name': db_file_name, 'db_full_path': fdc_folder + db_file_name},
+             'log': {'verbosity': log_level}})
