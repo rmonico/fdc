@@ -4,20 +4,7 @@ import subprocess
 import os
 
 
-class GitWrapperFactory(object):
-
-    def __init__(self):
-        self._configs = Inject('app configuration')
-        self._logger = Inject('logger')
-
-    @staticmethod
-    def get_external_resources():
-        return [{'name': 'git wrapper', 'creator': GitWrapperFactory.create_wrapper}]
-
-    def create_wrapper(self):
-        # TODO This could be parametrized somewhere else to get more flexible...
-        return GitWrapper(self._configs['fdc.folder'])
-
+# Custom git wrapper should be created by custom factories
 
 class GitWrapper(object):
 

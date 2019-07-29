@@ -7,7 +7,7 @@ class FDCInitCommand(object):
 
     def __init__(self):
         self._configs = Inject('app configuration')
-        self._git = Inject('git wrapper')
+        self._git = Inject('fdc git wrapper')
         self._logger = Inject('logger')
 
     def database_parser_created_handler(self, db_parser):
