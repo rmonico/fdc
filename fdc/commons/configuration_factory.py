@@ -1,11 +1,11 @@
 from commons.configurations import Configurations
 
 
-class FDCConfigurationFactory(object):
+class ConfigurationFactory(object):
 
     @staticmethod
     def get_external_resources():
-        return [{'name': 'app configuration', 'creator': FDCConfigurationFactory._load_configurations}]
+        return [{'name': 'app configuration', 'creator': ConfigurationFactory._load_configurations}]
 
     def _load_configurations(self):
         # TODO Load this from file
