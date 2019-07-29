@@ -42,9 +42,9 @@ class FDCInitCommand(object):
                                                  self._git.repository_folder)
 
     def _ensure_database_structure_with_no_data(self):
-        if os.path.isfile(self._configs['fdc.dbpath']):
-            self._logger.warn('Database file "{}" found, removing it...', self._configs['fdc.dbpath'])
-            os.remove(self._configs['fdc.dbpath'])
+        if os.path.isfile(self._configs['fdc.db_full_path']):
+            self._logger.warn('Database file "{}" found, removing it...', self._configs['fdc.db_full_path'])
+            os.remove(self._configs['fdc.db_full_path'])
 
         connection = di_container.get_resource('database connection')
 
