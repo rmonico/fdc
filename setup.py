@@ -7,7 +7,7 @@ setup(name='fdc',
       author='Rafael Monico',
       author_email='rmonico1@gmail.com',
       license='GPL3',
-      packages=['fdc', 'fdc.conta', 'fdc.lancamento', 'fdc.command', 'fdc.database', 'argparse_helpers.parsers', 'commons', 'di_container', ],
+      packages=['fdc', 'fdc.conta', 'fdc.lancamento', 'fdc.commons', 'fdc.command', 'fdc.database', 'argparse_helpers.parsers', 'commons', 'di_container', ],
       entry_points={
           'console_scripts': ['fdc=fdc.main:entry_point'],
       },
