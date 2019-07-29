@@ -16,10 +16,9 @@ class ConnectionFactory(object):
     def create_connection(self):
         import os
 
-        os.makedirs(self._configs['db.folder'], exist_ok=True)
+        # TODO Is using a project specific configuration key, extract this class to fdc.commons
+        connection = sqlite3.connect(self._configs['fdc.db_full_path'])
 
-        connection = sqlite3.connect(self._configs['db.path'])
-
-        self._logger.info('Connected to database at {}', self._configs['db.path'])
+        self._logger.debug('Connected to database at {}', self._configs['fdc.db_full_path'])
 
         return connection
