@@ -1,12 +1,3 @@
-class KeyNotFoundException(Exception):
-
-    def __init__(self, key=None):
-        if key:
-            super(super.__class__).__init__('Configuration key not found: "{}"'.format(key))
-        else:
-            super(super.__class__).__init__()
-
-
 class Configurations(object):
 
     def __init__(self, configs):
@@ -37,3 +28,12 @@ class Configurations(object):
             result += '{}: {}\n'.format(key, value)
 
         return result
+
+
+class KeyNotFoundException(Exception):
+
+    def __init__(self, key=None):
+        if key:
+            super(super.__class__).__init__('Configuration key not found: "{}"'.format(key))
+        else:
+            super(super.__class__).__init__()
