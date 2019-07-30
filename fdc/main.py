@@ -13,7 +13,7 @@ class Main(object):
 
     def main(self):
         packages = ['commons', 'di_container', __package__ + '.commons', __package__ + '.conta',
-                    __package__ + '.database', __package__ + '.import', 'fdc.lancamento']
+                    __package__ + '.database', __package__ + '.import', 'fdc.lancamento', 'fdc.produto', ]
 
         di_container.load_resources(packages)
         controller.load_listeners(packages)

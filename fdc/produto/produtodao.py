@@ -1,10 +1,15 @@
 from di_container.injector import Inject
 
 
-class Produto(object):
+class ProdutoDao(object):
 
     def __init__(self):
-        pass
+        self._connection = Inject('database connection')
 
+    @staticmethod
+    def injectable_resource():
+        return 'produto dao'
 
-class ProdutoDao(object):
+    def exists(self, produto_name):
+        # TODO
+        return True
