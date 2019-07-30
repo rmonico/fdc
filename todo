@@ -6,9 +6,11 @@
   ok Validar formato de valor
   ok Definir posição dos demais campos (observação, fornecedor, etc)
   ok Atualizar estrutura do banco de dados (pegar do database_structure no docs)
-  - Fazer dao de produto (com método exists)
-  - Validar se produto é válido
-  - Validar se fornecedor é válido
+  ok Fazer dao de produto (com método exists)
+  ok Validar se produto é válido
+  ok Fazer dao de fornecedor
+  ok Validar se fornecedor é válido
+  - Implementar métodos exists do dao de produto e fornecedor
   - Criar uma flag para confirmar a importação (por default deve apenas verificar se os arquivos são válidos e mostrar o que será importado em tela)
   - Refatorar a classe de comando, está muito grande
 
