@@ -1,6 +1,6 @@
-from di_container.injector import Inject, di_container
-
 import os
+
+from di_container.injector import Inject, di_container
 
 
 class FDCInitCommand(object):
@@ -52,84 +52,80 @@ class FDCInitCommand(object):
 
         self._logger.debug('Creating table "Conta"...')
         connection.executescript('create table Conta ('
-          '  nome text not null,'
-          '  descricao text,'
-          '  data_aquisicao date,'
-          '  propriedades text not null,'
-          '  observacao text);')
+                                 '  nome text not null,'
+                                 '  descricao text,'
+                                 '  data_aquisicao date,'
+                                 '  propriedades text not null,'
+                                 '  observacao text);')
 
         self._logger.debug('Creating table "Cotacao"...')
         connection.executescript('create table Cotacao ('
-          '  data date not null,'
-          '  moeda text not null,'
-          '  valor money not null);')
+                                 '  data date not null,'
+                                 '  moeda text not null,'
+                                 '  valor money not null);')
 
         self._logger.debug('Creating table "Orcamento"...')
         connection.executescript('create table Orcamento ('
-          '  nome text not null,'
-          '  descricao text not null);')
+                                 '  nome text not null,'
+                                 '  descricao text not null);')
 
         self._logger.debug('Creating table "OrcamentoLancamento"...')
         connection.executescript('create table OrcamentoLancamento ('
-          '  orcamento not null references Orcamento,'
-          '  regra_data_vencimento text not null,'
-          '  origem_padrao not null references Conta,'
-          '  destino_padrao not null references Conta,'
-          '  valor_padrao money not null,'
-          '  cotacao_moeda text,'
-          '  regra_cotacao_data text,'
-          '  regra_periodo_referencia text not null,'
-          '  produto references Produto,'
-          '  quantidade integer,'
-          '  observacao text);')
+                                 '  orcamento not null references Orcamento,'
+                                 '  regra_data_vencimento text not null,'
+                                 '  origem_padrao not null references Conta,'
+                                 '  destino_padrao not null references Conta,'
+                                 '  valor_padrao money not null,'
+                                 '  cotacao_moeda text,'
+                                 '  regra_cotacao_data text,'
+                                 '  regra_periodo_referencia text not null,'
+                                 '  produto references Produto,'
+                                 '  quantidade integer,'
+                                 '  observacao text);')
 
         self._logger.debug('Creating table "Lancamento"...')
         connection.executescript('create table Lancamento ('
-          '  data date not null,'
-          '  origem references Conta,'
-          '  destino references Conta,'
-          '  valor money not null,'
-          '  cotacao references Cotacao,'
-          '  referencia_inicio text,'
-          '  referencia_fim text,'
-          '  realizado boolean not null default false,'
-          '  produto references Produto,'
-          '  quantidade integer,'
-          '  observacao text);')
+                                 '  data date not null,'
+                                 '  origem references Conta,'
+                                 '  destino references Conta,'
+                                 '  valor money not null,'
+                                 '  cotacao references Cotacao,'
+                                 '  referencia_inicio text,'
+                                 '  referencia_fim text,'
+                                 '  realizado boolean not null default false,'
+                                 '  produto references Produto,'
+                                 '  quantidade integer,'
+                                 '  observacao text);')
 
         self._logger.debug('Creating table "Produto"...')
         connection.executescript('create table Produto ('
-          '  tipo not null references ProdutoTipo,'
-          '  fornecedor not null references Fornecedor,'
-          '  marca not null references Marca,'
-          '  fabricante not null references Fabricante,'
-          '  medida text not null,'
-          '  unidade text not null);')
+                                 '  tipo not null references ProdutoTipo,'
+                                 '  fornecedor not null references Fornecedor,'
+                                 '  marca not null references Marca,'
+                                 '  fabricante not null references Fabricante,'
+                                 '  medida text not null,'
+                                 '  unidade text not null);')
 
         self._logger.debug('Creating table "ProdutoTipo"...')
         connection.executescript('create table ProdutoTipo ('
-          '  descricao text not null,'
-          '  categoria not null references ProdutoCategoria);')
+                                 '  descricao text not null,'
+                                 '  categoria not null references ProdutoCategoria);')
 
         self._logger.debug('Creating table "ProdutoCategoria"...')
         connection.executescript('create table ProdutoCategoria ('
-          '  nome text not null);')
-
+                                 '  nome text not null);')
 
         self._logger.debug('Creating table "Fornecedor"...')
         connection.executescript('create table Fornecedor ('
-          '  nome text not null);')
-
+                                 '  nome text not null);')
 
         self._logger.debug('Creating table "Marca"...')
         connection.executescript('create table Marca ('
-          '  nome text not null);')
-
+                                 '  nome text not null);')
 
         self._logger.debug('Creating table "Fabricante"...')
         connection.executescript('create table Fabricante ('
-          '  nome text not null);')
-
+                                 '  nome text not null);')
 
         # TODO Handle errors
 
