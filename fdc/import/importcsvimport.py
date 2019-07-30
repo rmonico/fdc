@@ -12,6 +12,7 @@ class ImportCSVCommand(object):
         self._status = None
         self._conta_dao = Inject('conta dao')
         self._produto_dao = Inject('produto dao')
+        self._fornecedor_dao = Inject('fornecedor dao')
 
     @staticmethod
     def import_parser_created_handler(import_parser):
@@ -59,6 +60,9 @@ class ImportCSVCommand(object):
 
             if quantidade:
                 self._assert(self._is_float(quantidade), 'quantidade "{}" is not a float value', quantidade)
+
+            if fornecedor:
+                self._assert(self._fornecedor_dao.exists(fornecedor), 'fornecedor "{}" not found', fornecedor)
 
         return self._status, {'filename': args.filename}
 
