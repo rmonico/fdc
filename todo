@@ -5,7 +5,7 @@
   ok Validar conta origem e destino
   ok Validar formato de valor
   ok Definir posição dos demais campos (observação, fornecedor, etc)
-  - Atualizar estrutura do banco de dados (pegar do database_structure no docs)
+  ok Atualizar estrutura do banco de dados (pegar do database_structure no docs)
   - Fazer dao de produto (com método exists)
   - Validar se produto é válido
   - Validar se fornecedor é válido
