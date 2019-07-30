@@ -11,6 +11,7 @@ class ImportCSVCommand(object):
     def __init__(self):
         self._status = None
         self._conta_dao = Inject('conta dao')
+        self._produto_dao = Inject('produto dao')
 
     @staticmethod
     def import_parser_created_handler(import_parser):
@@ -32,7 +33,7 @@ class ImportCSVCommand(object):
 
             fields = line.split(';')
 
-            if not self._assert(lambda: len(fields) >= 4, 'every line must have at least 4 fields'):
+            if not self._assert(len(fields) >= 4, 'every line must have at least 4 fields'):
                 continue
 
             data = fields[0]
@@ -55,6 +56,9 @@ class ImportCSVCommand(object):
 
             if produto:
                 self._assert(self._produto_dao.exists(produto), 'produto "{}" not found', produto)
+
+            if quantidade:
+                self._assert(self._is_float(quantidade), 'quantidade "{}" is not a float value', quantidade)
 
         return self._status, {'filename': args.filename}
 
@@ -84,6 +88,13 @@ class ImportCSVCommand(object):
             Decimal(valor)
             return True
         except InvalidOperation:
+            return False
+
+    def _is_float(self, value):
+        try:
+            float(value)
+            return True
+        except ValueError:
             return False
 
     def import_csv_command_ok_handler(self, filename):
