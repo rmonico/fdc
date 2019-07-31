@@ -94,37 +94,18 @@ class FDCInitCommand(object):
                                  '  referencia_fim text,'
                                  '  realizado boolean not null default false,'
                                  '  produto references Produto,'
+                                 '  fornecedor not null references Fornecedor,'
                                  '  quantidade integer,'
                                  '  observacao text);')
 
         self._logger.debug('Creating table "Produto"...')
         connection.executescript('create table Produto ('
-                                 '  tipo not null references ProdutoTipo,'
-                                 '  fornecedor not null references Fornecedor,'
-                                 '  marca not null references Marca,'
-                                 '  fabricante not null references Fabricante,'
+                                 '  nome text,'
                                  '  medida text not null,'
                                  '  unidade text not null);')
 
-        self._logger.debug('Creating table "ProdutoTipo"...')
-        connection.executescript('create table ProdutoTipo ('
-                                 '  descricao text not null,'
-                                 '  categoria not null references ProdutoCategoria);')
-
-        self._logger.debug('Creating table "ProdutoCategoria"...')
-        connection.executescript('create table ProdutoCategoria ('
-                                 '  nome text not null);')
-
         self._logger.debug('Creating table "Fornecedor"...')
         connection.executescript('create table Fornecedor ('
-                                 '  nome text not null);')
-
-        self._logger.debug('Creating table "Marca"...')
-        connection.executescript('create table Marca ('
-                                 '  nome text not null);')
-
-        self._logger.debug('Creating table "Fabricante"...')
-        connection.executescript('create table Fabricante ('
                                  '  nome text not null);')
 
         # TODO Handle errors
