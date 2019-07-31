@@ -11,5 +11,8 @@ class ProdutoDao(object):
         return 'produto dao'
 
     def exists(self, produto_name):
-        # TODO
-        return True
+        cursor = self._connection.execute("select count(*) from produto where nome=?;", (produto_name,))
+
+        data = cursor.fetchone()
+
+        return data[0] == 1
