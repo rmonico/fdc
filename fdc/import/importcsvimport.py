@@ -75,7 +75,7 @@ class ImportCSVCommand(object):
 
     @staticmethod
     def _get(fields, index, default=None):
-        return fields[index] if len(fields) > index + 1 else default
+        return fields[index] if len(fields) >= index + 1 else default
 
     @staticmethod
     def _data_ok(value):
