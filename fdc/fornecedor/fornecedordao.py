@@ -11,5 +11,8 @@ class FornecedorDao(object):
         return 'fornecedor dao'
 
     def exists(self, fornecedor_name):
-        # TODO
-        return True
+        cursor = self._connection.execute("select count(*) from fornecedor where nome=?;", (fornecedor_name,))
+
+        data = cursor.fetchone()
+
+        return data[0] == 1
