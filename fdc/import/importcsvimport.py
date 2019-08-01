@@ -40,9 +40,7 @@ class ImportCSVCommand(object):
             fields = line.split(';')
 
             if not len(fields) >= 4:
-                print('[ERROR] Line {}: {}'.format(self._i + 1, 'every line must have at least 4 fields'.format(param)))
-                self._status = 'error'
-
+                self._error('every line must have at least 4 fields'.format(param))
                 continue
 
             data = fields[0]
