@@ -13,7 +13,10 @@ class ImportCSVCommand(object):
         self._produto_dao = Inject('produto dao')
         self._fornecedor_dao = Inject('fornecedor dao')
 
-        self._ok = True
+        self._unknown_contas = None
+        self._unknown_produtos = None
+        self._unknown_fornecedores = None
+        self._ok = None
 
     @staticmethod
     def import_parser_created_handler(import_parser):
@@ -25,9 +28,9 @@ class ImportCSVCommand(object):
     def import_csv_command_handler(self, args):
         source = open(args.filename, 'r')
 
-        unknown_contas = set()
-        unknown_produtos = set()
-        unknown_fornecedores = set()
+        self._unknown_contas = set()
+        self._unknown_produtos = set()
+        self._unknown_fornecedores = set()
 
         self._ok = True
 
@@ -53,31 +56,32 @@ class ImportCSVCommand(object):
 
             if not self._conta_dao.exists(origem):
                 self._error('origem "{}" doesnt exists'.format(origem))
-                unknown_contas.add(origem)
+                self._unknown_contas.add(origem)
 
             if not self._conta_dao.exists(destino):
                 self._error('destino "{}" doesnt exists'.format(destino))
-                unknown_contas.add(destino)
+                self._unknown_contas.add(destino)
 
             if not self._valor_ok(valor):
                 self._error('valor "{}" is not in valid format'.format(valor))
 
             if produto and not self._produto_dao.exists(produto):
                 self._error('produto "{}" not found'.format(produto))
-                unknown_produtos.add(produto)
+                self._unknown_produtos.add(produto)
 
             if quantidade and not self._is_float(quantidade):
                 self._error('quantidade "{}" is not a float value'.format(quantidade))
 
             if fornecedor and not self._fornecedor_dao.exists(fornecedor):
                 self._error('fornecedor "{}" not found'.format(fornecedor))
-                unknown_fornecedores.add(fornecedor)
+                self._unknown_fornecedores.add(fornecedor)
 
         if self._ok:
             return 'ok', {'filename': args.filename}
         else:
-            return 'error', {'filename': args.filename, 'unknown_contas': unknown_contas,
-                             'unknown_produtos': unknown_produtos, 'unknown_fornecedores': unknown_fornecedores}
+            return 'error', {'filename': args.filename, 'unknown_contas': self._unknown_contas,
+                             'unknown_produtos': self._unknown_produtos,
+                             'unknown_fornecedores': self._unknown_fornecedores}
 
     def _get_fields(self):
         if self._line.endswith('\n'):
