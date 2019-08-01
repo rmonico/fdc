@@ -35,13 +35,13 @@ class ImportCSVCommand(object):
         self._ok = True
 
         for self._i, self._line in enumerate(source):
-            fields = self._get_fields_array()
+            fields_array = self._get_fields_array()
 
-            if not len(fields) >= 4:
+            if not len(fields_array) >= 4:
                 self._error('every line must have at least 4 fields'.format(param))
                 continue
 
-            data, origem, destino, valor, observacoes, produto, quantidade, fornecedor = self._get_fields(fields)
+            fields = self._get_fields(fields_array)
 
             if not self._data_ok(data):
                 self._error('date "{}" is not in format "{}"'.format(data, _CSV_DATE_FORMAT))
