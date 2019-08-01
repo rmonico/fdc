@@ -46,7 +46,7 @@ class ImportCSVCommand(object):
 
                 fields = self._get_fields(fields_array)
 
-                ok &= self._validate_fields(fields)
+                ok &= self._validate_fields(*fields)
 
         except Exception:
             self._connection.rollback()
@@ -61,9 +61,7 @@ class ImportCSVCommand(object):
                              'unknown_produtos': self._unknown_produtos,
                              'unknown_fornecedores': self._unknown_fornecedores}
 
-    def _validate_fields(self, fields):
-        data, origem, destino, valor, observacoes, produto, quantidade, fornecedor = fields
-
+    def _validate_fields(self, data, origem, destino, valor, observacoes, produto, quantidade, fornecedor):
         ok = self._validate(data, self._data_ok, None, 'date "{{}}" is not in format "{}"'.format(_CSV_DATE_FORMAT))
 
         ok &= self._validate(origem, self._conta_dao.exists, lambda: self._unknown_contas.add(origem),
