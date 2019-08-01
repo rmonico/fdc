@@ -108,11 +108,6 @@ class ImportCSVCommand(object):
 
         return True
 
-    def _error(self, message):
-        print('[ERROR] Line {}: {}'.format(self._i + 1, message))
-
-        self._ok = False
-
     @staticmethod
     def _get(fields, index, default=None):
         return fields[index] if len(fields) >= index + 1 else default
@@ -143,16 +138,18 @@ class ImportCSVCommand(object):
         except ValueError:
             return False
 
-    def import_csv_command_ok_handler(self, filename):
+    @staticmethod
+    def import_csv_command_ok_handler(filename):
         print('Arquivo "{}" importado com sucesso!'.format(filename))
 
-    def import_csv_command_error_handler(self, filename, unknown_contas, unknown_produtos, unknown_fornecedores):
+    @staticmethod
+    def import_csv_command_error_handler(filename, unknown_contas, unknown_produtos, unknown_fornecedores):
         print('Erros importando arquivo "{}"!'.format(filename))
         print()
 
-        self._print_array('Contas desconhecidas:', unknown_contas)
-        self._print_array('Produtos desconhecidos:', unknown_produtos)
-        self._print_array('Fornecedores desconhecidos:', unknown_fornecedores)
+        ImportCSVCommand._print_array('Contas desconhecidas:', unknown_contas)
+        ImportCSVCommand._print_array('Produtos desconhecidos:', unknown_produtos)
+        ImportCSVCommand._print_array('Fornecedores desconhecidos:', unknown_fornecedores)
 
     @staticmethod
     def _print_array(message, array):
