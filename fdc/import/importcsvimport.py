@@ -119,7 +119,8 @@ class ImportCSVCommand(object):
         except ValueError:
             return False
 
-    def _valor_ok(self, valor):
+    @staticmethod
+    def _valor_ok(valor):
         try:
             # TODO Internacionalize this to work with , for decimal point!
             Decimal(valor)
@@ -127,7 +128,8 @@ class ImportCSVCommand(object):
         except InvalidOperation:
             return False
 
-    def _is_float(self, value):
+    @staticmethod
+    def _is_float(value):
         try:
             float(value)
             return True
@@ -145,7 +147,8 @@ class ImportCSVCommand(object):
         self._print_array('Produtos desconhecidos:', unknown_produtos)
         self._print_array('Fornecedores desconhecidos:', unknown_fornecedores)
 
-    def _print_array(self, message, array):
+    @staticmethod
+    def _print_array(message, array):
         if len(array) == 0:
             return
 
