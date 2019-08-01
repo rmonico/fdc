@@ -10,7 +10,8 @@
   ok Validar se produto é válido
   ok Fazer dao de fornecedor
   ok Validar se fornecedor é válido
-  - Implementar métodos exists do dao de produto e fornecedor
+  ok Implementar métodos exists do dao de produto e fornecedor
+  - Gravar as informações no banco de dados
   - Criar uma flag para confirmar a importação (por default deve apenas verificar se os arquivos são válidos e mostrar o que será importado em tela)
   - Refatorar a classe de comando, está muito grande
 
