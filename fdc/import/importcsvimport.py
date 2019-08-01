@@ -9,10 +9,11 @@ _CSV_DATE_FORMAT = '%d/%b/%Y'
 class ImportCSVCommand(object):
 
     def __init__(self):
-        self._status = None
         self._conta_dao = Inject('conta dao')
         self._produto_dao = Inject('produto dao')
         self._fornecedor_dao = Inject('fornecedor dao')
+
+        self._ok = True
 
     @staticmethod
     def import_parser_created_handler(import_parser):
