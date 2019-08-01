@@ -43,30 +43,7 @@ class ImportCSVCommand(object):
 
             fields = self._get_fields(fields_array)
 
-            if not self._data_ok(data):
-                self._error('date "{}" is not in format "{}"'.format(data, _CSV_DATE_FORMAT))
-
-            if not self._conta_dao.exists(origem):
-                self._error('origem "{}" doesnt exists'.format(origem))
-                self._unknown_contas.add(origem)
-
-            if not self._conta_dao.exists(destino):
-                self._error('destino "{}" doesnt exists'.format(destino))
-                self._unknown_contas.add(destino)
-
-            if not self._valor_ok(valor):
-                self._error('valor "{}" is not in valid format'.format(valor))
-
-            if produto and not self._produto_dao.exists(produto):
-                self._error('produto "{}" not found'.format(produto))
-                self._unknown_produtos.add(produto)
-
-            if quantidade and not self._is_float(quantidade):
-                self._error('quantidade "{}" is not a float value'.format(quantidade))
-
-            if fornecedor and not self._fornecedor_dao.exists(fornecedor):
-                self._error('fornecedor "{}" not found'.format(fornecedor))
-                self._unknown_fornecedores.add(fornecedor)
+            self._validate_fields(fields)
 
         if self._ok:
             return 'ok', {'filename': args.filename}
@@ -74,6 +51,34 @@ class ImportCSVCommand(object):
             return 'error', {'filename': args.filename, 'unknown_contas': self._unknown_contas,
                              'unknown_produtos': self._unknown_produtos,
                              'unknown_fornecedores': self._unknown_fornecedores}
+
+    def _validate_fields(self, fields):
+        data, origem, destino, valor, observacoes, produto, quantidade, fornecedor = fields
+
+        if not self._data_ok(data):
+            self._error('date "{}" is not in format "{}"'.format(data, _CSV_DATE_FORMAT))
+
+        if not self._conta_dao.exists(origem):
+            self._error('origem "{}" doesnt exists'.format(origem))
+            self._unknown_contas.add(origem)
+
+        if not self._conta_dao.exists(destino):
+            self._error('destino "{}" doesnt exists'.format(destino))
+            self._unknown_contas.add(destino)
+
+        if not self._valor_ok(valor):
+            self._error('valor "{}" is not in valid format'.format(valor))
+
+        if produto and not self._produto_dao.exists(produto):
+            self._error('produto "{}" not found'.format(produto))
+            self._unknown_produtos.add(produto)
+
+        if quantidade and not self._is_float(quantidade):
+            self._error('quantidade "{}" is not a float value'.format(quantidade))
+
+        if fornecedor and not self._fornecedor_dao.exists(fornecedor):
+            self._error('fornecedor "{}" not found'.format(fornecedor))
+            self._unknown_fornecedores.add(fornecedor)
 
     def _get_fields_array(self):
         if self._line.endswith('\n'):
