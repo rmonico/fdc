@@ -35,21 +35,13 @@ class ImportCSVCommand(object):
         self._ok = True
 
         for self._i, self._line in enumerate(source):
-            fields = self._get_fields()
+            fields = self._get_fields_array()
 
             if not len(fields) >= 4:
                 self._error('every line must have at least 4 fields'.format(param))
                 continue
 
-            data = fields[0]
-            origem = fields[1]
-            destino = fields[2]
-            valor = fields[3]
-
-            observacoes = self._get(fields, 4)
-            produto = self._get(fields, 5)
-            quantidade = self._get(fields, 6)
-            fornecedor = self._get(fields, 7)
+            data, origem, destino, valor, observacoes, produto, quantidade, fornecedor = self._get_fields(fields)
 
             if not self._data_ok(data):
                 self._error('date "{}" is not in format "{}"'.format(data, _CSV_DATE_FORMAT))
@@ -83,13 +75,26 @@ class ImportCSVCommand(object):
                              'unknown_produtos': self._unknown_produtos,
                              'unknown_fornecedores': self._unknown_fornecedores}
 
-    def _get_fields(self):
+    def _get_fields_array(self):
         if self._line.endswith('\n'):
             self._line = self._line[:-1]
 
         fields = self._line.split(';')
 
         return fields
+
+    def _get_fields(self, fields_array):
+        data = fields_array[0]
+        origem = fields_array[1]
+        destino = fields_array[2]
+        valor = fields_array[3]
+
+        observacoes = self._get(fields_array, 4)
+        produto = self._get(fields_array, 5)
+        quantidade = self._get(fields_array, 6)
+        fornecedor = self._get(fields_array, 7)
+
+        return data, origem, destino, valor, observacoes, produto, quantidade, fornecedor
 
     def _error(self, message):
         print('[ERROR] Line {}: {}'.format(self._i + 1, message))
