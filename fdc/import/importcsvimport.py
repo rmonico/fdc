@@ -66,6 +66,38 @@ class ImportCSVCommand(object):
                              'unknown_produtos': self._unknown_produtos,
                              'unknown_fornecedores': self._unknown_fornecedores}
 
+    def _get_fields_array(self):
+        if self._line.endswith('\n'):
+            self._line = self._line[:-1]
+
+        fields = self._line.split(';')
+
+        return fields
+
+    def _validate(self, data, validator, validation_fail_callback, message):
+        if not validator(data):
+            print('[ERROR] Line {}: {}'.format(self._i + 1, message.format(data)))
+
+            if validation_fail_callback:
+                validation_fail_callback()
+
+            return False
+
+        return True
+
+    def _get_fields(self, fields_array):
+        data = fields_array[0]
+        origem = fields_array[1]
+        destino = fields_array[2]
+        valor = fields_array[3]
+
+        observacoes = self._get(fields_array, 4)
+        produto = self._get(fields_array, 5)
+        quantidade = self._get(fields_array, 6)
+        fornecedor = self._get(fields_array, 7)
+
+        return data, origem, destino, valor, observacoes, produto, quantidade, fornecedor
+
     def _validate_fields(self, data, origem, destino, valor, observacoes, produto, quantidade, fornecedor):
         ok = self._validate(data, self._data_ok, None, 'date "{{}}" is not in format "{}"'.format(_CSV_DATE_FORMAT))
 
@@ -89,38 +121,6 @@ class ImportCSVCommand(object):
                                  lambda: self._unknown_fornecedores.add(fornecedor), 'fornecedor "{}" not found')
 
         return ok
-
-    def _get_fields_array(self):
-        if self._line.endswith('\n'):
-            self._line = self._line[:-1]
-
-        fields = self._line.split(';')
-
-        return fields
-
-    def _get_fields(self, fields_array):
-        data = fields_array[0]
-        origem = fields_array[1]
-        destino = fields_array[2]
-        valor = fields_array[3]
-
-        observacoes = self._get(fields_array, 4)
-        produto = self._get(fields_array, 5)
-        quantidade = self._get(fields_array, 6)
-        fornecedor = self._get(fields_array, 7)
-
-        return data, origem, destino, valor, observacoes, produto, quantidade, fornecedor
-
-    def _validate(self, data, validator, validation_fail_callback, message):
-        if not validator(data):
-            print('[ERROR] Line {}: {}'.format(self._i + 1, message.format(data)))
-
-            if validation_fail_callback:
-                validation_fail_callback()
-
-            return False
-
-        return True
 
     @staticmethod
     def _get(fields, index, default=None):
