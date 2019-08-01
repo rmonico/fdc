@@ -13,6 +13,7 @@ class ImportCSVCommand(object):
         self._conta_dao = Inject('conta dao')
         self._produto_dao = Inject('produto dao')
         self._fornecedor_dao = Inject('fornecedor dao')
+        self._lancamento_dao = Inject('lancamento dao')
 
         self._unknown_contas = None
         self._unknown_produtos = None
@@ -48,6 +49,10 @@ class ImportCSVCommand(object):
 
                 ok &= self._validate_fields(*fields)
 
+                if ok:
+                    lancamento = self._make_lancamento_from_fields(*fields)
+
+                    self._lancamento_dao.insert(lancamento)
         except Exception:
             self._connection.rollback()
             raise
