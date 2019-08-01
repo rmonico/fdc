@@ -50,7 +50,7 @@ class ImportCSVCommand(object):
                 ok &= self._validate_fields(*fields)
 
                 if ok:
-                    lancamento = self._make_lancamento_from_fields(*fields)
+                    lancamento = self._make_lancamento(*fields)
 
                     self._lancamento_dao.insert(lancamento)
         except Exception:
@@ -121,6 +121,20 @@ class ImportCSVCommand(object):
                                  lambda: self._unknown_fornecedores.add(fornecedor), 'fornecedor "{}" not found')
 
         return ok
+
+    def _make_lancamento(self, data, origem, destino, valor, observacoes, produto, quantidade, fornecedor):
+        lancamento = Lancamento()
+
+        lancamento.data = data
+        lancamento.origem = origem
+        lancamento.destino = destino
+        lancamento.valor = valor
+        lancamento.observacoes = observacoes
+        lancamento.produto = produto
+        lancamento.quantidade = quantidade
+        lancamento.fornecedor = fornecedor
+
+        return lancamento
 
     @staticmethod
     def _get(fields, index, default=None):
