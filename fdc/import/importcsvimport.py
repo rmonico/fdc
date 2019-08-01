@@ -36,8 +36,6 @@ class ImportCSVCommand(object):
 
         ok = True
 
-        self._connection.startTransaction()
-
         try:
             for self._i, self._line in enumerate(source):
                 fields_array = self._get_fields_array()
@@ -57,8 +55,6 @@ class ImportCSVCommand(object):
         except Exception:
             self._connection.rollback()
             raise
-        finally:
-            self._connection.commit()
 
         if ok:
             return 'ok', {'filename': args.filename}
