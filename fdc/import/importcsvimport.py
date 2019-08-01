@@ -25,19 +25,14 @@ class ImportCSVCommand(object):
     def import_csv_command_handler(self, args):
         source = open(args.filename, 'r')
 
-        self._ok = True
-
         unknown_contas = set()
         unknown_produtos = set()
         unknown_fornecedores = set()
 
+        self._ok = True
+
         for self._i, self._line in enumerate(source):
-            line = self._line
-
-            if line.endswith('\n'):
-                line = line[:-1]
-
-            fields = line.split(';')
+            fields = self._get_fields()
 
             if not len(fields) >= 4:
                 self._error('every line must have at least 4 fields'.format(param))
@@ -83,6 +78,14 @@ class ImportCSVCommand(object):
         else:
             return 'error', {'filename': args.filename, 'unknown_contas': unknown_contas,
                              'unknown_produtos': unknown_produtos, 'unknown_fornecedores': unknown_fornecedores}
+
+    def _get_fields(self):
+        if self._line.endswith('\n'):
+            self._line = self._line[:-1]
+
+        fields = self._line.split(';')
+
+        return fields
 
     def _error(self, message):
         print('[ERROR] Line {}: {}'.format(self._i + 1, message))
