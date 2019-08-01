@@ -2,6 +2,7 @@ from datetime import datetime
 from decimal import Decimal, InvalidOperation
 
 from di_container.injector import Inject
+from fdc.lancamento.lancamentodao import Lancamento
 
 _CSV_DATE_FORMAT = '%d/%b/%Y'
 
