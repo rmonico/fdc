@@ -16,7 +16,6 @@ class ImportCSVCommand(object):
         self._unknown_contas = None
         self._unknown_produtos = None
         self._unknown_fornecedores = None
-        self._ok = None
 
     @staticmethod
     def import_parser_created_handler(import_parser):
@@ -32,20 +31,19 @@ class ImportCSVCommand(object):
         self._unknown_produtos = set()
         self._unknown_fornecedores = set()
 
-        self._ok = True
+        ok = True
 
         for self._i, self._line in enumerate(source):
             fields_array = self._get_fields_array()
 
-            if not len(fields_array) >= 4:
-                self._error('every line must have at least 4 fields'.format(param))
+            if not self._validate(fields_array, lambda f: len(f) >= 4, None, 'every line must have at least 4 fields'):
                 continue
 
             fields = self._get_fields(fields_array)
 
-            self._validate_fields(fields)
+            ok &= self._validate_fields(fields)
 
-        if self._ok:
+        if ok:
             return 'ok', {'filename': args.filename}
         else:
             return 'error', {'filename': args.filename, 'unknown_contas': self._unknown_contas,
@@ -55,30 +53,28 @@ class ImportCSVCommand(object):
     def _validate_fields(self, fields):
         data, origem, destino, valor, observacoes, produto, quantidade, fornecedor = fields
 
-        if not self._data_ok(data):
-            self._error('date "{}" is not in format "{}"'.format(data, _CSV_DATE_FORMAT))
+        ok = self._validate(data, self._data_ok, None, 'date "{{}}" is not in format "{}"'.format(_CSV_DATE_FORMAT))
 
-        if not self._conta_dao.exists(origem):
-            self._error('origem "{}" doesnt exists'.format(origem))
-            self._unknown_contas.add(origem)
+        ok &= self._validate(origem, self._conta_dao.exists, lambda: self._unknown_contas.add(origem),
+                             'origem "{}" doesnt exists')
 
-        if not self._conta_dao.exists(destino):
-            self._error('destino "{}" doesnt exists'.format(destino))
-            self._unknown_contas.add(destino)
+        ok &= self._validate(destino, self._conta_dao.exists, lambda: self._unknown_contas.add(destino),
+                             'destino "{}" doesnt exists')
 
-        if not self._valor_ok(valor):
-            self._error('valor "{}" is not in valid format'.format(valor))
+        ok &= self._validate(valor, self._valor_ok, None, 'valor "{}" is not in valid format')
 
-        if produto and not self._produto_dao.exists(produto):
-            self._error('produto "{}" not found'.format(produto))
-            self._unknown_produtos.add(produto)
+        if produto:
+            ok &= self._validate(produto, self._produto_dao.exists, lambda: self._unknown_produtos.add(produto),
+                                 'produto "{}" not found')
 
-        if quantidade and not self._is_float(quantidade):
-            self._error('quantidade "{}" is not a float value'.format(quantidade))
+        if quantidade:
+            ok &= self._validate(quantidade, self._is_float, None, 'quantidade "{}" is not a float value')
 
-        if fornecedor and not self._fornecedor_dao.exists(fornecedor):
-            self._error('fornecedor "{}" not found'.format(fornecedor))
-            self._unknown_fornecedores.add(fornecedor)
+        if fornecedor:
+            ok &= self._validate(fornecedor, self._fornecedor_dao.exists,
+                                 lambda: self._unknown_fornecedores.add(fornecedor), 'fornecedor "{}" not found')
+
+        return ok
 
     def _get_fields_array(self):
         if self._line.endswith('\n'):
@@ -100,6 +96,17 @@ class ImportCSVCommand(object):
         fornecedor = self._get(fields_array, 7)
 
         return data, origem, destino, valor, observacoes, produto, quantidade, fornecedor
+
+    def _validate(self, data, validator, validation_fail_callback, message):
+        if not validator(data):
+            print('[ERROR] Line {}: {}'.format(self._i + 1, message.format(data)))
+
+            if validation_fail_callback:
+                validation_fail_callback()
+
+            return False
+
+        return True
 
     def _error(self, message):
         print('[ERROR] Line {}: {}'.format(self._i + 1, message))
