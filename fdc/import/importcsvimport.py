@@ -24,7 +24,11 @@ class ImportCSVCommand(object):
     def import_csv_command_handler(self, args):
         source = open(args.filename, 'r')
 
-        self._status = 'ok'
+        self._ok = True
+
+        unknown_contas = set()
+        unknown_produtos = set()
+        unknown_fornecedores = set()
 
         for self._i, self._line in enumerate(source):
             line = self._line
@@ -34,7 +38,10 @@ class ImportCSVCommand(object):
 
             fields = line.split(';')
 
-            if not self._assert(len(fields) >= 4, 'every line must have at least 4 fields'):
+            if not len(fields) >= 4:
+                print('[ERROR] Line {}: {}'.format(self._i + 1, 'every line must have at least 4 fields'.format(param)))
+                self._status = 'error'
+
                 continue
 
             data = fields[0]
@@ -47,31 +54,41 @@ class ImportCSVCommand(object):
             quantidade = self._get(fields, 6)
             fornecedor = self._get(fields, 7)
 
-            self._assert(self._data_ok(data), 'date "{}" is not in format "{}"', data, _CSV_DATE_FORMAT)
+            if not self._data_ok(data):
+                self._error('date "{}" is not in format "{}"'.format(data, _CSV_DATE_FORMAT))
 
-            self._assert(self._conta_dao.exists(origem), 'origem "{}" doesnt exists', origem)
+            if not self._conta_dao.exists(origem):
+                self._error('origem "{}" doesnt exists'.format(origem))
+                unknown_contas.add(origem)
 
-            self._assert(self._conta_dao.exists(destino), 'destino "{}" doesnt exists', destino)
+            if not self._conta_dao.exists(destino):
+                self._error('destino "{}" doesnt exists'.format(destino))
+                unknown_contas.add(destino)
 
-            self._assert(self._valor_ok(valor), 'valor "{}" is not in valid format', valor)
+            if not self._valor_ok(valor):
+                self._error('valor "{}" is not in valid format'.format(valor))
 
-            if produto:
-                self._assert(self._produto_dao.exists(produto), 'produto "{}" not found', produto)
+            if produto and not self._produto_dao.exists(produto):
+                self._error('produto "{}" not found'.format(produto))
+                unknown_produtos.add(produto)
 
-            if quantidade:
-                self._assert(self._is_float(quantidade), 'quantidade "{}" is not a float value', quantidade)
+            if quantidade and not self._is_float(quantidade):
+                self._error('quantidade "{}" is not a float value'.format(quantidade))
 
-            if fornecedor:
-                self._assert(self._fornecedor_dao.exists(fornecedor), 'fornecedor "{}" not found', fornecedor)
+            if fornecedor and not self._fornecedor_dao.exists(fornecedor):
+                self._error('fornecedor "{}" not found'.format(fornecedor))
+                unknown_fornecedores.add(fornecedor)
 
-        return self._status, {'filename': args.filename}
+        if self._ok:
+            return 'ok', {'filename': args.filename}
+        else:
+            return 'error', {'filename': args.filename, 'unknown_contas': unknown_contas,
+                             'unknown_produtos': unknown_produtos, 'unknown_fornecedores': unknown_fornecedores}
 
-    def _assert(self, assertion, message, *message_args, **message_kwargs):
-        if not assertion:
-            print('[ERROR] Line {}: {}'.format(self._i + 1, message.format(*message_args, **message_kwargs)))
-            self._status = 'error'
+    def _error(self, message):
+        print('[ERROR] Line {}: {}'.format(self._i + 1, message))
 
-        return assertion
+        self._ok = False
 
     @staticmethod
     def _get(fields, index, default=None):
@@ -104,5 +121,21 @@ class ImportCSVCommand(object):
     def import_csv_command_ok_handler(self, filename):
         print('Arquivo "{}" importado com sucesso!'.format(filename))
 
-    def import_csv_command_error_handler(self, filename):
-        print('Errors importing file "{}"!'.format(filename))
+    def import_csv_command_error_handler(self, filename, unknown_contas, unknown_produtos, unknown_fornecedores):
+        print('Erros importando arquivo "{}"!'.format(filename))
+        print()
+
+        self._print_array('Contas desconhecidas:', unknown_contas)
+        self._print_array('Produtos desconhecidos:', unknown_produtos)
+        self._print_array('Fornecedores desconhecidos:', unknown_fornecedores)
+
+    def _print_array(self, message, array):
+        if len(array) == 0:
+            return
+
+        print(message)
+
+        for conta in array:
+            print(conta)
+
+        print()
