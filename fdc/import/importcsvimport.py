@@ -9,6 +9,7 @@ _CSV_DATE_FORMAT = '%d/%b/%Y'
 class ImportCSVCommand(object):
 
     def __init__(self):
+        self._connection = Inject('database connection')
         self._conta_dao = Inject('conta dao')
         self._produto_dao = Inject('produto dao')
         self._fornecedor_dao = Inject('fornecedor dao')
@@ -33,15 +34,25 @@ class ImportCSVCommand(object):
 
         ok = True
 
-        for self._i, self._line in enumerate(source):
-            fields_array = self._get_fields_array()
+        self._connection.startTransaction()
 
-            if not self._validate(fields_array, lambda f: len(f) >= 4, None, 'every line must have at least 4 fields'):
-                continue
+        try:
+            for self._i, self._line in enumerate(source):
+                fields_array = self._get_fields_array()
 
-            fields = self._get_fields(fields_array)
+                if not self._validate(fields_array, lambda f: len(f) >= 4, None,
+                                      'every line must have at least 4 fields'):
+                    continue
 
-            ok &= self._validate_fields(fields)
+                fields = self._get_fields(fields_array)
+
+                ok &= self._validate_fields(fields)
+
+        except Exception:
+            self._connection.rollback()
+            raise
+        finally:
+            self._connection.commit()
 
         if ok:
             return 'ok', {'filename': args.filename}
