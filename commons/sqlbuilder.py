@@ -5,7 +5,12 @@ class TableDescriptor(object):
         self.fields = list(fields)
 
     def get_fields_tuple(self, entity):
-        return 'field 1 value', 'value of field 2', 'field 3'
+        t = ()
+
+        for field in self.fields:
+            t += getattr(entity, field, None),
+
+        return t
 
 
 class InsertBuilder(object):
