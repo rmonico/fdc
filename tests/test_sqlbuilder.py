@@ -3,9 +3,9 @@ import unittest
 from commons.sqlbuilder import TableDescriptor, InsertBuilder
 
 
-class MyTestCase(unittest.TestCase):
+class SQLBuilderTestCase(unittest.TestCase):
 
-    def test_something(self):
+    def test_insert_builder(self):
         table_descriptor = TableDescriptor('table_name', 'field1', 'field2', 'field3')
         builder = InsertBuilder()
         sql = builder.build(table_descriptor)

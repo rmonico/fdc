@@ -1,4 +1,5 @@
 class TableDescriptor(object):
+
     def __init__(self, table_name, *fields):
         self.table_name = table_name
         self.fields = list(fields)
