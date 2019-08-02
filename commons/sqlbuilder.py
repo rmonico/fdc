@@ -4,6 +4,9 @@ class TableDescriptor(object):
         self.table_name = table_name
         self.fields = list(fields)
 
+    def get_fields_tuple(self, entity):
+        return 'field 1 value', 'value of field 2', 'field 3'
+
 
 class InsertBuilder(object):
 
