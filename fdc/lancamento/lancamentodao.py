@@ -1,5 +1,10 @@
 from di_container.injector import Inject
 
+from commons.sqlbuilder import TableDescriptor, InsertBuilder
+
+lancamento_table_descriptor = TableDescriptor('lancamento', 'data', 'origem', 'destino', 'valor', 'observacao',
+                                              'produto', 'quantidade', 'fornecedor')
+
 
 class Lancamento(object):
 
@@ -23,10 +28,7 @@ class LancamentoDao(object):
         return 'lancamento dao'
 
     def insert(self, lancamento):
-        print('inserting lancamento with: {}, {}, {}, {}, {}, {}, {}, {}'.format(lancamento.data, lancamento.origem,
-                                                                                 lancamento.destino,
-                                                                                 lancamento.valor,
-                                                                                 lancamento.observacoes,
-                                                                                 lancamento.produto,
-                                                                                 lancamento.quantidade,
-                                                                                 lancamento.fornecedor))
+        builder = InsertBuilder()
+        sql = builder.build(lancamento_table_descriptor)
+
+        self._connection.execute(sql, lancamento_table_descriptor.get_fields_tuple(lancamento))

@@ -56,6 +56,8 @@ class ImportCSVCommand(object):
             self._connection.rollback()
             raise
 
+        self._connection.commit()
+
         if ok:
             return 'ok', {'filename': args.filename}
         else:
