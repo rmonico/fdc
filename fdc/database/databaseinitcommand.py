@@ -62,7 +62,7 @@ class FDCInitCommand(object):
         connection.executescript('create table Cotacao ('
                                  '  data date not null,'
                                  '  moeda text not null,'
-                                 '  valor money not null);')
+                                 '  valor integer not null);')
 
         self._logger.debug('Creating table "Orcamento"...')
         connection.executescript('create table Orcamento ('
@@ -75,7 +75,7 @@ class FDCInitCommand(object):
                                  '  regra_data_vencimento text not null,'
                                  '  origem_padrao not null references Conta,'
                                  '  destino_padrao not null references Conta,'
-                                 '  valor_padrao money not null,'
+                                 '  valor_padrao integer not null,'
                                  '  cotacao_moeda text,'
                                  '  regra_cotacao_data text,'
                                  '  regra_periodo_referencia text not null,'
@@ -86,15 +86,15 @@ class FDCInitCommand(object):
         self._logger.debug('Creating table "Lancamento"...')
         connection.executescript('create table Lancamento ('
                                  '  data date not null,'
-                                 '  origem references Conta,'
-                                 '  destino references Conta,'
-                                 '  valor money not null,'
+                                 '  origem references Conta not null,'
+                                 '  destino references Conta not null,'
+                                 '  valor integer not null,'
                                  '  cotacao references Cotacao,'
                                  '  referencia_inicio text,'
                                  '  referencia_fim text,'
                                  '  realizado boolean not null default false,'
                                  '  produto references Produto,'
-                                 '  fornecedor not null references Fornecedor,'
+                                 '  fornecedor references Fornecedor,'
                                  '  quantidade integer,'
                                  '  observacao text);')
 
