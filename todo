@@ -11,9 +11,11 @@
   ok Fazer dao de fornecedor
   ok Validar se fornecedor é válido
   ok Implementar métodos exists do dao de produto e fornecedor
-  - Gravar as informações no banco de dados
+  ok Gravar as informações no banco de dados
+  - Carregar as configurações de arquivo
+    - Começar escolhendo o nome do arquivo de configuração
   - Criar uma flag para confirmar a importação (por default deve apenas verificar se os arquivos são válidos e mostrar o que será importado em tela)
-  - Refatorar a classe de comando, está muito grande
+  ok Refatorar a classe de comando, está muito grande
 
 - Portar os comandos de lançamento para a nova estrutura
 - Fazer os comandos de rm de lanc, conta, etc (agora só está listando e adicionando)
