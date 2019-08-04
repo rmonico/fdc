@@ -1,6 +1,6 @@
 import unittest
 
-from commons.sqlbuilder import TableDescriptor, InsertBuilder
+from commons.sqlbuilder import TableDescriptor, InsertBuilder, SelectBuilder
 from types import SimpleNamespace
 
 
@@ -23,6 +23,13 @@ class SQLBuilderTestCase(unittest.TestCase):
         self.assertEqual('field 1 value', field1)
         self.assertEqual('value of field 2', field2)
         self.assertEqual('field 3', field3)
+
+    def test_select_builder(self):
+        table_descriptor = TableDescriptor('table_name', 'field1', 'field2', 'field3')
+        builder = SelectBuilder(table_descriptor)
+        sql = builder.build()
+
+        self.assertEqual('select field1, field2, field3 from table_name;', sql)
 
 
 if __name__ == '__main__':
