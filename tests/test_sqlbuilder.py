@@ -51,5 +51,18 @@ class SQLBuilderTestCase(unittest.TestCase):
 
         self.assertEqual('select field1, field2 from table_name;', sql)
 
+    def test_select_builder_row_loader(self):
+        table_descriptor = TableDescriptor('table_name', 'field1', 'field2', 'field3')
+        builder = SelectBuilder(table_descriptor)
+
+        row = 'field 1 value', 'value of field 2', 'field 3'
+
+        entity = builder.load_row(row)
+
+        self.assertEqual('field 1 value', entity.field1)
+        self.assertEqual('value of field 2', entity.field2)
+        self.assertEqual('field 3', entity.field3)
+
+
 if __name__ == '__main__':
     unittest.main()

@@ -1,3 +1,6 @@
+from types import SimpleNamespace
+
+
 class TableDescriptor(object):
 
     def __init__(self, table_name, *fields):
@@ -70,3 +73,13 @@ class SelectBuilder(SQLBuilder):
 
     def _get_fields(self):
         return self._fields if self._fields else self._table_descriptor.fields
+
+    def load_row(self, row):
+        entity_values = {}
+
+        for i, field_name in enumerate(self._get_fields()):
+            value = row[i]
+
+            entity_values[field_name] = value
+
+        return SimpleNamespace(**entity_values)
