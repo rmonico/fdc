@@ -13,14 +13,33 @@ class TableDescriptor(object):
         return t
 
 
-class InsertBuilder(object):
+class SQLBuilder(object):
 
     def __init__(self, table_descriptor):
         self._table_descriptor = table_descriptor
 
+    def _fields_str(self):
+        return ', '.join(self._table_descriptor.fields)
+
+
+class InsertBuilder(SQLBuilder):
+
+    def __init__(self, table_descriptor):
+        super().__init__(table_descriptor)
+
     def build(self):
         table_name = self._table_descriptor.table_name
-        fields = ', '.join(self._table_descriptor.fields)
         values_mask = ', '.join('?' * len(self._table_descriptor.fields))
 
-        return 'insert into {} ({}) values ({});'.format(table_name, fields, values_mask)
+        return 'insert into {} ({}) values ({});'.format(table_name, self._fields_str(), values_mask)
+
+
+class SelectBuilder(SQLBuilder):
+
+    def __init__(self, table_descriptor):
+        super().__init__(table_descriptor)
+
+    def build(self):
+        table_name = self._table_descriptor.table_name
+
+        return 'select {} from {};'.format(self._fields_str(), table_name)
