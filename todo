@@ -12,8 +12,8 @@
   ok Validar se fornecedor é válido
   ok Implementar métodos exists do dao de produto e fornecedor
   ok Gravar as informações no banco de dados
-  - Carregar as configurações de arquivo
-    - Começar escolhendo o nome do arquivo de configuração
+  ok Carregar as configurações de arquivo
+    ok Começar escolhendo o nome do arquivo de configuração
   - Criar uma flag para confirmar a importação (por default deve apenas verificar se os arquivos são válidos e mostrar o que será importado em tela)
   ok Refatorar a classe de comando, está muito grande
 
