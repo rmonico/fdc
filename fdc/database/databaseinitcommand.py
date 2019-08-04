@@ -100,9 +100,9 @@ class FDCInitCommand(object):
 
         self._logger.debug('Creating table "Produto"...')
         connection.executescript('create table Produto ('
-                                 '  nome text,'
-                                 '  medida text not null,'
-                                 '  unidade text not null);')
+                                 '  nome text not null,'
+                                 '  medida text,'
+                                 '  unidade text);')
 
         self._logger.debug('Creating table "Fornecedor"...')
         connection.executescript('create table Fornecedor ('
