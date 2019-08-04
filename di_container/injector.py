@@ -22,6 +22,25 @@ class Injector(object):
             for resource in self._resource_classes:
                 logger.info('Loaded resource: {name} (of {creator})'.format(**resource))
 
+    def load_resources_from_class(self, *classes):
+        for cls in classes:
+            self._load_resources_from_class(cls)
+
+    def _load_resources_from_class(self, cls):
+        method = getattr(cls, 'injectable_resource', None)
+
+        if method:
+            self._load_internal_resource(cls, method)
+            return
+
+        method = getattr(cls, 'get_external_resources', None)
+
+        if method:
+            self._load_external_resource(cls, method)
+            return
+
+        raise InjectorException('Class "{}" has no resources to load'.format(cls.__name__))
+
     def _load_internal_resources(self, packages):
         visitor = MethodVisitor(packages, lambda clazz, method: method.__name__ == 'injectable_resource')
         visitor.visit(self._load_internal_resource)
@@ -100,6 +119,10 @@ class Injector(object):
                 instance = properties['instance'] = properties['creator']()
 
         return instance
+
+
+class InjectorException(Exception):
+    pass
 
 
 di_container = Injector()
