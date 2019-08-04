@@ -53,7 +53,13 @@ class ContaDao(object):
         return conta_list
 
     def exists(self, conta_name):
-        cursor = self._connection.execute("select count(*) from conta where nome=?;", (conta_name,))
+        builder = SelectBuilder(conta_table_descriptor)
+        builder.fields('count(*)')
+        builder.where('nome = ?')
+
+        query = builder.build()
+
+        cursor = self._connection.execute(query, (conta_name,))
 
         data = cursor.fetchone()
 
