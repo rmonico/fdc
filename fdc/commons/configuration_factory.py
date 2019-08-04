@@ -1,4 +1,6 @@
 from commons.configurations import Configurations
+import yaml
+import os
 
 
 class ConfigurationFactory(object):
@@ -8,26 +10,43 @@ class ConfigurationFactory(object):
         return [{'name': 'app configuration', 'creator': ConfigurationFactory._load_configurations}]
 
     def _load_configurations(self):
-        # TODO Load this from file
-        # fdc.db_full_path is a "virtual attribute", should be created here!
-        import os
+        defaults = self._load_defaults()
 
-        fdc_folder = '{HOME}/.config/fdc'.format(**os.environ)
-        db_file_name = 'database.db'
-        dump_file_name = 'dump.db'
+        user_configs = self._load_user_configs()
 
-        log_level = 'DEBUG'
+        configs = self._make_virtual_attributes({**defaults, **user_configs})
 
-        return Configurations(
-            {
-                'fdc': {
-                    'folder': fdc_folder,
-                    'db_file_name': db_file_name,
-                    'db_full_path': fdc_folder + '/' + db_file_name
-                },
-                'dump': {
-                    'file_name': dump_file_name,
-                    'full_path': fdc_folder + '/' + dump_file_name
-                },
-                'log': {'verbosity': log_level}
-            })
+        self._replace_values_with_environment_variables(configs)
+
+        return Configurations(configs)
+
+    @staticmethod
+    def _load_defaults():
+        stream = open("defaults.yaml", 'r')
+
+        return yaml.safe_load(stream)
+
+    @staticmethod
+    def _load_user_configs():
+        user_configs_file_path = os.environ.get('FDCRC', '{HOME}/.fdcrc'.format(**os.environ))
+
+        stream = open(user_configs_file_path, 'r')
+
+        return yaml.safe_load(stream)
+
+    @staticmethod
+    def _make_virtual_attributes(configs):
+        configs['fdc']['db_full_path'] = '{}/{}'.format(configs['fdc']['folder'], configs['fdc']['db_file_name'])
+        configs['fdc']['full_path'] = '{}/{}'.format(configs['fdc']['folder'], configs['dump']['file_name'])
+
+        return configs
+
+    @staticmethod
+    def _replace_values_with_environment_variables(config):
+        # import ipdb; ipdb.set_trace()
+
+        for key, value in config.items():
+            if isinstance(value, str):
+                config[key] = value.format(**os.environ)
+            elif isinstance(value, dict):
+                ConfigurationFactory._replace_values_with_environment_variables(config[key])
