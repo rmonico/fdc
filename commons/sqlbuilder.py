@@ -80,6 +80,7 @@ class SelectBuilder(SQLBuilder):
     def _get_fields(self):
         return self._fields if self._fields else self._table_descriptor.fields
 
+    # TODO Isto não está bom aqui, seria melhor deixar numa classe de dao genérico
     def load_row(self, row):
         entity_values = {}
 
