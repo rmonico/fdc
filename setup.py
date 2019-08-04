@@ -12,4 +12,4 @@ setup(name='fdc',
       entry_points={
           'console_scripts': ['fdc=fdc.main:entry_point'],
       },
-      zip_safe=False, install_requires=['ipdb'])
+      zip_safe=False, install_requires=['ipdb', 'PyYAML'])
