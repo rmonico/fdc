@@ -15,7 +15,7 @@ class ContaListCommand(object):
     def conta_list_command_handler(self, args):
         contas = self._dao.list()
 
-        return 'ok', contas
+        return 'ok', {'contas': contas}
 
     def conta_list_command_ok_handler(self, contas):
         printer = TablePrinter(self._dao.fields(), contas)

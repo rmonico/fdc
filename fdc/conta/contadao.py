@@ -1,4 +1,7 @@
 from di_container.injector import Inject
+from commons.sqlbuilder import TableDescriptor, SelectBuilder
+
+conta_table_descriptor = TableDescriptor('conta', 'nome', 'descricao', 'data_aquisicao', 'propriedades', 'observacao')
 
 
 class Conta(object):
@@ -33,8 +36,10 @@ class ContaDao(object):
         return instance
 
     def list(self):
-        cursor = self._connection.execute(
-            "select {fields} from conta;".format(fields=", ".join(field['name'] for field in self.fields())))
+        builder = SelectBuilder(conta_table_descriptor)
+        query = builder.build()
+
+        cursor = self._connection.execute(query)
 
         conta_list = []
 
