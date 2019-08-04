@@ -15,9 +15,12 @@ class TableDescriptor(object):
 
 class InsertBuilder(object):
 
-    def build(self, table_descriptor):
-        table_name = table_descriptor.table_name
-        fields = ', '.join(table_descriptor.fields)
-        values_mask = ', '.join('?' * len(table_descriptor.fields))
+    def __init__(self, table_descriptor):
+        self._table_descriptor = table_descriptor
+
+    def build(self):
+        table_name = self._table_descriptor.table_name
+        fields = ', '.join(self._table_descriptor.fields)
+        values_mask = ', '.join('?' * len(self._table_descriptor.fields))
 
         return 'insert into {} ({}) values ({});'.format(table_name, fields, values_mask)

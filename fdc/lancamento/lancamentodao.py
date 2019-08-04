@@ -28,7 +28,7 @@ class LancamentoDao(object):
         return 'lancamento dao'
 
     def insert(self, lancamento):
-        builder = InsertBuilder()
-        sql = builder.build(lancamento_table_descriptor)
+        builder = InsertBuilder(lancamento_table_descriptor)
+        sql = builder.build()
 
         self._connection.execute(sql, lancamento_table_descriptor.get_fields_tuple(lancamento))

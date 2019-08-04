@@ -8,8 +8,8 @@ class SQLBuilderTestCase(unittest.TestCase):
 
     def test_insert_builder(self):
         table_descriptor = TableDescriptor('table_name', 'field1', 'field2', 'field3')
-        builder = InsertBuilder()
-        sql = builder.build(table_descriptor)
+        builder = InsertBuilder(table_descriptor)
+        sql = builder.build()
 
         self.assertEqual('insert into table_name (field1, field2, field3) values (?, ?, ?);', sql)
 
