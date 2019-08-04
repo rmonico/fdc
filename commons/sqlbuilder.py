@@ -38,8 +38,20 @@ class SelectBuilder(SQLBuilder):
 
     def __init__(self, table_descriptor):
         super().__init__(table_descriptor)
+        self._where = list()
 
     def build(self):
         table_name = self._table_descriptor.table_name
 
-        return 'select {} from {};'.format(self._fields_str(), table_name)
+        where = self._make_where()
+
+        return 'select {} from {}{};'.format(self._fields_str(), table_name, where)
+
+    def _make_where(self):
+        if len(self._where) == 0:
+            return ''
+
+        return ' where ' + 'and '.join(self._where)
+
+    def where(self, clause):
+        self._where.append(clause)
