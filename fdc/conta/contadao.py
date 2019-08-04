@@ -44,7 +44,7 @@ class ContaDao(object):
 
         query = builder.build()
 
-        cursor = self._connection.execute(query, (conta_name, ))
+        cursor = self._connection.execute(query, (conta_name,))
 
         row = cursor.fetchone()
 
