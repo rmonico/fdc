@@ -16,8 +16,8 @@ class ConnectionFactory(object):
     def create_connection(self):
         import os
 
-        connection = sqlite3.connect(self._configs['fdc.db_full_path'])
+        self._logger.debug('Connecting to database at {}...', self._configs['fdc.db_full_path'])
 
-        self._logger.debug('Connected to database at {}', self._configs['fdc.db_full_path'])
+        connection = sqlite3.connect(self._configs['fdc.db_full_path'])
 
         return connection
