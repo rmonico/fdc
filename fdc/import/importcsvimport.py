@@ -137,9 +137,9 @@ class ImportCSVCommand(object):
         lancamento = Lancamento()
 
         lancamento.data = data
-        lancamento.origem = origem
-        lancamento.destino = destino
         lancamento.valor = valor
+        lancamento.origem = self._conta_dao.by_name(origem)
+        lancamento.destino = self._conta_dao.by_name(destino)
         lancamento.observacoes = observacoes
         lancamento.produto = produto
         lancamento.quantidade = quantidade
