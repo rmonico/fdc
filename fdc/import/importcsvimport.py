@@ -137,7 +137,7 @@ class ImportCSVCommand(object):
         lancamento = Lancamento()
 
         lancamento.data = data
-        lancamento.valor = valor
+        lancamento.valor = int(valor.replace('.', '')) * 100
         lancamento.origem = self._conta_dao.by_name(origem)
         lancamento.destino = self._conta_dao.by_name(destino)
         lancamento.observacoes = observacoes
