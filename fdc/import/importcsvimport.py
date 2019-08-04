@@ -197,14 +197,10 @@ class ImportCSVCommand(object):
         values.append(str(lancamento.origem))
         values.append(str(lancamento.destino))
         values.append(str(lancamento.valor))
-        if lancamento.observacoes:
-            values.append(str(lancamento.observacoes))
-        if lancamento.produto:
-            values.append(str(lancamento.produto))
-        if lancamento.quantidade:
-            values.append(str(lancamento.quantidade))
-        if lancamento.fornecedor:
-            values.append(str(lancamento.fornecedor))
+        values.append(str(lancamento.observacoes)) if lancamento.observacoes else None
+        values.append(str(lancamento.produto)) if lancamento.produto else None
+        values.append(str(lancamento.quantidade)) if lancamento.quantidade else None
+        values.append(str(lancamento.fornecedor)) if lancamento.fornecedor else None
 
         return '; '.join(values)
 
