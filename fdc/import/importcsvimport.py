@@ -67,12 +67,10 @@ class ImportCSVCommand(object):
         self._connection.commit()
 
         if ok:
-            parameters = {'filename': args.filename}
-
-            if not args.confirm:
-                parameters['lancamentos'] = lancamentos
-
-            return 'ok', parameters
+            if args.confirm:
+                return 'imported', {'filename': args.filename}
+            else:
+                return 'simulated', {'filename': args.filename, 'lancamentos': lancamentos}
 
         else:
             return 'error', {'filename': args.filename, 'unknown_contas': self._unknown_contas,
@@ -180,8 +178,35 @@ class ImportCSVCommand(object):
             return False
 
     @staticmethod
-    def import_csv_command_ok_handler(filename, lancamentos=None):
+    def import_csv_command_imported_handler(filename):
         print('Arquivo "{}" importado com sucesso!'.format(filename))
+
+    @staticmethod
+    def import_csv_command_simulated_handler(filename, lancamentos):
+        print('Simulated import for file "{}" (use --confirm to actually import), would create lancamentos:'.format(
+            filename))
+
+        for lancamento in lancamentos:
+            print(ImportCSVCommand._make_lancamento_string(lancamento))
+
+    @staticmethod
+    def _make_lancamento_string(lancamento):
+        values = list()
+
+        values.append(str(lancamento.data))
+        values.append(str(lancamento.origem))
+        values.append(str(lancamento.destino))
+        values.append(str(lancamento.valor))
+        if lancamento.observacoes:
+            values.append(str(lancamento.observacoes))
+        if lancamento.produto:
+            values.append(str(lancamento.produto))
+        if lancamento.quantidade:
+            values.append(str(lancamento.quantidade))
+        if lancamento.fornecedor:
+            values.append(str(lancamento.fornecedor))
+
+        return '; '.join(values)
 
     @staticmethod
     def import_csv_command_error_handler(filename, unknown_contas, unknown_produtos, unknown_fornecedores):
