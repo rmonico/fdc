@@ -7,7 +7,9 @@ class TableDescriptor(object):
         self.table_name = table_name
         self.fields = list(fields)
 
-    def create_field_attributes(self, entity, values={}):
+    def create_field_attributes(self, entity, values=None):
+        if values is None:
+            values = {}
         for field in self.fields:
             setattr(entity, field, values.get(field, None))
 
