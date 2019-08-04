@@ -17,9 +17,10 @@ class SQLBuilder(object):
 
     def __init__(self, table_descriptor):
         self._table_descriptor = table_descriptor
+        self._fields = None
 
     def _fields_str(self):
-        return ', '.join(self._table_descriptor.fields)
+        return ', '.join(self._fields if self._fields else self._table_descriptor.fields)
 
 
 class InsertBuilder(SQLBuilder):
@@ -55,3 +56,6 @@ class SelectBuilder(SQLBuilder):
 
     def where(self, clause):
         self._where.append(clause)
+
+    def fields(self, *fields):
+        self._fields = list(fields)
