@@ -21,20 +21,6 @@ class ContaDao(object):
     def injectable_resource():
         return 'conta dao'
 
-    @staticmethod
-    def fields():
-        return [{'name': 'nome'}, {'name': 'contabilizavel'}, {'name': 'fechamento'}]
-
-    @staticmethod
-    def _load_from_cursor(row):
-        instance = Conta()
-
-        for i, field in enumerate(ContaDao.fields()):
-            value = row[i]
-            setattr(instance, field['name'], value)
-
-        return instance
-
     def list(self):
         builder = SelectBuilder(conta_table_descriptor)
         query = builder.build()
@@ -44,7 +30,7 @@ class ContaDao(object):
         conta_list = []
 
         for row in cursor:
-            conta = self._load_from_cursor(row)
+            conta = builder.load_row(row)
 
             conta_list.append(conta)
 
@@ -65,7 +51,7 @@ class ContaDao(object):
         cursor.close()
 
         if row:
-            return self._load_from_cursor(row)
+            return builder.load_row(row)
         else:
             return None
 
