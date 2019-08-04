@@ -1,15 +1,15 @@
 from di_container.injector import Inject
 from commons.sqlbuilder import TableDescriptor, SelectBuilder
+from types import SimpleNamespace
 
-conta_table_descriptor = TableDescriptor('conta', 'nome', 'descricao', 'data_aquisicao', 'propriedades', 'observacao')
+conta_table_descriptor = TableDescriptor('conta', 'rowid', 'nome', 'descricao', 'data_aquisicao', 'propriedades',
+                                         'observacao')
 
 
 class Conta(object):
 
     def __init__(self):
-        self.nome = None
-        self.contabilizavel = False
-        self.fechamento = None
+        conta_table_descriptor.create_field_attributes(self)
 
 
 class ContaDao(object):

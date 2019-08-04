@@ -2,21 +2,14 @@ from di_container.injector import Inject
 
 from commons.sqlbuilder import TableDescriptor, InsertBuilder
 
-lancamento_table_descriptor = TableDescriptor('lancamento', 'data', 'origem', 'destino', 'valor', 'observacao',
+lancamento_table_descriptor = TableDescriptor('lancamento', 'rowid', 'data', 'origem', 'destino', 'valor', 'observacao',
                                               'produto', 'quantidade', 'fornecedor')
 
 
 class Lancamento(object):
 
     def __init__(self):
-        self.data = None
-        self.origem = None
-        self.destino = None
-        self.valor = None
-        self.observacoes = None
-        self.produto = None
-        self.quantidade = None
-        self.fornecedor = None
+        lancamento_table_descriptor.create_field_attributes(self)
 
 
 class LancamentoDao(object):
