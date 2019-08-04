@@ -4,23 +4,17 @@ class TableDescriptor(object):
         self.table_name = table_name
         self.fields = list(fields)
 
-    def get_fields_tuple(self, entity):
-        t = ()
-
-        for field in self.fields:
-            t += getattr(entity, field, None),
-
-        return t
-
 
 class SQLBuilder(object):
 
     def __init__(self, table_descriptor):
         self._table_descriptor = table_descriptor
-        self._fields = None
 
     def _fields_str(self):
-        return ', '.join(self._fields if self._fields else self._table_descriptor.fields)
+        return ', '.join(self._get_fields())
+
+    def _get_fields(self):
+        return self._table_descriptor.fields
 
 
 class InsertBuilder(SQLBuilder):
@@ -34,12 +28,26 @@ class InsertBuilder(SQLBuilder):
 
         return 'insert into {} ({}) values ({});'.format(table_name, self._fields_str(), values_mask)
 
+    def get_field_values(self, entity):
+        t = ()
+
+        for field in self._get_fields():
+            value = getattr(entity, field, None)
+
+            if hasattr(value, 'rowid'):
+                t += value.rowid,
+            else:
+                t += value,
+
+        return t
+
 
 class SelectBuilder(SQLBuilder):
 
     def __init__(self, table_descriptor):
         super().__init__(table_descriptor)
         self._where = list()
+        self._fields = None
 
     def build(self):
         table_name = self._table_descriptor.table_name
@@ -59,3 +67,6 @@ class SelectBuilder(SQLBuilder):
 
     def fields(self, *fields):
         self._fields = list(fields)
+
+    def _get_fields(self):
+        return self._fields if self._fields else self._table_descriptor.fields

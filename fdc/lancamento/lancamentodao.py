@@ -31,4 +31,4 @@ class LancamentoDao(object):
         builder = InsertBuilder(lancamento_table_descriptor)
         sql = builder.build()
 
-        self._connection.execute(sql, lancamento_table_descriptor.get_fields_tuple(lancamento))
+        self._connection.execute(sql, builder.get_field_values(lancamento))

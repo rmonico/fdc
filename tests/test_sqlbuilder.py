@@ -18,7 +18,9 @@ class SQLBuilderTestCase(unittest.TestCase):
 
         entity = SimpleNamespace(field1='field 1 value', field2='value of field 2', field3='field 3')
 
-        field1, field2, field3 = table_descriptor.get_fields_tuple(entity)
+        builder = InsertBuilder(table_descriptor)
+
+        field1, field2, field3 = builder.get_field_values(entity)
 
         self.assertEqual('field 1 value', field1)
         self.assertEqual('value of field 2', field2)
