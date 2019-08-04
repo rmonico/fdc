@@ -25,6 +25,8 @@ class ImportCSVCommand(object):
         import_csv_parser = import_parser.add_parser('csv', help='Importa um arquivo .csv')
         import_csv_parser.set_defaults(event='import_csv_command')
 
+        import_csv_parser.add_argument('-c', '--confirm', action='store_true',
+                                       help='Confirma a importação, caso contrário apenas mostra em tela o que será importado')
         import_csv_parser.add_argument("filename", help="Nome do arquivo que será importado")
 
     def import_csv_command_handler(self, args):
@@ -35,6 +37,8 @@ class ImportCSVCommand(object):
         self._unknown_fornecedores = set()
 
         ok = True
+
+        lancamentos = []
 
         try:
             for self._i, self._line in enumerate(source):
@@ -51,7 +55,11 @@ class ImportCSVCommand(object):
                 if ok:
                     lancamento = self._make_lancamento(*fields)
 
-                    self._lancamento_dao.insert(lancamento)
+                    if args.confirm:
+                        self._lancamento_dao.insert(lancamento)
+                    else:
+                        lancamentos.append(lancamento)
+
         except Exception:
             self._connection.rollback()
             raise
@@ -59,7 +67,13 @@ class ImportCSVCommand(object):
         self._connection.commit()
 
         if ok:
-            return 'ok', {'filename': args.filename}
+            parameters = {'filename': args.filename}
+
+            if not args.confirm:
+                parameters['lancamentos'] = lancamentos
+
+            return 'ok', parameters
+
         else:
             return 'error', {'filename': args.filename, 'unknown_contas': self._unknown_contas,
                              'unknown_produtos': self._unknown_produtos,
@@ -166,7 +180,7 @@ class ImportCSVCommand(object):
             return False
 
     @staticmethod
-    def import_csv_command_ok_handler(filename):
+    def import_csv_command_ok_handler(filename, lancamentos=None):
         print('Arquivo "{}" importado com sucesso!'.format(filename))
 
     @staticmethod
