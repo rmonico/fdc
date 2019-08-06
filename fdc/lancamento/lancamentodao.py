@@ -1,6 +1,5 @@
 from commons.abstract_dao import AbstractDao
 from commons.sqlbuilder import TableDescriptor
-from di_container.injector import Inject
 
 lancamento_table_descriptor = TableDescriptor('lancamento', 'rowid', 'data', 'origem', 'destino', 'valor', 'observacao',
                                               'produto', 'quantidade', 'fornecedor')

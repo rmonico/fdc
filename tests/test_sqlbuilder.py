@@ -1,5 +1,6 @@
 import unittest
 from types import SimpleNamespace
+
 from commons.abstract_dao import AbstractDao
 from commons.sqlbuilder import TableDescriptor, InsertBuilder, SelectBuilder
 

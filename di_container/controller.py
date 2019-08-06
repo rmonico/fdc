@@ -1,6 +1,6 @@
+from .injector import Inject
 from .injector import di_container
 from .methodvisitor import MethodVisitor
-from .injector import Inject
 
 
 class ControllerEventResult(object):

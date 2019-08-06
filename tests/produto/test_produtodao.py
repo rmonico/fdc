@@ -1,10 +1,10 @@
 import unittest
 
-from di_container.injector import di_container, Inject
-from commons.sqlite_connection_factory import ConnectionFactory
 from commons.logger import Logger
-from tests.commons.test_configuration import TestConfiguration
+from commons.sqlite_connection_factory import ConnectionFactory
+from di_container.injector import di_container
 from fdc.produto.produtodao import ProdutoDao
+from tests.commons.test_configuration import TestConfiguration
 
 
 class ProdutoDaoTestCase(unittest.TestCase):

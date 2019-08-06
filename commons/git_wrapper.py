@@ -1,7 +1,5 @@
-from di_container.injector import Inject
-
-import subprocess
 import os
+import subprocess
 
 
 # Custom git wrapper should be created by custom factories

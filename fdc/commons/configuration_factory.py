@@ -1,6 +1,8 @@
-from commons.configurations import Configurations
-import yaml
 import os
+
+import yaml
+
+from commons.configurations import Configurations
 
 
 class ConfigurationFactory(object):

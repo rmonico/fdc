@@ -1,5 +1,5 @@
-from di_container.injector import Inject
 from commons.tableprinter import TablePrinter
+from di_container.injector import Inject
 
 
 class ContaListCommand(object):

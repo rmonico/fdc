@@ -1,6 +1,3 @@
-from types import SimpleNamespace
-
-
 class TableDescriptor(object):
 
     def __init__(self, table_name, *fields):

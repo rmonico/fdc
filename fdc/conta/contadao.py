@@ -1,7 +1,5 @@
-from di_container.injector import Inject
-from commons.sqlbuilder import TableDescriptor, SelectBuilder
-from types import SimpleNamespace
 from commons.abstract_dao import AbstractDao
+from commons.sqlbuilder import TableDescriptor
 
 conta_table_descriptor = TableDescriptor('conta', 'rowid', 'nome', 'descricao', 'data_aquisicao', 'propriedades',
                                          'observacao')
