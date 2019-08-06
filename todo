@@ -14,7 +14,7 @@
   ok Gravar as informações no banco de dados
   ok Carregar as configurações de arquivo
     ok Começar escolhendo o nome do arquivo de configuração
-  - Criar uma flag para confirmar a importação (por default deve apenas verificar se os arquivos são válidos e mostrar o que será importado em tela)
+  ok Criar uma flag para confirmar a importação (por default deve apenas verificar se os arquivos são válidos e mostrar o que será importado em tela)
   ok Refatorar a classe de comando, está muito grande
 
 - Portar os comandos de lançamento para a nova estrutura
