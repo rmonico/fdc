@@ -32,6 +32,9 @@ class ConfigurationFactory(object):
     def _load_user_configs():
         user_configs_file_path = os.environ.get('FDCRC', '{HOME}/.fdcrc'.format(**os.environ))
 
+        if not os.path.exists(user_configs_file_path):
+            open(user_configs_file_path, 'a').close()
+
         stream = open(user_configs_file_path, 'r')
 
         return yaml.safe_load(stream)
