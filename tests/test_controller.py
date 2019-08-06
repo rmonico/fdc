@@ -20,7 +20,7 @@ class EventHandlerWillReturnData(object):
 
     def event_that_will_return_data_handler(self):
         return 'status', {'property1': 'key-value data 1 value',
-                'property2': 'software é como lingüiça: melhor não saber como é feito'}, 'first data', \
+                          'property2': 'software é como lingüiça: melhor não saber como é feito'}, 'first data', \
                'second data'
 
 
