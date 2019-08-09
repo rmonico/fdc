@@ -5,6 +5,8 @@ from di_container.injector import Inject
 from fdc.lancamento.lancamentodao import Lancamento
 
 _CSV_DATE_FORMAT = '%d/%b/%Y'
+# TODO Tirar isso daqui!
+_SQLITE_DATE_FORMAT = '%Y-%m-%d'
 
 
 class ImportCSVCommand(object):
@@ -139,7 +141,8 @@ class ImportCSVCommand(object):
     def _make_lancamento(self, data, origem, destino, valor, observacoes, produto, quantidade, fornecedor):
         lancamento = Lancamento()
 
-        lancamento.data = data
+        # TODO Extract a formatter from the following two lines
+        lancamento.data = datetime.strftime(datetime.strptime(data, _CSV_DATE_FORMAT), _SQLITE_DATE_FORMAT)
         lancamento.valor = int(valor.replace('.', ''))
         lancamento.origem = self._conta_dao.by_name(origem)
         lancamento.destino = self._conta_dao.by_name(destino)
