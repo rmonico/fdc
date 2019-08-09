@@ -1,23 +1,17 @@
 :: TODO
 
-- Montar um comando no fdc para ler os arquivos de controle de gastos
-  ok Validar formato de data
-  ok Validar conta origem e destino
-  ok Validar formato de valor
-  ok Definir posição dos demais campos (observação, fornecedor, etc)
-  ok Atualizar estrutura do banco de dados (pegar do database_structure no docs)
-  ok Fazer dao de produto (com método exists)
-  ok Validar se produto é válido
-  ok Fazer dao de fornecedor
-  ok Validar se fornecedor é válido
-  ok Implementar métodos exists do dao de produto e fornecedor
-  ok Gravar as informações no banco de dados
-  ok Carregar as configurações de arquivo
-    ok Começar escolhendo o nome do arquivo de configuração
-  ok Criar uma flag para confirmar a importação (por default deve apenas verificar se os arquivos são válidos e mostrar o que será importado em tela)
-  ok Refatorar a classe de comando, está muito grande
+- Resolver recommit que ficou no histórico do import
 
-- Portar os comandos de lançamento para a nova estrutura
-- Fazer os comandos de rm de lanc, conta, etc (agora só está listando e adicionando)
-- Checar dependências cíclicas
-- Refatorar TablePrinter para ReportBuilder
+- Revisar quais comandos funcionam e quais estão com problema
+
+- Definir todos os comandos
+
+- Planejar versões
+  - Fazer comando de lanc add
+
+- Backlog
+  - Portar os comandos de lançamento para a nova estrutura
+  - Fazer os comandos de rm de lanc, conta, etc (agora só está listando e adicionando)
+  - Checar dependências cíclicas
+  - Refatorar TablePrinter para ReportBuilder
+  - Fazer algum esquema para a estrutura do banco de dados ficar juntos aos comandos que a manipula
