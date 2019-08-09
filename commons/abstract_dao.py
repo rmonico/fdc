@@ -18,7 +18,9 @@ class AbstractDao(object):
             return None
 
     def get_single(self, where=None, *values):
-        return self.list(where, *values)[0]
+        list = self.list(where, *values)
+
+        return list[0] if len(list) > 0 else None
 
     def list(self, where=None, *values):
         cursor = self._create_select_cursor((), where, *values)
