@@ -64,15 +64,18 @@ class ImportCSVCommand(object):
             self._connection.rollback()
             raise
 
-        self._connection.commit()
-
         if ok:
             if args.confirm:
+                self._connection.commit()
+
                 return 'imported', {'filename': args.filename}
             else:
                 return 'simulated', {'filename': args.filename, 'lancamentos': lancamentos}
 
         else:
+            if args.confirm:
+                self._connection.rollback()
+
             return 'error', {'filename': args.filename, 'unknown_contas': self._unknown_contas,
                              'unknown_produtos': self._unknown_produtos,
                              'unknown_fornecedores': self._unknown_fornecedores}
