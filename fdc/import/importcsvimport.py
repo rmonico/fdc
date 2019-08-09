@@ -131,7 +131,7 @@ class ImportCSVCommand(object):
             ok &= self._validate(quantidade, self._is_float, None, 'quantidade "{}" is not a float value')
 
         if fornecedor:
-            ok &= self._validate(fornecedor, self._fornecedor_dao.exists,
+            ok &= self._validate(fornecedor, self._fornecedor_dao.by_name,
                                  lambda: self._unknown_fornecedores.add(fornecedor), 'fornecedor "{}" not found')
 
         return ok
