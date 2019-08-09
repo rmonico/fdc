@@ -9,3 +9,6 @@ class FornecedorDao(object):
     @staticmethod
     def injectable_resource():
         return 'fornecedor dao'
+
+    def by_name(self, fornecedor_name):
+        return self.get_single('nome=?', fornecedor_name)

@@ -143,7 +143,7 @@ class ImportCSVCommand(object):
         lancamento.observacoes = observacoes
         lancamento.produto = self._produto_dao.by_name(produto) if produto else None
         lancamento.quantidade = quantidade
-        lancamento.fornecedor = fornecedor
+        lancamento.fornecedor = self._fornecedor_dao.by_name(fornecedor) if fornecedor else None
 
         return lancamento
 
