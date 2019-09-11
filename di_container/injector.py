@@ -130,3 +130,4 @@ class InjectorException(Exception):
 
 
 di_container = Injector()
+

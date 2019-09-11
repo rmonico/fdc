@@ -14,6 +14,9 @@ class ConfigurationFactory(object):
     def _load_configurations(self):
         defaults = self._load_defaults()
 
+        import ipdb
+        ipdb.set_trace()
+
         user_configs = self._load_user_configs()
 
         configs = self._make_virtual_attributes({**defaults, **user_configs})

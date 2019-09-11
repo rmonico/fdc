@@ -15,6 +15,10 @@
 
 - Está difícil gerir as possíveis chaves de configuração, pensar num jeito de resolver esse problema
 
+- Está dando problema quando não existe o arquivo ~/.fdcrc
+; Solução: tratar situações de dependências que não são encontradas
+
+
 - Resolver recommit que ficou no histórico do import
 
 - Revisar quais comandos funcionam e quais estão com problema
@@ -30,3 +34,5 @@
   - Checar dependências cíclicas
   - Refatorar TablePrinter para ReportBuilder
   - Fazer algum esquema para a estrutura do banco de dados ficar juntos aos comandos que a manipula
+
+

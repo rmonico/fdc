@@ -78,6 +78,9 @@ class InjectorTestCase(TestCase):
         self.assertIsInstance(context.exception, Exception)
         self.assertEqual('Dependency not found: "dependency which doesnt exists"', str(context.exception))
 
+    def test_should_call_di_container_error_handler_when_unexisting_dependency_is_get(self):
+        di_container.load_resources
+
 
 class Injected(object):
 
@@ -172,3 +175,10 @@ class InjectNotExistingDependency(object):
 
     def __init__(self):
         self._dependency = Inject('dependency which doesnt exists')
+
+
+@DependencyNotFoundObserver(filter='^dependency which doesnt exists$')
+class DependencyWhichDoesntExistNotFoundObserver(object):
+
+    def handle(self, dependency_name):
+        return 'system exit'
