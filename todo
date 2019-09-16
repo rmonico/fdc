@@ -1,6 +1,12 @@
 :: TODO
 
-- Fazer uma listagem do status de como está cada um dos comandos que existe no momento
+- Milestone 1
+  ok Importar csv's
+  -  Restaurar/Dump do banco
+  -  lanc add
+
+- Milestone 2
+  - lanc ls
 
 - Tratar erro quando o ~/.fdcrc não é um Json válido
 
