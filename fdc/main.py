@@ -44,38 +44,7 @@ class Main(object):
 
         controller.event('root_parser_created', root_parser=subparsers)
 
-        _make_contrato_parser(subparsers)
-
         return parser.parse_args()
-
-
-def _make_contrato_list_parser(parent_parser):
-    contrato_list_parser = parent_parser.add_parser(
-        "list", help="Lista os contratos existentes")
-
-
-def _make_contrato_add_parser(parent_parser):
-    contrato_add_parser = parent_parser.add_parser(
-        "add", help="Adiciona um novo contrato")
-
-    contrato_add_parser.add_argument(
-        "data-compra", type=date_parser, help="Data da compra. Formato: AAAA-MM-DD")
-    contrato_add_parser.add_argument("conta", help="Conta associada")
-    contrato_add_parser.add_argument(
-        "total-parcelas", type=int, help="Total de parcelas")
-    contrato_add_parser.add_argument(
-        "-v", "--valor-parcela", type=float, help="Valor da parcela")
-    contrato_add_parser.add_argument("-o", "--observacao", help="Observações")
-
-
-def _make_contrato_parser(parent_parser):
-    contrato_parser = parent_parser.add_parser(
-        "contrato", help="Comandos de contrato")
-    subparsers = contrato_parser.add_subparsers()
-
-    _make_contrato_list_parser(subparsers)
-
-    _make_contrato_add_parser(subparsers)
 
 
 def entry_point():
