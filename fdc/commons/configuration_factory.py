@@ -48,8 +48,6 @@ class ConfigurationFactory(object):
 
     @staticmethod
     def _replace_values_with_environment_variables(config):
-        # import ipdb; ipdb.set_trace()
-
         for key, value in config.items():
             if isinstance(value, str):
                 config[key] = value.format(**os.environ)
