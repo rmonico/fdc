@@ -9,8 +9,7 @@ class DatabaseDumpCommand(object):
         self._config = Inject('app configuration')
 
     def database_parser_created_handler(self, db_parser):
-        db_parser.add_parser("dump", help="Dump database.db to database.dump").set_defaults(
-            event='database_dump_command')
+        db_parser.add_parser("dump", help="Dump database.db to database.dump")
 
     def database_dump_command_handler(self, args):
         with open(self._config['fdc.dump_full_path'], 'w') as file:
