@@ -13,7 +13,7 @@ class DatabaseDumpCommand(object):
             event='database_dump_command')
 
     def database_dump_command_handler(self, args):
-        with open(self._config['dump.full_path'], 'w') as file:
+        with open(self._config['fdc.dump_full_path'], 'w') as file:
             for line in self._connection.iterdump():
                 file.write('%s\n' % line)
 

@@ -41,8 +41,8 @@ class ConfigurationFactory(object):
 
     @staticmethod
     def _make_virtual_attributes(configs):
-        configs['fdc']['db_full_path'] = '{}/{}'.format(configs['fdc']['folder'], configs['fdc']['db_file_name'])
-        configs['fdc']['full_path'] = '{}/{}'.format(configs['fdc']['folder'], configs['dump']['file_name'])
+        configs['fdc']['db_full_path'] = '{}/{}'.format(configs['fdc']['folder'], configs['fdc']['db_file'])
+        configs['fdc']['dump_full_path'] = '{}/{}'.format(configs['fdc']['folder'], configs['fdc']['dump_file'])
 
         return configs
 

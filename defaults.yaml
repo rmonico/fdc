@@ -1,9 +1,7 @@
 fdc:
   folder: "{HOME}/.config/fdc"
-  db_file_name: database.db
-
-dump:
-  file_name: dump.db
+  db_file: database.db
+  dump_file: dump.db
 
 log:
   verbosity: DEBUG
