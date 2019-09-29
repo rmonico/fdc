@@ -10,5 +10,5 @@ class LancamentoAddCommand(object):
     def lancamento_add_command_handler(self, args):
         return 'ok'
 
-    def lancamento_add_command_ok_handler(self, ints):
-        print('TODO {}'.format(ints))
+    def lancamento_add_command_ok_handler(self):
+        print('TODO')
