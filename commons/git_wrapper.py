@@ -7,7 +7,7 @@ import subprocess
 class GitWrapper(object):
 
     def __init__(self, repository_folder):
-        self.repository_folder = repository_folder
+        self._repository_folder = repository_folder
         self._git_binary = self._get_git_binary()
 
     @staticmethod
@@ -25,7 +25,7 @@ class GitWrapper(object):
     def _git(self, *args):
         current_directory = os.getcwd()
 
-        os.chdir(self.repository_folder)
+        os.chdir(self._repository_folder)
 
         process = subprocess.run(
             [self._git_binary] + list(args), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
