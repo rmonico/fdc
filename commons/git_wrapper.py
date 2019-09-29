@@ -12,7 +12,8 @@ class GitWrapper(object):
 
     @staticmethod
     def _get_git_binary():
-        p = subprocess.run(['which', 'git'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        p = subprocess.run(
+            ['which', 'git'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
         if p.returncode != 0:
             raise GitWrapperException('git binary not found in PATH')
@@ -26,7 +27,8 @@ class GitWrapper(object):
 
         os.chdir(self.repository_folder)
 
-        process = subprocess.run([self._git_binary] + list(args), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        process = subprocess.run(
+            [self._git_binary] + list(args), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
         os.chdir(current_directory)
 
