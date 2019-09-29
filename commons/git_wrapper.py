@@ -37,9 +37,22 @@ class GitWrapper(object):
     def is_repository(self):
         return self._git('status').returncode == 0
 
-    def init(self):
-        return self._git('init', '.').returncode == 0
+    def __getattribute__(self, attribute_name):
+        if GitWrapper._should_wrap_attribute(attribute_name):
+            return object.__getattribute__(self, attribute_name)
 
+        def __call_wrapper__(*args, **kwargs):
+            command = attribute_name
+
+            args = args[1:]
+
+            return self._git(command, *args, **kwargs)
+
+        return __call_wrapper__
+
+    @staticmethod
+    def _should_wrap_attribute(attribute_name):
+        return attribute_name.startswith('_')
 
 class GitWrapperException(Exception):
     pass
