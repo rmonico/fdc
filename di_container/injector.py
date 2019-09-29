@@ -11,16 +11,17 @@ class Injector(object):
 
     def __init__(self):
         self._resource_classes = []
+        self._logger = None
 
     def load_resources(self, packages):
         self._load_internal_resources(packages)
         self._load_external_resources(packages)
 
-        logger = self.get_resource('logger', optional=True)
+        self._logger = self.get_resource('logger', optional=True)
 
-        if logger:
+        if self._logger:
             for resource in self._resource_classes:
-                logger.info('Loaded resource: {name} (of {creator})'.format(**resource))
+                self._logger.info('Loaded resource: {name} (of {creator})'.format(**resource))
 
     def load_resources_from_class(self, *classes):
         for cls in classes:
@@ -66,6 +67,9 @@ class Injector(object):
         self._resource_classes += resources
 
     def inject_resources(self, client):
+        if self._logger:
+            self._logger.debug('Injecting resources into "{}"', client)
+
         import inspect
 
         if hasattr(client, 'before_inject'):
