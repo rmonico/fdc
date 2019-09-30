@@ -12,6 +12,7 @@ class Lancamento(object):
 
 
 class LancamentoDao(AbstractDao):
+
     def __init__(self):
         super().__init__(Lancamento, lancamento_table_descriptor)
 
