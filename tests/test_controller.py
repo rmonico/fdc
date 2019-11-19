@@ -3,6 +3,7 @@ from unittest import TestCase
 
 from di_container.controller import controller
 from di_container.injector import di_container
+from tests.commons.test_configuration import TestConfiguration
 
 
 class TestEventHandler(object):
@@ -27,6 +28,8 @@ class EventHandlerWillReturnData(object):
 class ControllerTestCase(TestCase):
 
     def test_event_triggered(self):
+        di_container.load_resources_from_class(TestConfiguration)
+
         di_container.load_resources(['commons'])
         controller.load_listeners([__package__])
 

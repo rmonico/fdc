@@ -54,5 +54,6 @@ class GitWrapper(object):
     def _should_wrap_attribute(attribute_name):
         return attribute_name.startswith('_')
 
+
 class GitWrapperException(Exception):
     pass
