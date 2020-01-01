@@ -13,6 +13,8 @@
 
 - Tratar erro quando nenhum comando é informado
 
+- Tratar erro quando pasta de configurações não existe
+
 - Tratar erro quando o ~/.fdcrc não é um Json válido
 
 - Está difícil gerir as possíveis chaves de configuração, pensar num jeito de resolver esse problema
