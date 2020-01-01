@@ -1,6 +1,5 @@
 import argparse
 
-from argparse_helpers.parsers.date_parser import date_parser
 from di_container.controller import controller
 from di_container.injector import di_container, Inject
 
@@ -35,7 +34,10 @@ class Main(object):
             self._logger.info('Calling front end for "{}" with data "{}, {}" due to status "{}"', args.event,
                               result.kwdata, result.data, result.status)
 
-            controller.event(args.event + '_' + result.status, inject_dependencies=True, *result.data, **result.kwdata)
+            # inject_dependencies parameter put first
+            event_args = True, *result.data
+
+            controller.event(args.event + '_' + result.status, *event_args, **result.kwdata)
 
     def parse_command_line(self):
         parser = argparse.ArgumentParser()
