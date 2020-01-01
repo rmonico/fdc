@@ -5,6 +5,9 @@ from di_container.controller import controller
 from di_container.injector import di_container
 from tests.commons.test_configuration import TestConfiguration
 
+_test_event_handled = False
+_test_event_parameter = -99
+
 
 class TestEventHandler(object):
 
