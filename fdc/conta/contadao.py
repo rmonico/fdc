@@ -9,6 +9,7 @@ class Conta(object):
 
     def __init__(self):
         conta_table_descriptor.create_field_attributes(self)
+        self.propriedades = ""
 
 
 class ContaDao(AbstractDao):
