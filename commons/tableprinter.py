@@ -12,7 +12,8 @@ class TablePrinter(object):
         self._print()
 
     def _load_and_format_data(self):
-        self._data = [[field['name'] for field in self._fields]]
+        # import ipdb; ipdb.set_trace()
+        self._data = [list(self._fields)]
 
         for row in self._result_set:
             formatted_row = ()
@@ -26,7 +27,7 @@ class TablePrinter(object):
         cells = []
 
         for field in self._fields:
-            cells.append(getattr(row, field['name']))
+            cells.append(getattr(row, field))
 
         return cells
 
