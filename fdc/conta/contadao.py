@@ -8,8 +8,7 @@ conta_table_descriptor = TableDescriptor('conta', 'rowid', 'nome', 'descricao', 
 class Conta(object):
 
     def __init__(self):
-        conta_table_descriptor.create_field_attributes(self)
-        self.propriedades = ""
+        conta_table_descriptor.create_field_attributes(self, nome="", propriedades="")
 
 
 class ContaDao(AbstractDao):
