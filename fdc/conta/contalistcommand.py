@@ -18,6 +18,7 @@ class ContaListCommand(object):
         return 'ok', {'contas': contas}
 
     def conta_list_command_ok_handler(self, contas):
-        printer = TablePrinter(self._dao.fields(), contas)
+        # TODO self._dao não deve expor seu campo interno, _metadata
+        printer = TablePrinter(self._dao._metadata.fields, contas)
 
         printer.print()
