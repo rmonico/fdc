@@ -12,7 +12,6 @@ class TablePrinter(object):
         self._print()
 
     def _load_and_format_data(self):
-        # import ipdb; ipdb.set_trace()
         self._data = [list(self._fields)]
 
         for row in self._result_set:
