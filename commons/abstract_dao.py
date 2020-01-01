@@ -6,14 +6,14 @@ from di_container.injector import Inject
 
 class AbstractDao(object):
 
-    def __init__(self, entity_class, table_descriptor):
+    def __init__(self, entity_class, metadata):
         self._connection = Inject('database connection')
         self._entity_class = entity_class
-        self._table_descriptor = table_descriptor
+        self._metadata = metadata
 
     def new_builder(self, kind):
         if kind == 'SELECT':
-            return SelectBuilder(self._table_descriptor)
+            return SelectBuilder(self._metadata)
         else:
             return None
 
@@ -60,7 +60,7 @@ class AbstractDao(object):
     def _load_row(self, row):
         entity_values = {}
 
-        for i, field_name in enumerate(self._table_descriptor.fields):
+        for i, field_name in enumerate(self._metadata.fields):
             value = row[i]
 
             entity_values[field_name] = value
@@ -68,7 +68,7 @@ class AbstractDao(object):
         return SimpleNamespace(**entity_values)
 
     def insert(self, entity):
-        builder = InsertBuilder(self._table_descriptor)
+        builder = InsertBuilder(self._metadata)
 
         sql = builder.build()
 
@@ -77,7 +77,7 @@ class AbstractDao(object):
     def _get_field_values(self, entity):
         t = ()
 
-        for field in self._table_descriptor.fields:
+        for field in self._metadata.fields:
             if field == 'rowid':
                 continue
 
