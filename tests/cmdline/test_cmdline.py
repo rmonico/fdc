@@ -39,7 +39,7 @@ class CommandLineTestCase(TestCase):
         os.remove(self._env('FDCRC'))
 
     def _call_fdc(self, *args):
-        return subprocess.run(['fdc'] + list(args), env=self._environment)
+        return subprocess.run(['fdc'] + list(args), env=self._environment, stdout=subprocess.PIPE)
 
     def test_db_init(self):
         result = self._call_fdc('db', 'init')
