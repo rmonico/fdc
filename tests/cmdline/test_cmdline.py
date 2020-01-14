@@ -46,8 +46,29 @@ class CommandLineTestCase(TestCase):
 
         self.assertEqual(result.returncode, 0)
 
+        database_filename = self._env('FDC_FOLDER') + '/main.db'
+
         self.assertTrue(os.path.exists(self._env('FDCRC')))
-        self.assertTrue(os.path.exists(self._env('FDC_FOLDER')))
+        self.assertTrue(os.path.exists(database_filename))
+
+        import sqlite3
+
+        conn = sqlite3.connect(database_filename)
+
+        rs = conn.execute("select * from sqlite_master where type='table';")
+
+        tables = ['Conta', 'Cotacao', 'Orcamento', 'OrcamentoLancamento', 'Lancamento', 'Produto', 'Fornecedor']
+
+        table_count = 0
+
+        for row in rs:
+            table = row[1]
+
+            self.assertTrue(table in tables, '"{}" is not in table list'.format(table))
+
+            table_count += 1
+
+        self.assertEqual(table_count, 7, msg='Wrong table count')
 
 
 if __name__ == '__main__':
