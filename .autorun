@@ -65,13 +65,13 @@ test() {
   #   echo xx "$module" yy
   # done
 
-  python -m unittest "${_modules[@]}"
+  python3 -m unittest "${_modules[@]}"
 
   cd "$initial_folder"
 }
 
 build() {
-  pip install "$PROJECT_FOLDER"
+  pip3 install "$PROJECT_FOLDER"
 }
 
 workoff() {
@@ -91,7 +91,7 @@ check_dependencies() {
     local deps_nok="no"
 
     which virtualenvwrapper.sh &> /dev/null || (echo "'virtualenvwrapper.sh' not found..."; deps_nok="yes")
-    which python &> /dev/null || (echo "'python' command not found..."; deps_nok="yes")
+    which python3 &> /dev/null || (echo "'python3' command not found..."; deps_nok="yes")
 
     [[ "$deps_nok" == "no" ]] && echo "[ Dependencies ok ]"
 }
