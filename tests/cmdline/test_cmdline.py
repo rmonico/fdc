@@ -25,7 +25,7 @@ class CommandLineTestCase(TestCase):
 
         file.close()
 
-        os.mkdir(self._env('FDC_FOLDER'))
+        os.makedirs(self._env('FDC_FOLDER'), exist_ok = True)
 
     def _env(self, var, value=None):
         if value:
