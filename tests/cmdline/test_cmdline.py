@@ -73,6 +73,18 @@ class CommandLineTestCase(TestCase):
         self.assertEqual(table_count, 7, msg='Wrong table count')
 
 
+    def test_db_restore(self):
+        file = open(self._env('FDC_FOLDER') + '/main.dump', 'w')
+
+        file.write('create table test(column)')
+
+        file.close()
+
+        result = self._call_fdc('db', 'restore')
+
+        database_filename = self._env('FDC_FOLDER') + '/main.db'
+
+
 if __name__ == '__main__':
     unittest.main()
 
