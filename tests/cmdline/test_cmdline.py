@@ -25,6 +25,8 @@ class CommandLineTestCase(TestCase):
 
         file.close()
 
+        os.mkdir(self._env('FDC_FOLDER'))
+
     def _env(self, var, value=None):
         if value:
             self._environment[var] = value
@@ -33,6 +35,7 @@ class CommandLineTestCase(TestCase):
 
     def tearDown(self):
         import shutil
+
         shutil.rmtree(self._env('FDC_FOLDER'))
 
         os.remove(self._env('FDCRC'))
