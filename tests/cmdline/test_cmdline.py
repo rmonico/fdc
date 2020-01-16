@@ -5,8 +5,7 @@ from unittest import TestCase
 
 class CommandLineTestCase(TestCase):
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def setUp(self):
         self._environment = os.environ.copy()
 
         self._env(
