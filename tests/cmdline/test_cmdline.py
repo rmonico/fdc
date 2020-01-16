@@ -73,3 +73,15 @@ class CommandLineTestCase(TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+# check fdc db init
+# check fdc db restore
+# check fdc db dump
+
+# check fdc conta add
+# check fdc conta list
+
+# check fdc import csv
+
+# check fdc lanc add

@@ -70,30 +70,6 @@ test() {
   cd "$initial_folder"
 }
 
-test_cmds() {
-  red_fg="\e[31m"
-  green_fg="\e[32m"
-  reset="\e[0m"
-
-  _ok="${green_fg}[OK]${reset}"
-  _error="${red_fg}[ERRO]${reset}"
-
-  check() {
-    "$@" &> /dev/null && echo -ne "$_ok    " || echo -ne "$_error  "; echo "$@"
-  }
-
-  check fdc db restore
-  check fdc db dump
-  check fdc db init
-
-  check fdc conta add
-  check fdc conta list
-
-  check fdc import csv
-
-  check fdc lanc add
-}
-
 build() {
   pip install "$PROJECT_FOLDER"
 }
