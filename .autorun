@@ -76,7 +76,6 @@ build() {
 
 workoff() {
   unset -f test
-  unset -f test_cmds
   unset -f build
   unset -f workoff
   unset -f help
