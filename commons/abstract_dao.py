@@ -74,6 +74,8 @@ class AbstractDao(object):
 
         self._connection.execute(sql, self._get_field_values(entity))
 
+        self._connection.commit()
+
     def _get_field_values(self, entity):
         t = ()
 
