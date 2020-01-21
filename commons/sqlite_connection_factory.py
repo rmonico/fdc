@@ -1,3 +1,4 @@
+import decimal
 import sqlite3
 
 from di_container.injector import Inject
@@ -18,5 +19,8 @@ class ConnectionFactory(object):
         self._logger.debug('Connecting to database at {}...', self._configs['fdc.db_full_path'])
 
         connection = sqlite3.connect(self._configs['fdc.db_full_path'])
+
+        sqlite3.register_adapter(decimal.Decimal, lambda d: str(d))
+        sqlite3.register_converter('decimal', lambda s: decimal.Decimal(s))
 
         return connection
