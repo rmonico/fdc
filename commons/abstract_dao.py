@@ -8,6 +8,7 @@ class AbstractDao(object):
 
     def __init__(self, entity_class, metadata):
         self._connection = Inject('database connection')
+        self._logger = Inject('logger')
         self._entity_class = entity_class
         self._metadata = metadata
 
@@ -72,7 +73,11 @@ class AbstractDao(object):
 
         sql = builder.build()
 
-        self._connection.execute(sql, self._get_field_values(entity))
+        values = self._get_field_values(entity)
+
+        self._logger.debug('Running "{}" with values "{}"', sql, values)
+
+        self._connection.execute(sql, values)
 
         self._connection.commit()
 
