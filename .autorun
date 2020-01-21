@@ -100,8 +100,9 @@ check_dependencies
 unset -f check_dependencies
 
 source virtualenvwrapper.sh
+
+export fdc_scripts_loaded="YES"
+
 workon "$(basename $PWD)"
 
 help
-
-export fdc_scripts_loaded="YES"
