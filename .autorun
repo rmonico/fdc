@@ -13,7 +13,6 @@ help() {
 New commands registered:
 
 test       : Run unit tests
-test_cmds  : Tests return code of commands
 build      : build project
 workoff    : Deregister all functions and deactivate virtualenvwrapper
 help       : Shows this help
