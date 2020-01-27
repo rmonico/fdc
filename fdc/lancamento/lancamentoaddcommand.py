@@ -51,7 +51,9 @@ class LancamentoAddCommand(object):
     def lancamento_add_command_ok_handler(self, lancamento):
         observacao = lancamento.observacao if lancamento.observacao else ''
 
-        print('Lançamento criado: {} {} {} {} {}'.format(lancamento.data, lancamento.origem.nome, lancamento.destino.nome, lancamento.valor, observacao))
+        print(
+            'Lançamento criado: {} {} {} {} {}'.format(lancamento.data, lancamento.origem.nome, lancamento.destino.nome,
+                                                       lancamento.valor, observacao))
 
     def lancamento_add_command_conta_not_found_handler(self, contas):
         plural_suffix = 's' if len(contas) > 0 else ''

@@ -25,7 +25,7 @@ class CommandLineTestCase(TestCase):
 
         file.close()
 
-        os.makedirs(self._env('FDC_FOLDER'), exist_ok = True)
+        os.makedirs(self._env('FDC_FOLDER'), exist_ok=True)
 
     def _env(self, var, value=None):
         if value:
@@ -72,7 +72,6 @@ class CommandLineTestCase(TestCase):
 
         self.assertEqual(table_count, 7, msg='Wrong table count')
 
-
     def test_db_restore(self):
         file = open(self._env('FDC_FOLDER') + '/main.dump', 'w')
 
@@ -87,7 +86,6 @@ class CommandLineTestCase(TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-
 
 # check fdc db init
 # check fdc db restore
