@@ -1,5 +1,10 @@
 :: TODO
 
+- Lugares que lidam com valores monetários
+  - commons/sqlite_connection_factory.py:23
+  - argparse_helpers/parsers/currency_parser.py:10
+  - fdc/import/importcsvimport.py:146
+
 - Terminar testes da linha de comando
 
 - Encontrar qual é a versão correta do banco de dados
