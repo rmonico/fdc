@@ -41,7 +41,7 @@ class LancamentoAddCommand(object):
             lancamento.data = args.data
             lancamento.origem = origem
             lancamento.destino = destino
-            lancamento.valor = Decimal(args.valor)
+            lancamento.valor = args.valor
             lancamento.observacao = args.observacao
 
             self._lancamento_dao.insert(lancamento)
