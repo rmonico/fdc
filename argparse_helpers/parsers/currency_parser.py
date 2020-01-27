@@ -1,4 +1,6 @@
-import decimal, re, argparse
+import argparse
+import decimal
+import re
 
 
 def currency_parser(s):
