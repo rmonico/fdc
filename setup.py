@@ -7,6 +7,7 @@ setup(name='fdc',
       author='Rafael Monico',
       author_email='rmonico1@gmail.com',
       license='GPL3',
+      include_package_data=True,
       packages=['argparse_helpers.parsers', 'commons', 'di_container', 'fdc', 'fdc.commons', 'fdc.conta',
                 'fdc.database', 'fdc.import', 'fdc.lancamento', 'fdc.produto', 'fdc.fornecedor', ],
       entry_points={

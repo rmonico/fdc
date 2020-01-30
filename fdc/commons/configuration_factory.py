@@ -1,5 +1,7 @@
 import os
 
+import pkg_resources
+
 import yaml
 
 from commons.configurations import Configurations
@@ -24,7 +26,9 @@ class ConfigurationFactory(object):
 
     @staticmethod
     def _load_defaults():
-        stream = open("defaults.yaml", 'r')
+        defaults_path = pkg_resources.resource_filename(__name__, '../defaults.yaml')
+
+        stream = open(defaults_path, 'r')
 
         return yaml.safe_load(stream)
 
