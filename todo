@@ -13,9 +13,10 @@
   ok Importar csv's
   ok Dump do banco
   ok Restaurar dump do banco
-  -  lanc add
+  ok lanc add
 
 - Milestone 2
+  - Débito: é necessário separar os conversores para lidar com valores monetários em um módulo à parte
   - lanc ls
 
 - Tratar erro quando nenhum comando é informado
