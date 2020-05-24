@@ -1,10 +1,10 @@
 :: TODO
 
-ok Milestone 1
-  ok Importar csv's
-  ok Dump do banco
-  ok Restaurar dump do banco
-  ok lanc add
+x Milestone 1
+  x Importar csv's
+  x Dump do banco
+  x Restaurar dump do banco
+  x lanc add
 
 - Milestone 2
   - Débitos
