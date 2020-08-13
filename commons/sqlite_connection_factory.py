@@ -8,6 +8,7 @@ class ConnectionFactory(object):
 
     def __init__(self):
         self._configs = Inject('app configuration')
+
         self._logger = Inject('logger')
 
     @staticmethod

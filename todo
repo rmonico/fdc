@@ -6,6 +6,7 @@ x Milestone 1
   x Restaurar dump do banco
   x lanc add
 
+
 - Milestone 2
   - Débitos
     - Terminar testes da linha de comando
@@ -16,6 +17,7 @@ x Milestone 1
       - fdc/import/importcsvimport.py:146
 
   - lanc ls
+
 
 - Tratar erro quando nenhum comando é informado
 

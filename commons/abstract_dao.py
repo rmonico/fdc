@@ -12,12 +12,6 @@ class AbstractDao(object):
         self._entity_class = entity_class
         self._metadata = metadata
 
-    def new_builder(self, kind):
-        if kind == 'SELECT':
-            return SelectBuilder(self._metadata)
-        else:
-            return None
-
     def get_single(self, where=None, *values):
         list = self.list(where, *values)
 
