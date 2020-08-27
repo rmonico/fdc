@@ -18,7 +18,7 @@ run() {
     cd $base_path
 
     rm -rf __pycache__
-    python -m fdc.main
+    python -m fdc.main "$@"
 
     cd "$old_pwd"
 }
