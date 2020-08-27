@@ -46,7 +46,13 @@ class Main(object):
 
         controller.event('root_parser_created', root_parser=subparsers)
 
-        return parser.parse_args()
+        args = parser.parse_args()
+
+        if not hasattr(args, "event"):
+            parser.print_help()
+            parser.exit(0, "No arguments supplied\n")
+        else:
+            return args
 
 
 def entry_point():
