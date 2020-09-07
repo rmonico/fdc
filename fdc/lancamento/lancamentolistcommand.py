@@ -1,7 +1,11 @@
+from commons.tableprinter import TablePrinter
+from di_container.injector import Inject
+
+
 class LancamentoListCommand(object):
 
     def __init__(self):
-      pass
+      self._dao = Inject('lancamento dao')
 
     def lancamento_parser_created_handler(self, lancamento_parser):
       parser = lancamento_parser.add_parser('list', aliases=['ls'], help='Lista os lançamentos existentes')
@@ -12,8 +16,11 @@ class LancamentoListCommand(object):
       # parser.add_argument('-f', '--filter', type=str, help='Filter to be applied')
 
     def lancamento_list_command_handler(self, args):
-      # Business rule
-      return 'ok'
+      lancamentos = self._dao.list()
 
-    def lancamento_list_command_ok_handler(self):
-      print('OK')
+      return 'ok', {'lancamentos': lancamentos}
+
+    def lancamento_list_command_ok_handler(self, lancamentos):
+      printer = TablePrinter(self._dao._metadata.fields, lancamentos)
+
+      printer.print()
