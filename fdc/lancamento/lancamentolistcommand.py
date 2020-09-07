@@ -9,7 +9,7 @@ class LancamentoListCommand(object):
       parser.set_defaults(event='lancamento_list_command')
 
       # TODO
-      # parser.add_argument('filter')
+      # parser.add_argument('-f', '--filter', type=str, help='Filter to be applied')
 
     def lancamento_list_command_handler(self, args):
       # Business rule
