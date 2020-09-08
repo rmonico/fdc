@@ -2,7 +2,7 @@ source zsh_autorun_start "$(realpath "$0")" || return 0
 
 _description='Project fdc: A simple CLI personal Fluxo de Caixa (cashflow)'
 
-_functions=($_functions workon run compile upload clean clean_idea)
+_functions=($_functions workon run compile test build upload clean clean_idea)
 
 
 _workon_description="Activate virtualenv for this project"
@@ -36,6 +36,51 @@ compile() {
     python3 setup.py sdist bdist_wheel
 
     cd "$old_pwd"
+}
+
+_test_description='Run the tests'
+test() {
+  local initial_folder="$(pwd)"
+
+  cd "$PROJECT_FOLDER"
+
+  _modules=($(find . -regex '.*/test_.*.py' | awk '
+{
+  line = $0;
+
+  line_without_find_directory_prefix = substr($line, 3);
+
+  # print(line_without_find_directory_prefix);
+
+  line_len = length(line_without_find_directory_prefix);
+
+  # print(line_len);
+
+  extension_len = length(".py");
+
+  line_without_extension = substr(line_without_find_directory_prefix, 1, line_len - extension_len);
+
+  # print(line_without_extension);
+
+  module_name = line_without_extension
+
+  gsub("/", ".", module_name);
+
+  print(module_name);
+}
+'))
+
+  IFS='
+'
+
+  python3 -m unittest "${_modules[@]}"
+
+  cd "$initial_folder"
+}
+
+_build_description='Build and install everything'
+build() {
+  pip3 install "$PROJECT_FOLDER"
 }
 
 _upload_description="Upload the project to pypi, compile before (needs virtualenv activated)"
