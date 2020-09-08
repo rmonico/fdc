@@ -22,3 +22,4 @@ class LancamentoBalanceTests(TestCase):
         self.assertTrue(result[0], 'ok')
         self.assertTrue(result[1].keys(), ['saldos'])
         self.assertTrue(result[1].values() is list)
+
