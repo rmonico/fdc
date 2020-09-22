@@ -109,3 +109,8 @@ clean_idea() {
 }
 
 source zsh_autorun_end "$(realpath "$0")"
+
+echo
+echo
+echo '***** Important: use command "run" instead "fdc" *****'
+echo
