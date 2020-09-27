@@ -20,6 +20,9 @@ class ConnectionFactory(object):
 
         connection = sqlite3.connect(self._configs['fdc.db_full_path'])
 
+        # TODO Implement this: http://docs.python.org/library/sqlite3.html#sqlite3.Connection.row_factory
+        # (will make queries return dictionaries instead tuples)
+
         sqlite3.register_adapter(decimal.Decimal, lambda d: str(d))
         sqlite3.register_converter('decimal', lambda s: decimal.Decimal(s))
 
