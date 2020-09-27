@@ -49,6 +49,23 @@ class LancamentoBalanceTests(TestCase):
         self.assertBalanceIs(saldos_dia, 'carteira', 95)
 
 
+    def test_should_lancamento_balance_accumulate_throught_the_days(self):
+        self._lancamento('2020-09-01', 'itau', 'carteira', 150.00)
+        self._lancamento('2020-09-01', 'carteira', 'lanche', 5.00)
+        self._lancamento('2020-09-01', 'carteira', 'casa', 50.00)
+
+        self._lancamento('2020-09-02', 'carteira', 'itau', 50.00)
+
+
+        result = self._command.lancamento_balance_command_handler(None)
+
+        saldos = self.assertResult(result, status='ok')
+
+        saldos_dia = self.assertHasData(saldos, '2020-09-02')
+        self.assertBalanceIs(saldos_dia, 'itau', -100)
+        self.assertBalanceIs(saldos_dia, 'carteira', 45)
+
+
     def assertResult(self, result, status):
         self.assertEqual(result[0], status)
         self.assertTrue('saldos' in result[1])
