@@ -46,7 +46,11 @@ test() {
 
   run_tests_command=(python3 -m unittest **/test_*.py)
 
-  $run_tests_command
+  if [ "$1" = "--watch" ]; then
+    watch $run_tests_command
+  else
+    $run_tests_command
+  fi
 
   cd "$initial_folder"
 }
