@@ -45,9 +45,7 @@ class LancamentoBalanceTests(TestCase):
         saldos = self.assertResult(result, status='ok')
 
         saldos_dia = self.assertHasData(saldos, '2020-09-01')
-
         self.assertBalanceIs(saldos_dia, 'itau', -150)
-
         self.assertBalanceIs(saldos_dia, 'carteira', 95)
 
 

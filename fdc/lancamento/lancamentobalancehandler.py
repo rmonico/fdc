@@ -8,15 +8,11 @@ class LancamentoBalanceHandler(object):
 
     def __init__(self):
         self._lancamento_dao = Inject('lancamento dao')
-        self._conta_dao = Inject('conta dao')
 
     def lancamento_balance_command_handler(self, args):
         # TODO Limit this by date
-        lancamentos_to_work_on = self._lancamento_dao.list()
+        lancamentos_to_work_on = self._lancamento_dao.list_with_contas()
     
-        for lancamento in lancamentos_to_work_on:
-            self._load_conta_data(lancamento)
-
         lancamentos_per_day = self._group_lancamentos_per_day(lancamentos_to_work_on)
 
         saldos = dict()
@@ -31,10 +27,6 @@ class LancamentoBalanceHandler(object):
             saldos[data] = saldos_do_dia
 
         return 'ok', {'saldos': saldos}
-
-    def _load_conta_data(self, lancamento):
-        lancamento.origem = self._conta_dao.get_single('rowid = ?', lancamento.origem)
-        lancamento.destino = self._conta_dao.get_single('rowid = ?', lancamento.destino)
 
     def _group_lancamentos_per_day(self, lancamentos):
         lancamentos_per_day = {}
