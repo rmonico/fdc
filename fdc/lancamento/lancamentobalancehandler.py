@@ -23,7 +23,7 @@ class LancamentoBalanceHandler(object):
                 self._update_balance(diario, lancamento.origem, -lancamento.valor)
                 self._update_balance(diario, lancamento.destino, lancamento.valor)
 
-            saldos[data] = diario
+            saldos[data] = dict(diario)
 
         return 'ok', {'saldos': saldos}
 
