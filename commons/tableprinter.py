@@ -1,8 +1,9 @@
 class TablePrinter(object):
 
-    def __init__(self, fields, result_set):
+    def __init__(self, fields, result_set, data_provider = None):
         self._fields = fields
         self._result_set = result_set
+        self._data_provider = data_provider
 
     def print(self):
         self._load_and_format_data()
@@ -26,7 +27,7 @@ class TablePrinter(object):
         cells = []
 
         for field in self._fields:
-            cells.append(getattr(row, field))
+            cells.append(getattr(row, field) if hasattr(row, field) else self._data_provider.get_value(row, field, self._result_set))
 
         return cells
 
