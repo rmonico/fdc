@@ -18,8 +18,6 @@ class LancamentoBalanceTests(TestCase):
         self._conta('carteira', 'contabilizável')
         self._conta('lanche')
         self._conta('casa')
-        self._conta('bb')
-        self._conta('santander')
 
 
     def _conta(self, nome, propriedades=''):
@@ -70,21 +68,6 @@ class LancamentoBalanceTests(TestCase):
         diario = self.assertHasData(saldos, '2020-09-02')
         self.assertBalanceIs(diario, 'itau', -100)
         self.assertBalanceIs(diario, 'carteira', 45)
-
-
-    def test_should_all_days_have_same_keys(self):
-        self._lancamento('2020-09-01', 'itau', 'carteira', 10)
-        self._lancamento('2020-09-02', 'bb', 'santander', 10)
-
-        result = self._command.lancamento_balance_command_handler(None)
-
-        saldos = self.assertResult(result, status='ok')
-
-        diario = self.assertHasData(saldos, '2020-09-01')
-        self.assertTrue('itau' in diario)
-        self.assertTrue('carteira' in diario)
-        self.assertTrue('bb' in diario)
-        self.assertTrue('santander' in diario)
 
 
     def assertResult(self, result, status):
