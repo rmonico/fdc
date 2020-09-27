@@ -11,20 +11,19 @@ class LancamentoBalanceHandler(object):
 
     def lancamento_balance_command_handler(self, args):
         # TODO Limit this by date
-        lancamentos_to_work_on = self._lancamento_dao.list_with_contas()
+        lancamentos = self._lancamento_dao.list_with_contas()
     
-        lancamentos_per_day = self._group_lancamentos_per_day(lancamentos_to_work_on)
+        lancamentos_per_day = self._group_lancamentos_per_day(lancamentos)
 
         saldos = dict()
-
-        saldos_do_dia = dict()
+        diario = dict()
 
         for data, lancamentos in lancamentos_per_day.items():
             for lancamento in lancamentos:
-                self._update_balance(saldos_do_dia, lancamento.origem, -lancamento.valor)
-                self._update_balance(saldos_do_dia, lancamento.destino, lancamento.valor)
+                self._update_balance(diario, lancamento.origem, -lancamento.valor)
+                self._update_balance(diario, lancamento.destino, lancamento.valor)
 
-            saldos[data] = saldos_do_dia
+            saldos[data] = diario
 
         return 'ok', {'saldos': saldos}
 
