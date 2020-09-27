@@ -40,7 +40,7 @@ from\
         (lancamento.destino=destino.rowid)\
 \
 order by\
-    lancamento.data desc'
+    lancamento.data asc'
 
         cursor = self._connection.execute(query)
 
