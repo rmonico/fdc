@@ -42,7 +42,7 @@ _test_description='Run the tests'
 test() {
   local initial_folder="$(pwd)"
 
-  cd "$PROJECT_FOLDER"
+  cd "$PROJECT_FOLDER"/fdc
 
   _modules=($(find . -regex '.*/test_.*.py' | awk '
 {
