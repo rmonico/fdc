@@ -111,6 +111,13 @@ clean_idea() {
 source zsh_autorun_end "$(realpath "$0")"
 
 echo
+echo "Last commits:"
+
+git -c core.pager= log --oneline --graph -n 5
+
+echo
 echo
 echo '***** Important: use command "run" instead "fdc" *****'
 echo
+echo
+
