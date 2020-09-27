@@ -17,9 +17,9 @@ class LancamentoBalanceHandler(object):
 
         saldos = dict()
 
-        for data, lancamentos in lancamentos_per_day.items():
-            saldos_do_dia = dict()
+        saldos_do_dia = dict()
 
+        for data, lancamentos in lancamentos_per_day.items():
             for lancamento in lancamentos:
                 self._update_balance(saldos_do_dia, lancamento.origem, -lancamento.valor)
                 self._update_balance(saldos_do_dia, lancamento.destino, lancamento.valor)
@@ -39,10 +39,6 @@ class LancamentoBalanceHandler(object):
         return lancamentos_per_day
 
     def _update_balance(self, saldos_do_dia, conta, valor):
-        # TODO Continuar aqui, precisa somar ou subtrair conforme origem, destino ou saldo
-        # TODO Também deve acumular por dia
-        # Talvez mover essa lógica para uma classe que faça apenas isso. Um classe que recebe uma lista de lancamentos e devolve cada um com uma tupla extra com os saldos da origem e do destino, ou ainda um dict com as contas e os respectivos saldos após o lançamento
-        # Talvez essa lógica deva ir para o lanc ls num parâmetro --balance
         if 'contabilizável' in conta.propriedades:
             saldo = saldos_do_dia.setdefault(conta.nome, Decimal(0))
 
