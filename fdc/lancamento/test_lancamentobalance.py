@@ -44,9 +44,9 @@ class LancamentoBalanceTests(TestCase):
 
         saldos = self.assertResult(result, status='ok')
 
-        saldos_dia = self.assertHasData(saldos, '2020-09-01')
-        self.assertBalanceIs(saldos_dia, 'itau', -150)
-        self.assertBalanceIs(saldos_dia, 'carteira', 95)
+        diario = self.assertHasData(saldos, '2020-09-01')
+        self.assertBalanceIs(diario, 'itau', -150)
+        self.assertBalanceIs(diario, 'carteira', 95)
 
 
     def test_should_lancamento_balance_accumulate_throught_the_days(self):
@@ -61,13 +61,13 @@ class LancamentoBalanceTests(TestCase):
 
         saldos = self.assertResult(result, status='ok')
 
-        saldos_dia = self.assertHasData(saldos, '2020-09-01')
-        self.assertBalanceIs(saldos_dia, 'itau', -150)
-        self.assertBalanceIs(saldos_dia, 'carteira', 95)
+        diario = self.assertHasData(saldos, '2020-09-01')
+        self.assertBalanceIs(diario, 'itau', -150)
+        self.assertBalanceIs(diario, 'carteira', 95)
 
-        saldos_dia = self.assertHasData(saldos, '2020-09-02')
-        self.assertBalanceIs(saldos_dia, 'itau', -100)
-        self.assertBalanceIs(saldos_dia, 'carteira', 45)
+        diario = self.assertHasData(saldos, '2020-09-02')
+        self.assertBalanceIs(diario, 'itau', -100)
+        self.assertBalanceIs(diario, 'carteira', 45)
 
 
     def assertResult(self, result, status):
