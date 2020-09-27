@@ -42,38 +42,11 @@ _test_description='Run the tests'
 test() {
   local initial_folder="$(pwd)"
 
-  cd "$PROJECT_FOLDER"/fdc
+  cd "$base_path"
 
-  _modules=($(find . -regex '.*/test_.*.py' | awk '
-{
-  line = $0;
+  run_tests_command=(python3 -m unittest **/test_*.py)
 
-  line_without_find_directory_prefix = substr($line, 3);
-
-  # print(line_without_find_directory_prefix);
-
-  line_len = length(line_without_find_directory_prefix);
-
-  # print(line_len);
-
-  extension_len = length(".py");
-
-  line_without_extension = substr(line_without_find_directory_prefix, 1, line_len - extension_len);
-
-  # print(line_without_extension);
-
-  module_name = line_without_extension
-
-  gsub("/", ".", module_name);
-
-  print(module_name);
-}
-'))
-
-  IFS='
-'
-
-  python3 -m unittest "${_modules[@]}"
+  $run_tests_command
 
   cd "$initial_folder"
 }
