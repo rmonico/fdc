@@ -1,4 +1,3 @@
-from commons.tableprinter import TablePrinter
 from di_container.injector import Inject
 from decimal import Decimal
 from collections import OrderedDict
@@ -16,16 +15,21 @@ class LancamentoBalanceHandler(object):
         lancamentos_per_day = self._group_lancamentos_per_day(lancamentos)
 
         saldos = dict()
-        diario = dict()
+        balance = dict()
 
         for data, lancamentos in lancamentos_per_day.items():
             for lancamento in lancamentos:
-                self._update_balance(diario, lancamento.origem, -lancamento.valor)
-                self._update_balance(diario, lancamento.destino, lancamento.valor)
+                self._update_balance(balance, lancamento.origem, -lancamento.valor)
 
-            saldos[data] = dict(diario)
+                self._update_balance(balance, lancamento.destino, lancamento.valor)
 
-        return 'ok', {'saldos': saldos}
+            saldos[data] = dict(balance)
+
+        contas = list(set(balance.keys()))
+
+        contas.sort()
+
+        return 'ok', {'saldos': saldos, 'contas': contas}
 
     def _group_lancamentos_per_day(self, lancamentos):
         lancamentos_per_day = {}
@@ -37,12 +41,11 @@ class LancamentoBalanceHandler(object):
 
         return lancamentos_per_day
 
-    def _update_balance(self, saldos_do_dia, conta, valor):
+    def _update_balance(self, diario, conta, valor):
         if 'contabilizável' in conta.propriedades:
-            saldo = saldos_do_dia.setdefault(conta.nome, Decimal(0))
+            saldo = diario.setdefault(conta.nome, Decimal(0))
 
             saldo += Decimal(valor) / Decimal(100)
 
-            saldos_do_dia[conta.nome] = saldo
-
+            diario[conta.nome] = saldo
 
