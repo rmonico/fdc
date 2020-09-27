@@ -21,7 +21,7 @@ class LancamentoBalanceHandler(object):
             saldos_do_dia = dict()
 
             for lancamento in lancamentos:
-                self._update_balance(saldos_do_dia, lancamento.origem, lancamento.valor)
+                self._update_balance(saldos_do_dia, lancamento.origem, -lancamento.valor)
                 self._update_balance(saldos_do_dia, lancamento.destino, lancamento.valor)
 
             saldos[data] = saldos_do_dia
