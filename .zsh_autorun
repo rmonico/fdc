@@ -53,7 +53,7 @@ test() {
 
 _build_description='Build and install everything'
 build() {
-  pip3 install "$PROJECT_FOLDER"
+  pip3 install "$base_path"
 }
 
 _upload_description="Upload the project to pypi, compile before (needs virtualenv activated)"
