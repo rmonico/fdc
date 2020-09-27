@@ -31,13 +31,12 @@ class ProdutoDaoTestCase(unittest.TestCase):
     def test_exists_with_name_only(self):
         self._conn.executescript('insert into produto (nome) values ("Café");')
 
-        self.assertEqual(True, self.dao.exists('Café'))
+        self.assertEqual(True, self.dao.by_name('Café'))
 
     def test_exists_with_produto_with_medida_and_unidade(self):
-        self._conn.executescript(
-            'insert into produto (nome, medida, unidade) values ("Café", "100", "gramas");')
+        self._conn.executescript('insert into produto (nome, medida, unidade) values ("Café", "100", "gramas");')
 
-        self.assertEqual(True, self.dao.exists('Café 100 gramas'))
+        self.assertEqual(True, self.dao.by_name('Café 100 gramas'))
 
 
 if __name__ == '__main__':

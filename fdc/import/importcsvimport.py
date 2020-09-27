@@ -112,16 +112,16 @@ class ImportCSVCommand(object):
     def _validate_fields(self, data, origem, destino, valor, observacoes, produto, quantidade, fornecedor):
         ok = self._validate(data, self._data_ok, None, 'date "{{}}" is not in format "{}"'.format(_CSV_DATE_FORMAT))
 
-        ok &= self._validate(origem, self._conta_dao.exists, lambda: self._unknown_contas.add(origem),
+        ok &= self._validate(origem, self._conta_dao.by_name, lambda: self._unknown_contas.add(origem),
                              'origem "{}" doesnt exists')
 
-        ok &= self._validate(destino, self._conta_dao.exists, lambda: self._unknown_contas.add(destino),
+        ok &= self._validate(destino, self._conta_dao.by_name, lambda: self._unknown_contas.add(destino),
                              'destino "{}" doesnt exists')
 
         ok &= self._validate(valor, self._valor_ok, None, 'valor "{}" is not in valid format')
 
         if produto:
-            ok &= self._validate(produto, self._produto_dao.exists, lambda: self._unknown_produtos.add(produto),
+            ok &= self._validate(produto, self._produto_dao.by_name, lambda: self._unknown_produtos.add(produto),
                                  'produto "{}" not found')
 
         if quantidade:
@@ -141,7 +141,7 @@ class ImportCSVCommand(object):
         lancamento.origem = self._conta_dao.by_name(origem)
         lancamento.destino = self._conta_dao.by_name(destino)
         lancamento.observacoes = observacoes
-        lancamento.produto = produto
+        lancamento.produto = self._produto_dao.by_name(produto) if produto else None
         lancamento.quantidade = quantidade
         lancamento.fornecedor = fornecedor
 

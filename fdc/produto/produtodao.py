@@ -1,16 +1,25 @@
-from di_container.injector import Inject
+from commons.abstract_dao import AbstractDao
+from commons.sqlbuilder import TableDescriptor
+
+produto_table_descriptor = TableDescriptor('produto', 'rowid', 'nome', 'medida', 'unidade')
 
 
-class ProdutoDao(object):
+class Produto(object):
 
     def __init__(self):
-        self._connection = Inject('database connection')
+        produto_table_descriptor.create_field_attributes(self)
+
+
+class ProdutoDao(AbstractDao):
+
+    def __init__(self):
+        super().__init__(Produto, produto_table_descriptor)
 
     @staticmethod
     def injectable_resource():
         return 'produto dao'
 
-    def exists(self, produto_name):
+    def by_name(self, produto_name):
         names = produto_name.split(' ')
 
         if len(names) >= 3:
@@ -18,12 +27,6 @@ class ProdutoDao(object):
             medida = names[-2]
             unidade = names[-1]
 
-            cursor = self._connection.execute(
-                'select count(*) from produto where nome=? or (nome=? and medida=? and unidade=?);',
-                (produto_name, nome, medida, unidade))
+            return self.exists('nome=? or (nome=? and medida=? and unidade=?)', produto_name, nome, medida, unidade)
         else:
-            cursor = self._connection.execute('select count(*) from produto where nome=?;', (produto_name,))
-
-        data = cursor.fetchone()
-
-        return data[0] == 1
+            return self.exists('nome = ?', produto_name)

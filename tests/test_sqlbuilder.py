@@ -1,7 +1,7 @@
 import unittest
-
-from commons.sqlbuilder import TableDescriptor, InsertBuilder, SelectBuilder
 from types import SimpleNamespace
+from commons.abstract_dao import AbstractDao
+from commons.sqlbuilder import TableDescriptor, InsertBuilder, SelectBuilder
 
 
 class SQLBuilderTestCase(unittest.TestCase):
@@ -18,9 +18,9 @@ class SQLBuilderTestCase(unittest.TestCase):
 
         entity = SimpleNamespace(field1='field 1 value', field2='value of field 2', field3='field 3')
 
-        builder = InsertBuilder(table_descriptor)
+        builder = AbstractDao(object, table_descriptor)
 
-        field1, field2, field3 = builder.get_field_values(entity)
+        field1, field2, field3 = builder._get_field_values(entity)
 
         self.assertEqual('field 1 value', field1)
         self.assertEqual('value of field 2', field2)
@@ -36,7 +36,7 @@ class SQLBuilderTestCase(unittest.TestCase):
     def test_select_builder_with_where(self):
         table_descriptor = TableDescriptor('table_name', 'field1', 'field2', 'field3')
         builder = SelectBuilder(table_descriptor)
-        builder.where('field1 = ?')
+        builder.where = 'field1 = ?'
 
         sql = builder.build()
 
@@ -51,13 +51,13 @@ class SQLBuilderTestCase(unittest.TestCase):
 
         self.assertEqual('select field1, field2 from table_name;', sql)
 
-    def test_select_builder_row_loader(self):
+    def test_abstract_dao_load_row(self):
         table_descriptor = TableDescriptor('table_name', 'field1', 'field2', 'field3')
-        builder = SelectBuilder(table_descriptor)
+        dao = AbstractDao(object, table_descriptor)
 
         row = 'field 1 value', 'value of field 2', 'field 3'
 
-        entity = builder.load_row(row)
+        entity = dao._load_row(row)
 
         self.assertEqual('field 1 value', entity.field1)
         self.assertEqual('value of field 2', entity.field2)

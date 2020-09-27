@@ -33,60 +33,40 @@ class InsertBuilder(SQLBuilder):
 
     def build(self):
         table_name = self._table_descriptor.table_name
-        values_mask = ', '.join('?' * len(self._table_descriptor.fields))
+        values_mask = ', '.join('?' * len(self._get_fields()))
 
         return 'insert into {} ({}) values ({});'.format(table_name, self._fields_str(), values_mask)
 
-    def get_field_values(self, entity):
-        t = ()
+    def _get_fields(self):
+        fields = tuple()
 
-        for field in self._get_fields():
-            value = getattr(entity, field, None)
+        for field in super()._get_fields():
+            if field == 'rowid':
+                continue
 
-            if hasattr(value, 'rowid'):
-                t += value.rowid,
-            else:
-                t += value,
+            fields += field,
 
-        return t
+        return fields
 
 
 class SelectBuilder(SQLBuilder):
 
     def __init__(self, table_descriptor):
         super().__init__(table_descriptor)
-        self._where = list()
-        self._fields = None
+        self._fields = tuple()
+        self.where = ''
 
     def build(self):
         table_name = self._table_descriptor.table_name
 
-        where = self._make_where()
+        where = ' where ' + self.where if self.where and self.where != '' else ''
 
         return 'select {} from {}{};'.format(self._fields_str(), table_name, where)
 
-    def _make_where(self):
-        if len(self._where) == 0:
-            return ''
-
-        return ' where ' + 'and '.join(self._where)
-
-    def where(self, clause):
-        self._where.append(clause)
-
     def fields(self, *fields):
-        self._fields = list(fields)
+        self._fields = fields
+
+        return self
 
     def _get_fields(self):
-        return self._fields if self._fields else self._table_descriptor.fields
-
-    # TODO Isto não está bom aqui, seria melhor deixar numa classe de dao genérico
-    def load_row(self, row):
-        entity_values = {}
-
-        for i, field_name in enumerate(self._get_fields()):
-            value = row[i]
-
-            entity_values[field_name] = value
-
-        return SimpleNamespace(**entity_values)
+        return self._fields if len(self._fields) > 0 else self._table_descriptor.fields
