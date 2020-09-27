@@ -46,7 +46,7 @@ class LancamentoBalanceHandler(object):
         if 'contabilizável' in conta.propriedades:
             saldo = saldos_do_dia.setdefault(conta.nome, Decimal(0))
 
-            saldo += valor / Decimal(100)
+            saldo += Decimal(valor) / Decimal(100)
 
             saldos_do_dia[conta.nome] = saldo
 
