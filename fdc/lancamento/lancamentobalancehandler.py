@@ -11,7 +11,7 @@ class LancamentoBalanceHandler(object):
     def lancamento_balance_command_handler(self, args):
         # TODO Limit this by date
         lancamentos = self._lancamento_dao.list_with_contas()
-    
+
         lancamentos_per_day = self._group_lancamentos_per_day(lancamentos)
 
         saldos = dict()
