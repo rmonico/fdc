@@ -18,6 +18,6 @@ class ContaListCommand(object):
         return 'ok', {'contas': contas}
 
     def conta_list_command_ok_handler(self, contas):
-        printer = TablePrinter(contas, [Column('Nome', lambda conta, d: conta.nome), _Column('Descrição', lambda conta, d: conta.descricao), _Column('Propriedades', lambda conta, d: conta.propriedades)])
+        printer = TablePrinter(contas, [Column('Nome', lambda conta, d: conta.nome), Column('Descrição', lambda conta, d: conta.descricao), Column('Propriedades', lambda conta, d: conta.propriedades)])
 
         printer.print()

@@ -24,6 +24,6 @@ class LancamentoListCommand(object):
         return 'ok', {'lancamentos': lancamentos}
 
     def lancamento_list_command_ok_handler(self, lancamentos):
-        printer = TablePrinter(lancamentos, [Column('Data', lambda lanc, d: lanc.data), _Column('Origem', lambda lanc, d: lanc.origem), _Column('Destino', lambda lanc, d: lanc.destino), _Column('Valor', lambda lanc, d: Decimal(lanc.valor) / Decimal(100), lambda v: '{:.2f}'.format(v)), _Column('Observação', lambda lanc, d: lanc.observacao)])
+        printer = TablePrinter(lancamentos, [Column('Data', lambda lanc, d: lanc.data), Column('Origem', lambda lanc, d: lanc.origem), Column('Destino', lambda lanc, d: lanc.destino), Column('Valor', lambda lanc, d: Decimal(lanc.valor) / Decimal(100), lambda v: '{:.2f}'.format(v)), Column('Observação', lambda lanc, d: lanc.observacao)])
 
         printer.print()
