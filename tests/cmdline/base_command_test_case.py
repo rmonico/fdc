@@ -42,14 +42,11 @@ class BaseCommandTestCase(TestCase):
 
         os.remove(self._env('FDCRC'))
 
-    def _call_fdc(self, *args, **kwargs):
+    def _call_fdc(self, *args):
         process = subprocess.run(['python', '-m', 'fdc.main'] + list(args), env=self._environment, stdout=subprocess.PIPE)
 
         if process.returncode != 0:
             message = '{} failed (returned {})'.format(' '.join(args), process.returncode)
-
-            if 'for_command' in kwargs:
-                message += ', cant test {}'.format(kwargs['for_command'])
 
             self.fail(message)
         else:
