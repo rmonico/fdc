@@ -89,6 +89,8 @@ class CommandLineTestCase(TestCase):
 
         result = self._call_fdc('db', 'restore')
 
+        self.assertEqual(result.returncode, 0)
+
         database_filename = self._env('FDC_FOLDER') + '/main.db'
 
         self.assertTrue(os.path.exists(database_filename))
@@ -101,7 +103,9 @@ class CommandLineTestCase(TestCase):
         with sqlite3.connect(database_filename) as connection:
             connection.executescript("create table test(column);")
 
-        self._call_fdc('db', 'dump')
+        result = self._call_fdc('db', 'dump')
+
+        self.assertEqual(result.returncode, 0)
 
         with open(self._env('FDC_FOLDER') + '/main.dump', 'r') as dump_file:
             self.assertEqual(dump_file.readline(), 'BEGIN TRANSACTION;\n')
