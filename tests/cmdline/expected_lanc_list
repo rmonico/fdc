@@ -1,0 +1,3 @@
+| rowid | data       | origem       | destino       | valor | observacao                                            | produto | quantidade | fornecedor |
+ -------------------------------------------------------------------------------------------------------------------------------------------------------
+| 1     | 2020-02-07 | conta_origem | conta_destino | 31,99 | None                                                  | None    | None       | None       |
