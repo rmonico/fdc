@@ -41,8 +41,18 @@ class CommandLineTestCase(TestCase):
 
         os.remove(self._env('FDCRC'))
 
-    def _call_fdc(self, *args):
-        return subprocess.run(['python', '-m', 'fdc.main'] + list(args), env=self._environment, stdout=subprocess.PIPE)
+    def _call_fdc(self, *args, **kwargs):
+        process = subprocess.run(['python', '-m', 'fdc.main'] + list(args), env=self._environment, stdout=subprocess.PIPE)
+
+        if process.returncode != 0:
+            message = '{} failed (returned {})'.format(' '.join(args), process.returncode)
+
+            if 'for_command' in kwargs:
+                message += ', cant test {}'.format(kwargs['for_command'])
+
+            self.fail(message)
+        else:
+            return process.stdout.decode().split('\n')
 
     @contextmanager
     def runsql(self, sql: str, database_file: str = None):
@@ -71,9 +81,7 @@ class CommandLineTestCase(TestCase):
             self.assertEqual(table_count, len(tables), msg='Wrong table count')
 
     def test_db_init(self):
-        result = self._call_fdc('db', 'init')
-
-        self.assertEqual(result.returncode, 0)
+        self._call_fdc('db', 'init')
 
         database_filename = self._env('FDC_FOLDER') + '/main.db'
 
@@ -90,9 +98,7 @@ class CommandLineTestCase(TestCase):
 
         file.close()
 
-        result = self._call_fdc('db', 'restore')
-
-        self.assertEqual(result.returncode, 0)
+        self._call_fdc('db', 'restore')
 
         database_filename = self._env('FDC_FOLDER') + '/main.db'
 
@@ -106,9 +112,7 @@ class CommandLineTestCase(TestCase):
         with sqlite3.connect(database_filename) as connection:
             connection.executescript("create table test(column);")
 
-        result = self._call_fdc('db', 'dump')
-
-        self.assertEqual(result.returncode, 0)
+        self._call_fdc('db', 'dump')
 
         with open(self._env('FDC_FOLDER') + '/main.dump', 'r') as dump_file:
             self.assertEqual(dump_file.readline(), 'BEGIN TRANSACTION;\n')
@@ -121,14 +125,9 @@ class CommandLineTestCase(TestCase):
     #     pass
 
     def test_conta_add_should_create_new_conta(self):
-        result = self._call_fdc('db', 'init').returncode
+        self._call_fdc('db', 'init', for_command='conta add')
 
-        if result != 0:
-            self.fail('db init failed (returned {}), cant test conta add'.format(result))
-
-        result = self._call_fdc('conta', 'add', 'conta_teste')
-
-        self.assertEqual(result.returncode, 0)
+        self._call_fdc('conta', 'add', 'conta_teste')
 
         with self.runsql('select rowid, nome from conta;') as result_set:
             row = result_set.fetchone()
