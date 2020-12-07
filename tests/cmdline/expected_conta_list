@@ -1,0 +1,4 @@
+| rowid | nome    | descricao | data_aquisicao | propriedades | observacao |
+ --------------------------------------------------------------------------
+| 1     | conta_1 | None      | None           |              | None       |
+| 2     | conta_2 | None      | None           |              | None       |
