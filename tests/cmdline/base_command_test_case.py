@@ -7,7 +7,7 @@ from contextlib import contextmanager
 from collections.abc import Sequence
 
 
-class BaseTestCase(TestCase):
+class BaseCommandTestCase(TestCase):
 
     def setUp(self):
         self._environment = os.environ.copy()
@@ -105,73 +105,6 @@ class BaseTestCase(TestCase):
             actual = self.clean_sequence_for_comparison(stdout)
 
             self.assertSequenceEqual(actual, expected, msg)
-
-
-class DBCommandsTestCase(BaseTestCase):
-
-    def test_db_init(self):
-        self._call_fdc('db', 'init')
-
-        database_filename = self._env('FDC_FOLDER') + '/main.db'
-
-        self.assertTrue(os.path.exists(self._env('FDCRC')))
-        self.assertTrue(os.path.exists(database_filename))
-
-        # TODO Check columns of every table
-        self.assert_database_has_tables(database_filename, 'Conta', 'Cotacao', 'Orcamento', 'OrcamentoLancamento', 'Lancamento', 'Produto', 'Fornecedor')
-
-    def test_db_restore(self):
-        file = open(self._env('FDC_FOLDER') + '/main.dump', 'w')
-
-        file.write('create table test(column)')
-
-        file.close()
-
-        self._call_fdc('db', 'restore')
-
-        database_filename = self._env('FDC_FOLDER') + '/main.db'
-
-        self.assertTrue(os.path.exists(database_filename))
-
-        self.assert_database_has_tables(database_filename, 'test')
-
-    def test_db_dump_should_dump_database_contents_on_file(self):
-        database_filename = self._env('FDC_FOLDER') + '/main.db'
-
-        with sqlite3.connect(database_filename) as connection:
-            connection.executescript("create table test(column);")
-
-        self._call_fdc('db', 'dump')
-
-        with open(self._env('FDC_FOLDER') + '/main.dump', 'r') as dump_file:
-            self.assertWithFile(dump_file, __file__, 'expected_dump_test')
-
-
-    # def test_db_dump_should_create_new_commit_with_dump_file(self):
-    #     pass
-
-
-class ContaCommandTests(BaseTestCase):
-
-    def test_conta_add_should_create_new_conta(self):
-        self._call_fdc('db', 'init', for_command='conta add')
-
-        self._call_fdc('conta', 'add', 'conta_teste')
-
-        with self.runsql('select rowid, nome from conta;') as rs:
-            self.assertResultSet(rs, (1, 'conta_teste'))
-
-    def test_conta_list_should_list_contas(self):
-        self._call_fdc('db', 'init', for_command='conta list')
-
-        self._call_fdc('conta', 'add', 'conta_1', for_command='conta list')
-
-        self._call_fdc('conta', 'add', 'conta_2', for_command='conta list')
-
-        stdout = self._call_fdc('conta', 'list')
-
-        self.assertWithFile(stdout, __file__, 'expected_conta_list')
-
 
 if __name__ == '__main__':
     unittest.main()
