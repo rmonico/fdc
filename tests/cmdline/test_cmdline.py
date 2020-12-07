@@ -115,7 +115,6 @@ class CommandLineTestCase(TestCase):
             dump_file.close()
 
     # def test_db_dump_should_create_new_commit_with_dump_file(self):
-    #     # Checar as alterações no repositório do git
     #     pass
 
 if __name__ == '__main__':
