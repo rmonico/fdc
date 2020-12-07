@@ -53,6 +53,7 @@ class CommandLineTestCase(TestCase):
 
             self.fail(message)
         else:
+            # TODO Use generators to yield values just when need
             return process.stdout.decode().splitlines()
 
     @contextmanager
