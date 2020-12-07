@@ -124,18 +124,21 @@ class CommandLineTestCase(TestCase):
     # def test_db_dump_should_create_new_commit_with_dump_file(self):
     #     pass
 
+    def assertResultSet(self, result_set, *expected_tuples):
+        line = 1
+        for expected in expected_tuples:
+            self.assertTupleEqual(result_set.fetchone(), expected, msg='Line ' + str(line))
+            line += 1
+
+        self.assertIsNone(result_set.fetchone(), msg='Line ' + str(line))
+
     def test_conta_add_should_create_new_conta(self):
         self._call_fdc('db', 'init', for_command='conta add')
 
         self._call_fdc('conta', 'add', 'conta_teste')
 
-        with self.runsql('select rowid, nome from conta;') as result_set:
-            row = result_set.fetchone()
-
-            self.assertEqual(row[0], 1)
-            self.assertEqual(row[1], 'conta_teste')
-
-            self.assertIsNone(result_set.fetchone())
+        with self.runsql('select rowid, nome from conta;') as rs:
+            self.assertResultSet(rs, (1, 'conta_teste'))
 
     def test_conta_list_should_list_contas(self):
         self._call_fdc('db', 'init', for_command='conta list')
