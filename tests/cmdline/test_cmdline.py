@@ -123,10 +123,8 @@ class CommandLineTestCase(TestCase):
     #     pass
 
     def assertResultSet(self, result_set, *expected_tuples):
-        line = 1
-        for expected in expected_tuples:
+        for line, expected in enumerate(expected_tuples, start=1):
             self.assertTupleEqual(result_set.fetchone(), expected, msg='Line ' + str(line))
-            line += 1
 
         self.assertIsNone(result_set.fetchone(), msg='Line ' + str(line))
 
