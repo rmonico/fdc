@@ -45,7 +45,10 @@ class CommandLineTestCase(TestCase):
         return subprocess.run(['fdc'] + list(args), env=self._environment, stdout=subprocess.PIPE)
 
     @contextmanager
-    def runsql(self, database_file: str, sql: str):
+    def runsql(self, sql: str, database_file: str = None):
+        if not database_file:
+            database_file = self._env('FDC_FOLDER') + '/main.db'
+
         with sqlite3.connect(database_file) as connection:
             result_set = connection.execute(sql)
 
@@ -55,7 +58,7 @@ class CommandLineTestCase(TestCase):
                 result_set.close()
 
     def assert_database_has_tables(self, database_file: str, *tables: list):
-        with self.runsql(database_file, "select * from sqlite_master where type='table';") as result_set:
+        with self.runsql("select * from sqlite_master where type='table';", database_file) as result_set:
             table_count = 0
 
             for row in result_set:
