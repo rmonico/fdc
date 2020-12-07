@@ -4,6 +4,7 @@ from unittest import TestCase
 import sqlite3
 import shutil
 from contextlib import contextmanager
+from collections.abc import Sequence
 
 
 class CommandLineTestCase(TestCase):
@@ -141,13 +142,18 @@ class CommandLineTestCase(TestCase):
 
         file_path = os.path.join(module_path, filename)
 
-        with open(file_path) as expected_file:
-            return expected_file.read().splitlines()
+        return open(file_path)
 
-    def assertWithFile(self, content: list, filename: str, msg=None):
-        expected_lines = self.load_file('expected_conta_list', __file__)
+    def clean_sequence_for_comparison(self, data):
+        return data if isinstance(data, Sequence) else [ line.rstrip('\n') for line in data ]
 
-        self.assertSequenceEqual(content, expected_lines, msg)
+    def assertWithFile(self, stdout, module__file__: str, filename: str, msg=None):
+        with self.load_file(filename, module__file__) as expected_file:
+            expected = self.clean_sequence_for_comparison(expected_file)
+
+            actual = self.clean_sequence_for_comparison(stdout)
+
+            self.assertSequenceEqual(actual, expected, msg)
 
     def test_conta_list_should_list_contas(self):
         self._call_fdc('db', 'init', for_command='conta list')
@@ -158,7 +164,7 @@ class CommandLineTestCase(TestCase):
 
         stdout = self._call_fdc('conta', 'list')
 
-        self.assertWithFile(stdout, 'expected_conta_list')
+        self.assertWithFile(stdout, __file__, 'expected_conta_list')
 
 
 if __name__ == '__main__':
