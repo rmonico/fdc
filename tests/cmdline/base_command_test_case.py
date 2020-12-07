@@ -96,7 +96,7 @@ class BaseCommandTestCase(TestCase):
         return open(file_path)
 
     def clean_sequence_for_comparison(self, data):
-        return data if isinstance(data, Sequence) else [ line.rstrip('\n') for line in data ]
+        return data if isinstance(data, Sequence) else [line.rstrip('\n') for line in data]
 
     def assertWithFile(self, stdout, module__file__: str, filename: str, msg=None):
         with self.load_file(filename, module__file__) as expected_file:
