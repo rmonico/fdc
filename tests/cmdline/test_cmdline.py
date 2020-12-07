@@ -137,6 +137,22 @@ class CommandLineTestCase(TestCase):
 
             self.assertIsNone(result_set.fetchone())
 
+    def test_conta_list_should_list_contas(self):
+        self._call_fdc('db', 'init', for_command='conta list')
+
+        self._call_fdc('conta', 'add', 'conta_1', for_command='conta list')
+
+        self._call_fdc('conta', 'add', 'conta_2', for_command='conta list')
+
+        stdout = self._call_fdc('conta', 'list')
+
+        self.assertEqual(stdout[0], '| rowid | nome    | descricao | data_aquisicao | propriedades | observacao |')
+        self.assertEqual(stdout[1], ' --------------------------------------------------------------------------')
+        self.assertEqual(stdout[2], '| 1     | conta_1 | None      | None           |              | None       |')
+        self.assertEqual(stdout[3], '| 2     | conta_2 | None      | None           |              | None       |')
+        self.assertEqual(stdout[4], '')
+
+        self.assertEqual(len(stdout), 5)
 
 
 if __name__ == '__main__':
