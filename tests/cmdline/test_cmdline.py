@@ -1,6 +1,8 @@
 import os
 import subprocess
 from unittest import TestCase
+import sqlite3
+import shutil
 
 
 class CommandLineTestCase(TestCase):
@@ -34,8 +36,6 @@ class CommandLineTestCase(TestCase):
             return self._environment[var]
 
     def tearDown(self):
-        import shutil
-
         shutil.rmtree(self._env('FDC_FOLDER'))
 
         os.remove(self._env('FDCRC'))
@@ -52,8 +52,6 @@ class CommandLineTestCase(TestCase):
 
         self.assertTrue(os.path.exists(self._env('FDCRC')))
         self.assertTrue(os.path.exists(database_filename))
-
-        import sqlite3
 
         conn = sqlite3.connect(database_filename)
 
