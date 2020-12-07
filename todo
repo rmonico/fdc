@@ -14,6 +14,7 @@ x Milestone 1
       - fdc db dump #ok
 
       - fdc conta add #ok
+      - Testar mais situação de lanc add e list
       - fdc conta list #ok
 
       - fdc import csv

@@ -56,12 +56,12 @@ class BaseCommandTestCase(TestCase):
             # TODO Use generators to yield values just when need
             return process.stdout.decode().splitlines()
 
-    @contextmanager
-    def runsql(self, sql: str, database_file: str = None):
-        if not database_file:
-            database_file = self._env('FDC_FOLDER') + '/main.db'
+    def get_db_file(self):
+        return self._env('FDC_FOLDER') + '/main.db'
 
-        with sqlite3.connect(database_file) as connection:
+    @contextmanager
+    def runsql(self, sql: str):
+        with sqlite3.connect(self.get_db_file()) as connection:
             result_set = connection.execute(sql)
 
             try:
@@ -69,18 +69,9 @@ class BaseCommandTestCase(TestCase):
             finally:
                 result_set.close()
 
-    def assert_database_has_tables(self, database_file: str, *tables: list):
-        with self.runsql("select * from sqlite_master where type='table';", database_file) as result_set:
-            table_count = 0
-
-            for row in result_set:
-                table = row[1]
-
-                self.assertTrue(table in tables, '"{}" is not in table list'.format(table))
-
-                table_count += 1
-
-            self.assertEqual(table_count, len(tables), msg='Wrong table count')
+    def runscript(self, script: str):
+        with sqlite3.connect(self.get_db_file()) as connection:
+            connection.executescript(script)
 
     def assertResultSet(self, result_set, *expected_tuples):
         for line, expected in enumerate(expected_tuples, start=1):
@@ -105,6 +96,7 @@ class BaseCommandTestCase(TestCase):
             actual = self.clean_sequence_for_comparison(stdout)
 
             self.assertSequenceEqual(actual, expected, msg)
+
 
 if __name__ == '__main__':
     unittest.main()

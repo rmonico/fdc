@@ -1,20 +1,30 @@
 from . base_command_test_case import BaseCommandTestCase
-import sqlite3
 import os
 
 
 class DBCommandsTestCase(BaseCommandTestCase):
 
+    def assert_database_has_tables(self, *tables: list):
+        with self.runsql("select * from sqlite_master where type='table';") as result_set:
+            table_count = 0
+
+            for row in result_set:
+                table = row[1]
+
+                self.assertTrue(table in tables, '"{}" is not in table list'.format(table))
+
+                table_count += 1
+
+            self.assertEqual(table_count, len(tables), msg='Wrong table count')
+
     def test_db_init(self):
         self._call_fdc('db', 'init')
 
-        database_filename = self._env('FDC_FOLDER') + '/main.db'
-
         self.assertTrue(os.path.exists(self._env('FDCRC')))
-        self.assertTrue(os.path.exists(database_filename))
+        self.assertTrue(os.path.exists(self.get_db_file()))
 
         # TODO Check columns of every table
-        self.assert_database_has_tables(database_filename, 'Conta', 'Cotacao', 'Orcamento', 'OrcamentoLancamento', 'Lancamento', 'Produto', 'Fornecedor')
+        self.assert_database_has_tables('Conta', 'Cotacao', 'Orcamento', 'OrcamentoLancamento', 'Lancamento', 'Produto', 'Fornecedor')
 
     def test_db_restore(self):
         file = open(self._env('FDC_FOLDER') + '/main.dump', 'w')
@@ -25,17 +35,12 @@ class DBCommandsTestCase(BaseCommandTestCase):
 
         self._call_fdc('db', 'restore')
 
-        database_filename = self._env('FDC_FOLDER') + '/main.db'
+        self.assertTrue(os.path.exists(self.get_db_file()))
 
-        self.assertTrue(os.path.exists(database_filename))
-
-        self.assert_database_has_tables(database_filename, 'test')
+        self.assert_database_has_tables('test')
 
     def test_db_dump_should_dump_database_contents_on_file(self):
-        database_filename = self._env('FDC_FOLDER') + '/main.db'
-
-        with sqlite3.connect(database_filename) as connection:
-            connection.executescript("create table test(column);")
+        self.runscript('create table test(column);')
 
         self._call_fdc('db', 'dump')
 
