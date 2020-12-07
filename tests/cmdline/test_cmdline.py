@@ -69,6 +69,7 @@ class CommandLineTestCase(TestCase):
         self.assertTrue(os.path.exists(self._env('FDCRC')))
         self.assertTrue(os.path.exists(database_filename))
 
+        # TODO Check columns of every table
         self.assert_database_has_tables(database_filename, 'Conta', 'Cotacao', 'Orcamento', 'OrcamentoLancamento', 'Lancamento', 'Produto', 'Fornecedor')
 
     def test_db_restore(self):
