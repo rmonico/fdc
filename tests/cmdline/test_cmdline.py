@@ -3,6 +3,7 @@ import subprocess
 from unittest import TestCase
 import sqlite3
 import shutil
+from contextlib import contextmanager
 
 
 class CommandLineTestCase(TestCase):
@@ -43,21 +44,28 @@ class CommandLineTestCase(TestCase):
     def _call_fdc(self, *args):
         return subprocess.run(['fdc'] + list(args), env=self._environment, stdout=subprocess.PIPE)
 
+    @contextmanager
+    def runsql(self, database_file: str, sql: str):
+        with sqlite3.connect(database_file) as connection:
+            result_set = connection.execute(sql)
+
+            try:
+                yield result_set
+            finally:
+                result_set.close()
+
     def assert_database_has_tables(self, database_file: str, *tables: list):
-        conn = sqlite3.connect(database_file)
+        with self.runsql(database_file, "select * from sqlite_master where type='table';") as result_set:
+            table_count = 0
 
-        result_set = conn.execute("select * from sqlite_master where type='table';")
+            for row in result_set:
+                table = row[1]
 
-        table_count = 0
+                self.assertTrue(table in tables, '"{}" is not in table list'.format(table))
 
-        for row in result_set:
-            table = row[1]
+                table_count += 1
 
-            self.assertTrue(table in tables, '"{}" is not in table list'.format(table))
-
-            table_count += 1
-
-        self.assertEqual(table_count, len(tables), msg='Wrong table count')
+            self.assertEqual(table_count, len(tables), msg='Wrong table count')
 
     def test_db_init(self):
         result = self._call_fdc('db', 'init')
