@@ -43,6 +43,22 @@ class CommandLineTestCase(TestCase):
     def _call_fdc(self, *args):
         return subprocess.run(['fdc'] + list(args), env=self._environment, stdout=subprocess.PIPE)
 
+    def assert_database_has_tables(self, database_file: str, *tables: list):
+        conn = sqlite3.connect(database_file)
+
+        result_set = conn.execute("select * from sqlite_master where type='table';")
+
+        table_count = 0
+
+        for row in result_set:
+            table = row[1]
+
+            self.assertTrue(table in tables, '"{}" is not in table list'.format(table))
+
+            table_count += 1
+
+        self.assertEqual(table_count, len(tables), msg='Wrong table count')
+
     def test_db_init(self):
         result = self._call_fdc('db', 'init')
 
@@ -53,22 +69,7 @@ class CommandLineTestCase(TestCase):
         self.assertTrue(os.path.exists(self._env('FDCRC')))
         self.assertTrue(os.path.exists(database_filename))
 
-        conn = sqlite3.connect(database_filename)
-
-        rs = conn.execute("select * from sqlite_master where type='table';")
-
-        tables = ['Conta', 'Cotacao', 'Orcamento', 'OrcamentoLancamento', 'Lancamento', 'Produto', 'Fornecedor']
-
-        table_count = 0
-
-        for row in rs:
-            table = row[1]
-
-            self.assertTrue(table in tables, '"{}" is not in table list'.format(table))
-
-            table_count += 1
-
-        self.assertEqual(table_count, 7, msg='Wrong table count')
+        self.assert_database_has_tables(database_filename, 'Conta', 'Cotacao', 'Orcamento', 'OrcamentoLancamento', 'Lancamento', 'Produto', 'Fornecedor')
 
     def test_db_restore(self):
         file = open(self._env('FDC_FOLDER') + '/main.dump', 'w')
