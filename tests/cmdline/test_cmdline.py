@@ -83,6 +83,10 @@ class CommandLineTestCase(TestCase):
 
         database_filename = self._env('FDC_FOLDER') + '/main.db'
 
+        self.assertTrue(os.path.exists(database_filename))
+
+        self.assert_database_has_tables(database_filename, 'test')
+
     # def test_db_dump_should_dump_database_contents_on_file(self):
     #     database_filename = self._env('FDC_FOLDER') + '/main.db'
 
