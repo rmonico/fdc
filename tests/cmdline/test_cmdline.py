@@ -52,7 +52,7 @@ class CommandLineTestCase(TestCase):
 
             self.fail(message)
         else:
-            return process.stdout.decode().split('\n')
+            return process.stdout.decode().splitlines()
 
     @contextmanager
     def runsql(self, sql: str, database_file: str = None):
