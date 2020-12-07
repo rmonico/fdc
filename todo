@@ -11,7 +11,7 @@ x Milestone 1
     - Terminar testes da linha de comando
       - fdc db init - OK
       - fdc db restore - OK
-      - fdc db dump
+      - fdc db dump - OK
 
       - fdc conta add
       - fdc conta list

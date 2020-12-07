@@ -95,23 +95,20 @@ class CommandLineTestCase(TestCase):
 
         self.assert_database_has_tables(database_filename, 'test')
 
-    # def test_db_dump_should_dump_database_contents_on_file(self):
-    #     database_filename = self._env('FDC_FOLDER') + '/main.db'
+    def test_db_dump_should_dump_database_contents_on_file(self):
+        database_filename = self._env('FDC_FOLDER') + '/main.db'
 
-    #     conn = sqlite3.connect(database_filename)
+        with sqlite3.connect(database_filename) as connection:
+            connection.executescript("create table test(column);")
 
-    #     rs = conn.execute("select * from sqlite_master where type='table';")
+        self._call_fdc('db', 'dump')
 
-    #     self._call_fdc('db', 'dump')
-    #     import ipdb; ipdb.set_trace()
-    #     # Checar o arquivo de dump gerado (em {HOME}/.config/fdc_tests/main.dump)
-    #     dump_file = open(self._env('FDC_FOLDER') + '/main.dump', 'r')
+        with open(self._env('FDC_FOLDER') + '/main.dump', 'r') as dump_file:
+            self.assertEqual(dump_file.readline(), 'BEGIN TRANSACTION;\n')
+            self.assertEqual(dump_file.readline(), 'CREATE TABLE test(column);\n')
+            self.assertEqual(dump_file.readline(), 'COMMIT;\n')
 
-    #     dump = dump_file.readlines()
-
-    #     self.assertEqual(dump[0], 'Dump contents')
-
-    #     dump_file.close()
+            dump_file.close()
 
     # def test_db_dump_should_create_new_commit_with_dump_file(self):
     #     # Checar as alterações no repositório do git
