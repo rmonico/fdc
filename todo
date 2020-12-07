@@ -9,6 +9,18 @@ x Milestone 1
 - Milestone 2
   - Débitos
     - Terminar testes da linha de comando
+      - fdc db init - OK
+      - fdc db restore - OK
+      - fdc db dump
+
+      - fdc conta add
+      - fdc conta list
+
+      - fdc import csv
+
+      - fdc lanc add
+      - fdc lanc list
+      - fdc lanc balance
     - Mudar o jeito que é montado as listagens, passar um sql e parsear manualmente
     - É necessário separar os conversores para lidar com valores monetários em um módulo à parte
     ; Lugares que lidam com valores monetários
