@@ -120,5 +120,25 @@ class CommandLineTestCase(TestCase):
     # def test_db_dump_should_create_new_commit_with_dump_file(self):
     #     pass
 
+    def test_conta_add_should_create_new_conta(self):
+        result = self._call_fdc('db', 'init').returncode
+
+        if result != 0:
+            self.fail('db init failed (returned {}), cant test conta add'.format(result))
+
+        result = self._call_fdc('conta', 'add', 'conta_teste')
+
+        self.assertEqual(result.returncode, 0)
+
+        with self.runsql('select rowid, nome from conta;') as result_set:
+            row = result_set.fetchone()
+
+            self.assertEqual(row[0], 1)
+            self.assertEqual(row[1], 'conta_teste')
+
+            self.assertIsNone(result_set.fetchone())
+
+
+
 if __name__ == '__main__':
     unittest.main()
