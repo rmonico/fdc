@@ -42,7 +42,7 @@ class CommandLineTestCase(TestCase):
         os.remove(self._env('FDCRC'))
 
     def _call_fdc(self, *args):
-        return subprocess.run(['fdc'] + list(args), env=self._environment, stdout=subprocess.PIPE)
+        return subprocess.run(['python', '-m', 'fdc.main'] + list(args), env=self._environment, stdout=subprocess.PIPE)
 
     @contextmanager
     def runsql(self, sql: str, database_file: str = None):
