@@ -136,6 +136,19 @@ class CommandLineTestCase(TestCase):
         with self.runsql('select rowid, nome from conta;') as rs:
             self.assertResultSet(rs, (1, 'conta_teste'))
 
+    def load_file(self, filename: str, module__file__):
+        module_path = os.path.dirname(module__file__)
+
+        file_path = os.path.join(module_path, filename)
+
+        with open(file_path) as expected_file:
+            return expected_file.read().splitlines()
+
+    def assertWithFile(self, content: list, filename: str, msg=None):
+        expected_lines = self.load_file('expected_conta_list', __file__)
+
+        self.assertSequenceEqual(content, expected_lines, msg)
+
     def test_conta_list_should_list_contas(self):
         self._call_fdc('db', 'init', for_command='conta list')
 
@@ -145,13 +158,7 @@ class CommandLineTestCase(TestCase):
 
         stdout = self._call_fdc('conta', 'list')
 
-        self.assertEqual(stdout[0], '| rowid | nome    | descricao | data_aquisicao | propriedades | observacao |')
-        self.assertEqual(stdout[1], ' --------------------------------------------------------------------------')
-        self.assertEqual(stdout[2], '| 1     | conta_1 | None      | None           |              | None       |')
-        self.assertEqual(stdout[3], '| 2     | conta_2 | None      | None           |              | None       |')
-        self.assertEqual(stdout[4], '')
-
-        self.assertEqual(len(stdout), 5)
+        self.assertWithFile(stdout, 'expected_conta_list')
 
 
 if __name__ == '__main__':
