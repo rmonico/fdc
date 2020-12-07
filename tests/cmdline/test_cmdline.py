@@ -7,7 +7,7 @@ from contextlib import contextmanager
 from collections.abc import Sequence
 
 
-class CommandLineTestCase(TestCase):
+class BaseTestCase(TestCase):
 
     def setUp(self):
         self._environment = os.environ.copy()
@@ -82,6 +82,33 @@ class CommandLineTestCase(TestCase):
 
             self.assertEqual(table_count, len(tables), msg='Wrong table count')
 
+    def assertResultSet(self, result_set, *expected_tuples):
+        for line, expected in enumerate(expected_tuples, start=1):
+            self.assertTupleEqual(result_set.fetchone(), expected, msg='Line ' + str(line))
+
+        self.assertIsNone(result_set.fetchone(), msg='Line ' + str(line))
+
+    def load_file(self, filename: str, module__file__):
+        module_path = os.path.dirname(module__file__)
+
+        file_path = os.path.join(module_path, filename)
+
+        return open(file_path)
+
+    def clean_sequence_for_comparison(self, data):
+        return data if isinstance(data, Sequence) else [ line.rstrip('\n') for line in data ]
+
+    def assertWithFile(self, stdout, module__file__: str, filename: str, msg=None):
+        with self.load_file(filename, module__file__) as expected_file:
+            expected = self.clean_sequence_for_comparison(expected_file)
+
+            actual = self.clean_sequence_for_comparison(stdout)
+
+            self.assertSequenceEqual(actual, expected, msg)
+
+
+class DBCommandsTestCase(BaseTestCase):
+
     def test_db_init(self):
         self._call_fdc('db', 'init')
 
@@ -123,11 +150,8 @@ class CommandLineTestCase(TestCase):
     # def test_db_dump_should_create_new_commit_with_dump_file(self):
     #     pass
 
-    def assertResultSet(self, result_set, *expected_tuples):
-        for line, expected in enumerate(expected_tuples, start=1):
-            self.assertTupleEqual(result_set.fetchone(), expected, msg='Line ' + str(line))
 
-        self.assertIsNone(result_set.fetchone(), msg='Line ' + str(line))
+class ContaCommandTests(BaseTestCase):
 
     def test_conta_add_should_create_new_conta(self):
         self._call_fdc('db', 'init', for_command='conta add')
@@ -136,24 +160,6 @@ class CommandLineTestCase(TestCase):
 
         with self.runsql('select rowid, nome from conta;') as rs:
             self.assertResultSet(rs, (1, 'conta_teste'))
-
-    def load_file(self, filename: str, module__file__):
-        module_path = os.path.dirname(module__file__)
-
-        file_path = os.path.join(module_path, filename)
-
-        return open(file_path)
-
-    def clean_sequence_for_comparison(self, data):
-        return data if isinstance(data, Sequence) else [ line.rstrip('\n') for line in data ]
-
-    def assertWithFile(self, stdout, module__file__: str, filename: str, msg=None):
-        with self.load_file(filename, module__file__) as expected_file:
-            expected = self.clean_sequence_for_comparison(expected_file)
-
-            actual = self.clean_sequence_for_comparison(stdout)
-
-            self.assertSequenceEqual(actual, expected, msg)
 
     def test_conta_list_should_list_contas(self):
         self._call_fdc('db', 'init', for_command='conta list')
