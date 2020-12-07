@@ -1,4 +1,4 @@
-from commons.tableprinter import TablePrinter
+from commons.tableprinter import TablePrinter, Column, format_currency
 from types import SimpleNamespace
 from decimal import Decimal
 
@@ -12,27 +12,42 @@ class LancamentoBalance(object):
 
 
     def lancamento_balance_command_ok_handler(self, saldos, contas):
-        printer = TablePrinter(['Data'] + contas + ['Total'], saldos, _SaldoDataProvider(contas))
+        columns = [Column('Data', lambda row, data: row)]
+
+        for conta in contas:
+            columns.append(_ContaColumn(conta))
+
+        columns.append(_TotalColumn(contas))
+
+        printer = TablePrinter(saldos, columns)
 
         printer.print()
 
 
-class _SaldoDataProvider(object):
+class _ContaColumn(Column):
+
+    def __init__(self, conta):
+        super().__init__(conta, self._getter, _format_currency)
+
+    def _getter(self, row, data):
+        return data[row].get(self.title, None)
+
+
+class _TotalColumn(Column):
 
     def __init__(self, contas):
+        super().__init__('Total', self._getter, _format_currency)
         self._contas = contas
 
-    def get_value(self, row, field, result_set):
-        if field == 'Data':
-            return row
-        elif field == 'Total':
-            total = Decimal(0)
+    def _getter(self, row, data):
+        total = Decimal(0)
 
-            for conta in self._contas:
-                if conta in result_set[row]:
-                    total += result_set[row].get(conta)
+        for conta in self._contas:
+            if conta in data[row]:
+                total += data[row].get(conta)
 
-            return total
-        else:
-            return result_set[row].get(field)
+        return total
 
+
+def _format_currency(value):
+    return '{:.2f}'.format(value) if value else ''
