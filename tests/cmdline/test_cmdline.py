@@ -119,8 +119,6 @@ class CommandLineTestCase(TestCase):
             self.assertEqual(dump_file.readline(), 'CREATE TABLE test(column);\n')
             self.assertEqual(dump_file.readline(), 'COMMIT;\n')
 
-            dump_file.close()
-
     # def test_db_dump_should_create_new_commit_with_dump_file(self):
     #     pass
 
