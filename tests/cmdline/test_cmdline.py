@@ -116,9 +116,8 @@ class CommandLineTestCase(TestCase):
         self._call_fdc('db', 'dump')
 
         with open(self._env('FDC_FOLDER') + '/main.dump', 'r') as dump_file:
-            self.assertEqual(dump_file.readline(), 'BEGIN TRANSACTION;\n')
-            self.assertEqual(dump_file.readline(), 'CREATE TABLE test(column);\n')
-            self.assertEqual(dump_file.readline(), 'COMMIT;\n')
+            self.assertWithFile(dump_file, __file__, 'expected_dump_test')
+
 
     # def test_db_dump_should_create_new_commit_with_dump_file(self):
     #     pass
