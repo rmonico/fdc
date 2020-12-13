@@ -1,17 +1,16 @@
 class TablePrinter(object):
 
-    def __init__(self, data, columns):
-        self._data = data
+    def __init__(self, columns):
         self._columns = columns
 
-    def print(self):
-        self._load_and_format_data()
+    def print(self, data):
+        self._load_and_format_data(data)
 
         self._calculate_column_widths()
 
         self._print()
 
-    def _load_and_format_data(self):
+    def _load_and_format_data(self, _data):
         title_row = list()
 
         for column in self._columns:
@@ -19,10 +18,10 @@ class TablePrinter(object):
 
         self._raw_data = [title_row]
 
-        for row in self._data:
+        for row in _data:
             data = []
             for column in self._columns:
-                value = column.get_value(row, self._data)
+                value = column.get_value(row, _data)
 
                 data.append(column.format(value))
 
