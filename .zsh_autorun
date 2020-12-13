@@ -1,3 +1,4 @@
+# vim: syntax=bash
 source zsh_autorun_start "$(realpath "$0")" || return 0
 
 _description='Project fdc: A simple CLI personal Fluxo de Caixa (cashflow)'
@@ -44,7 +45,7 @@ test() {
 
   cd "$base_path"
 
-  run_tests_command=(python3 -m unittest **/test_*.py)
+  run_tests_command=(python3 -m unittest **/test_*.py "$@")
 
   if [ "$1" = "--watch" ]; then
     watch $run_tests_command
