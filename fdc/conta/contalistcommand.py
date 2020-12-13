@@ -1,4 +1,4 @@
-from commons.tableprinter import TablePrinter, Column, attr_column
+from commons.tableprinter import TablePrinterFactory
 from di_container.injector import Inject
 
 
@@ -18,6 +18,12 @@ class ContaListCommand(object):
         return 'ok', {'contas': contas}
 
     def conta_list_command_ok_handler(self, contas):
-        printer = TablePrinter(contas, [Column('Nome', lambda conta, d: conta.nome), Column('Descrição', lambda conta, d: conta.descricao), Column('Propriedades', lambda conta, d: conta.propriedades)])
+        factory = TablePrinterFactory()
 
-        printer.print()
+        factory.string_column().of_attr('nome').add()
+        factory.string_column().of_attr('descricao').title('Descrição').add()
+        factory.string_column().of_attr('propriedades').add()
+
+        printer = factory.create()
+
+        printer.print(contas)

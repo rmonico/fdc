@@ -1,3 +1,91 @@
+class TablePrinterFactory(object):
+    """
+    Creates 'TablePrinter' objects.
+
+    The method 'add' create the new column and return it. Note its possible to add a custom column not created by this class.
+
+    At least 'title' and 'getter' must be specified before call 'add'.
+
+    The '<type>_column' methods create column with pre-formatted types.
+
+    The 'of_attr' method assign title and getter for a object property. Its also possible pass 'property.subproperty' to get the value of a property of a embedded object.
+
+    The 'create' method return the 'TablePrinter' object.
+    Instances of this class can be reused.
+    """
+    def __init__(self):
+        self._reset()
+
+    def date_column(self):
+        # TODO Improve
+        self._formatter = lambda value: str(value)
+        return self
+
+    def string_column(self):
+        self._formatter = lambda value: str(value)
+        return self
+
+    def currency_column(self):
+        self._formatter = _currency_formatter
+        return self
+
+    # FIXME default_value should be in another method
+    def of_attr(self, attribute, default_value=None):
+        attr_path = attribute.split('.')
+        self.title(attr_path[0].capitalize())
+
+        def _get_sub_attr(data, attr):
+            new_data = getattr(data, attr[0])
+            return new_data if len(attr) == 1 else _get_sub_attr(new_data, attr[1:])
+
+        self.getter(lambda row, data: _get_sub_attr(row, attr_path))
+
+        return self
+
+    def title(self, title: str):
+        self._title = title
+        return self
+
+    def getter(self, getter):
+        self._getter = getter
+        return self
+
+    def formatter(self, formatter):
+        self._formatter = formatter
+        return self
+
+    def add(self, _column=None):
+        if _column:
+            self._columns.append(_column)
+        else:
+            column = self._create_column()
+            self._columns.append(column)
+
+        self._reset_column()
+
+        return _column if _column else self._columns[-1]
+
+    def _create_column(self):
+        if self._formatter:
+            return Column(self._title, self._getter, self._formatter)
+        else:
+            return Column(self._title, self._getter)
+
+    def _reset_column(self):
+        self._title = None
+        self._getter = None
+        self._formatter = None
+
+    def create(self):
+        columns = self._columns
+        self._reset()
+        return TablePrinter(columns)
+
+    def _reset(self):
+        self._columns = list()
+        self._reset_column()
+
+
 class TablePrinter(object):
 
     def __init__(self, columns):
@@ -82,17 +170,5 @@ class Column(object):
     def format(self, value):
         return self._formatter(value) if value else ''
 
-
-class AttrGetter(object):
-    def __init__(self, attr_name, default=None):
-        self._attr_name = attr_name
-        self._default = default
-
-    def get(self, row, data):
-        return getattr(row, self._attr_name, self._default)
-
-def format_currency(value):
+def _currency_formatter(value):
     return '{:.2f}'.format(value) if value else ''
-
-def attr_column(attribute, formatter=lambda v: str(v)):
-    return Column(attribute.capitalize(), AttrGetter(attribute).get, formatter)

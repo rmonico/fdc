@@ -1,4 +1,4 @@
-from commons.tableprinter import TablePrinter, Column, format_currency
+from commons.tableprinter import TablePrinterFactory, Column, _currency_formatter
 from types import SimpleNamespace
 from decimal import Decimal
 
@@ -10,24 +10,25 @@ class LancamentoBalance(object):
 
         parser.set_defaults(event='lancamento_balance_command')
 
-
     def lancamento_balance_command_ok_handler(self, saldos, contas):
-        columns = [Column('Data', lambda row, data: row)]
+        factory = TablePrinterFactory()
+
+        factory.date_column().of_attr('data').add()
 
         for conta in contas:
-            columns.append(_ContaColumn(conta))
+            factory.add(_ContaColumn(conta))
 
-        columns.append(_TotalColumn(contas))
+        factory.add(_TotalColumn(contas))
 
-        printer = TablePrinter(saldos, columns)
+        printer = factory.create()
 
-        printer.print()
+        printer.print(saldos)
 
 
 class _ContaColumn(Column):
 
     def __init__(self, conta):
-        super().__init__(conta, self._getter, _format_currency)
+        super().__init__(conta, self._getter, _currency_formatter)
 
     def _getter(self, row, data):
         return data[row].get(self.title, None)
@@ -36,7 +37,7 @@ class _ContaColumn(Column):
 class _TotalColumn(Column):
 
     def __init__(self, contas):
-        super().__init__('Total', self._getter, _format_currency)
+        super().__init__('Total', self._getter, _currency_formatter)
         self._contas = contas
 
     def _getter(self, row, data):
@@ -47,7 +48,3 @@ class _TotalColumn(Column):
                 total += data[row].get(conta)
 
         return total
-
-
-def _format_currency(value):
-    return '{:.2f}'.format(value) if value else ''

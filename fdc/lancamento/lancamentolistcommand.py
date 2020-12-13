@@ -1,4 +1,4 @@
-from commons.tableprinter import TablePrinter, Column, attr_column, format_currency
+from commons.tableprinter import TablePrinterFactory
 from di_container.injector import Inject
 from decimal import Decimal
 
@@ -24,6 +24,14 @@ class LancamentoListCommand(object):
         return 'ok', {'lancamentos': lancamentos}
 
     def lancamento_list_command_ok_handler(self, lancamentos):
-        printer = TablePrinter(lancamentos, [Column('Data', lambda lanc, d: lanc.data), Column('Origem', lambda lanc, d: lanc.origem), Column('Destino', lambda lanc, d: lanc.destino), Column('Valor', lambda lanc, d: Decimal(lanc.valor) / Decimal(100), lambda v: '{:.2f}'.format(v)), Column('Observação', lambda lanc, d: lanc.observacao)])
+        factory = TablePrinterFactory()
 
-        printer.print()
+        factory.date_column().of_attr('data').add()
+        factory.string_column().of_attr('origem.nome').add()
+        factory.string_column().of_attr('destino.nome').add()
+        factory.currency_column().of_attr('valor').getter(lambda lanc, d: Decimal(lanc.valor) / Decimal(100)).add()
+        factory.string_column().of_attr('observacao').title('observação').add()
+
+        printer = factory.create()
+
+        printer.print(lancamentos)
