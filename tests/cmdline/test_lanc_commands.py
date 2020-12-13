@@ -3,10 +3,6 @@ from . highlevel_command_testcase import HighLevelCommandTestCase
 
 class LancCommandsTests(HighLevelCommandTestCase):
 
-    def setUp(self):
-        super().setUp()
-        self._call_fdc('db', 'init')
-
     # def test_lanc_add_should_create_new_conta(self):
     #     self._call_fdc('conta', 'add', 'conta_teste')
 
