@@ -1,5 +1,5 @@
 from . highlevel_command_testcase import HighLevelCommandTestCase
-from unittest import skip
+
 
 class LancCommandsTests(HighLevelCommandTestCase):
 
@@ -13,7 +13,6 @@ class LancCommandsTests(HighLevelCommandTestCase):
     #     with self.runsql('select rowid, nome from conta;') as rs:
     #         self.assertResultSet(rs, (1, 'conta_teste'))
 
-    @skip
     def test_lanc_list_should_list_lancs(self):
         self._call_fdc('conta', 'add', 'conta_origem')
         self._call_fdc('conta', 'add', 'conta_destino')
