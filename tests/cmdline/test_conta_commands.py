@@ -1,5 +1,4 @@
 from . base_command_test_case import BaseCommandTestCase
-from unittest import skip
 
 class ContaCommandsTests(BaseCommandTestCase):
 
@@ -13,7 +12,6 @@ class ContaCommandsTests(BaseCommandTestCase):
         with self.runsql('select rowid, nome from conta;') as rs:
             self.assertResultSet(rs, (1, 'conta_teste'))
 
-    @skip
     def test_conta_add_should_create_new_conta_contabilizavel(self):
         self._call_fdc('conta', 'add', 'conta_teste', '--contabilizavel')
 
