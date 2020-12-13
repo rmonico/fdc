@@ -1,7 +1,7 @@
-from . base_command_test_case import BaseCommandTestCase
+from . highlevel_command_testcase import HighLevelCommandTestCase
 from unittest import skip
 
-class LancCommandsTests(BaseCommandTestCase):
+class LancCommandsTests(HighLevelCommandTestCase):
 
     def setUp(self):
         super().setUp()

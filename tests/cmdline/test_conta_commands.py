@@ -1,10 +1,6 @@
-from . base_command_test_case import BaseCommandTestCase
+from . highlevel_command_testcase import HighLevelCommandTestCase
 
-class ContaCommandsTests(BaseCommandTestCase):
-
-    def setUp(self):
-        super().setUp()
-        self._call_fdc('db', 'init')
+class ContaCommandsTests(HighLevelCommandTestCase):
 
     def test_conta_add_should_create_new_conta(self):
         self._call_fdc('conta', 'add', 'conta_teste')
