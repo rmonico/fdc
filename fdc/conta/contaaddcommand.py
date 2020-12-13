@@ -22,7 +22,8 @@ class ContaAddCommand(object):
         conta = Conta()
 
         conta.nome = args.nome
-        conta.contabilizavel = args.contabilizavel
+        if args.contabilizavel:
+            conta.propriedades += 'contabilizável'
 
         if hasattr(args, "fechamento"):
             conta.fechamento = args.fechamento
@@ -32,7 +33,11 @@ class ContaAddCommand(object):
         return 'ok', conta
 
     def conta_add_command_ok_handler(self, conta):
-        message = 'Conta \'{}\' ({}contabilizável) criada'.format(conta.nome,
-                                                                  'não ' if not conta.contabilizavel else '')
+        message = 'Conta "{}"'.format(conta.nome)
+
+        if conta.propriedades != '':
+            message += ' com as propriedades "{}"'.format(conta.propriedades)
+
+        message += " criada."
 
         print(message)
