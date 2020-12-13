@@ -19,7 +19,7 @@ class LancamentoListCommand(object):
 
 
     def lancamento_list_command_handler(self, args):
-        lancamentos = self._dao.list()
+        lancamentos = self._dao.list_with_contas()
 
         return 'ok', {'lancamentos': lancamentos}
 

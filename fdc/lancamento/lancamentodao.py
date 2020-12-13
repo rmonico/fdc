@@ -1,7 +1,6 @@
 from commons.abstract_dao import AbstractDao
 from commons.sqlbuilder import TableDescriptor
-
-from types import SimpleNamespace
+from commons.rowwrapper import RowWrapper
 
 
 lancamento_table_descriptor = TableDescriptor('lancamento', 'rowid', 'data', 'origem', 'destino', 'valor', 'observacao',
@@ -14,6 +13,22 @@ class Lancamento(object):
         lancamento_table_descriptor.create_field_attributes(self)
 
 
+class Conta(RowWrapper):
+    pass
+
+Conta._create_field('nome')
+Conta._create_field('propriedades')
+
+class LancamentoWithContas(RowWrapper):
+    pass
+
+LancamentoWithContas._create_field('data')
+LancamentoWithContas._create_field('origem', Conta)
+LancamentoWithContas._create_field('destino', Conta)
+LancamentoWithContas._create_field('valor')
+LancamentoWithContas._create_field('observacao')
+
+
 class LancamentoDao(AbstractDao):
 
     def __init__(self):
@@ -22,13 +37,15 @@ class LancamentoDao(AbstractDao):
 
     def list_with_contas(self):
         # TODO Support where
+        # TODO Move the construction of this select to RowWrapper
         query = 'select\
     lancamento.data as data,\
     origem.nome as origem_nome,\
     origem.propriedades as origem_propriedades,\
     destino.nome as destino_nome,\
     destino.propriedades as destino_propriedades,\
-    lancamento.valor as valor\
+    lancamento.valor as valor,\
+    lancamento.observacao as observacao\
  \
 from\
     lancamento as lancamento\
@@ -44,19 +61,7 @@ order by\
 
         cursor = self._connection.execute(query)
 
-        result = list()
-
-        for line in cursor:
-            row = dict()
-
-            row['data'] = line[0]
-            row['origem'] = SimpleNamespace(nome=line[1], propriedades=line[2])
-            row['destino'] = SimpleNamespace(nome=line[3], propriedades=line[4])
-            row['valor'] = line[5]
-
-            result.append(SimpleNamespace(**row))
-
-        return result
+        return RowWrapper.load(cursor, LancamentoWithContas)
 
 
     @staticmethod
