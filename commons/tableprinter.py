@@ -1,3 +1,5 @@
+import sys
+
 class TablePrinterFactory(object):
     """
     Creates 'TablePrinter' objects.
@@ -91,12 +93,12 @@ class TablePrinter(object):
     def __init__(self, columns):
         self._columns = columns
 
-    def print(self, data):
+    def print(self, data, output=sys.stdout):
         self._load_and_format_data(data)
 
         self._calculate_column_widths()
 
-        self._print()
+        self._print(output)
 
     def _load_and_format_data(self, _data):
         title_row = list()
@@ -125,9 +127,9 @@ class TablePrinter(object):
                 if len(cell) > self._column_widths[column]:
                     self._column_widths[column] = len(cell)
 
-    def _print(self):
+    def _print(self, output):
         if len(self._raw_data) == 1:
-            print('No data')
+            print('No data', file=output)
             return
 
         column_mask = []
@@ -149,11 +151,11 @@ class TablePrinter(object):
 
             formatted_line = "| {} |".format(" | ".join(line))
 
-            print(formatted_line)
+            print(formatted_line, file=output)
 
             if not header_printed:
                 # TODO Improve
-                print(" -{}-".format("-" * (len(formatted_line) - 4)))
+                print(" -{}-".format("-" * (len(formatted_line) - 4)), file=output)
                 header_printed = True
 
 
