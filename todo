@@ -19,6 +19,10 @@ x Milestone 1
       - fdc import csv
 
       - fdc lanc add
+        - Apenas origem, destino e valor
+        - Com data
+        - Com observação
+        - Para contas inexistentes
       - fdc lanc list #ok
       - fdc lanc balance
       ; Já tem alguma coisa, mas não sei o que está testando na verdade
