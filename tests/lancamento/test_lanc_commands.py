@@ -1,4 +1,4 @@
-from . highlevel_command_testcase import HighLevelCommandTestCase
+from tests.highlevel_command_testcase import HighLevelCommandTestCase
 
 
 class LancCommandsTests(HighLevelCommandTestCase):

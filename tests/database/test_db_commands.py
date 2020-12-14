@@ -1,4 +1,4 @@
-from . base_command_test_case import BaseCommandTestCase
+from tests.base_command_test_case import BaseCommandTestCase
 import os
 
 
