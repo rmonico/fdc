@@ -3,7 +3,6 @@ from unittest.mock import MagicMock
 
 from fdc.lancamento.lancamentobalancehandler import LancamentoBalanceHandler
 from types import SimpleNamespace
-from argparse_helpers.parsers.date_parser import date_parser
 from decimal import Decimal
 
 

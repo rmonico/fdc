@@ -1,7 +1,7 @@
 from datetime import date
 
-from argparse_helpers.parsers.currency_parser import currency_parser
-from argparse_helpers.parsers.date_parser import date_parser
+from converters import currency
+from converters import date as date_converter
 from di_container.injector import Inject
 from .lancamentodao import Lancamento
 
@@ -18,8 +18,8 @@ class LancamentoAddCommand(object):
 
         parser.add_argument('origem')
         parser.add_argument('destino')
-        parser.add_argument('valor', type=currency_parser)
-        parser.add_argument('--data', '-d', type=date_parser, default=date.today())
+        parser.add_argument('valor', type=currency.parse)
+        parser.add_argument('--data', '-d', type=date_converter.parse, default=date.today())
         parser.add_argument('--observacao', '-o', required=False)
 
     def lancamento_add_command_handler(self, args):
