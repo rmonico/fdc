@@ -13,6 +13,11 @@ class LancCommandsTests(HighLevelCommandTestCase):
 
         self.assertWithRegexFile(stdout, __file__, 'expected_lanc_list')
 
+    def test_lanc_list_should_return_nothing_on_empty_list(self):
+        stdout = self._call_fdc('lanc', 'list')
+
+        self.assertWithRegexFile(stdout, __file__, 'expected_lanc_list_with_database_empty')
+
 
 if __name__ == '__main__':
     unittest.main()
