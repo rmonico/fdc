@@ -4,14 +4,14 @@ from commons.logger import Logger
 from commons.sqlite_connection_factory import ConnectionFactory
 from di_container.injector import di_container
 from fdc.produto.produtodao import ProdutoDao
-from tests.commons.test_configuration import TestConfiguration
+from tests.configurations import TestConfigurations
 
 
 class ProdutoDaoTestCase(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        di_container.load_resources_from_class(TestConfiguration, Logger, ConnectionFactory, ProdutoDao)
+        di_container.load_resources_from_class(TestConfigurations, Logger, ConnectionFactory, ProdutoDao)
 
         conn = di_container.get_resource('database connection')
 

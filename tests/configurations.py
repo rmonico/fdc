@@ -1,7 +1,7 @@
 from commons.configurations import Configurations
 
 
-class TestConfiguration(Configurations):
+class TestConfigurations(Configurations):
 
     def __init__(self):
         super().__init__(self._get_configs())
