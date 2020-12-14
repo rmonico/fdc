@@ -19,7 +19,7 @@ x Milestone 1
       - fdc import csv
 
       - fdc lanc add
-        - Apenas origem, destino e valor
+        - Apenas origem, destino e valor #ok
         - Com data
         - Com observação
         - Para contas inexistentes
