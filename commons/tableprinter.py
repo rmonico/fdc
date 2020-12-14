@@ -1,4 +1,5 @@
 import sys
+from converters.currency import currency
 
 class TablePrinterFactory(object):
     """
@@ -28,7 +29,7 @@ class TablePrinterFactory(object):
         return self
 
     def currency_column(self):
-        self._formatter = _currency_formatter
+        self._formatter = currency.format
         return self
 
     # FIXME default_value should be in another method
@@ -173,6 +174,3 @@ class Column(object):
 
     def format(self, value):
         return self._formatter(value) if value != None else ''
-
-def _currency_formatter(value):
-    return '{:.2f}'.format(value) if value != None else ''

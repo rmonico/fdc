@@ -8,3 +8,6 @@ def parse(s):
         raise argparse.ArgumentTypeError('Invalid currency value: "{}" (should be in format 0.00)'.format(s))
 
     return Decimal(s)
+
+def format(value):
+    return '{:.2f}'.format(value) if value != None else ''

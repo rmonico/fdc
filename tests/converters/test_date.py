@@ -4,6 +4,7 @@ from datetime import date
 
 
 class DateParserTestCase(TestCase):
+
     def test_single_value_should_parse_to_date(self):
         parsed = date_converter.parse('2020-11-01')
 
