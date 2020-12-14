@@ -12,17 +12,17 @@ class RowWrapper(object):
         self._referenced_fields = dict()
 
     @classmethod
-    def _create_field(cls, field_name, field_class = None):
-        logger.debug('creating field "{}" on class "{}" with index {} of class "{}"'.format(field_name, str(cls), cls._field_count, field_class))
+    def _create_field(cls, name, builder = None):
+        logger.debug('creating field "{}" on class "{}" with index {} of class "{}"'.format(name, str(cls), cls._field_count, builder))
         field_index = int(cls._field_count)
-        p = property(lambda self: self._field_getter(field_index, field_class))
-        setattr(cls, field_name, p)
+        p = property(lambda self: self._field_getter(field_index, builder))
+        setattr(cls, name, p)
         cls._field_count += field_class._field_count if field_class else 1
 
-    def _field_getter(self, field, field_class):
-        if field_class:
+    def _field_getter(self, field, builder):
+        if builder:
             if not field in self._referenced_fields:
-                self._referenced_fields[field] = field_class(self._row, field)
+                self._referenced_fields[field] = builder(self._row, field)
 
             return self._referenced_fields[self._offset + field]
 
