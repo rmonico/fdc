@@ -3,7 +3,7 @@ from unittest import TestCase
 from commons.configurations import Configurations
 
 
-class TestConfiguration(TestCase):
+class ConfigurationsTestCase(TestCase):
 
     def test_single_get(self):
         c = Configurations({'key': 'value'})
