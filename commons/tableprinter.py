@@ -1,5 +1,7 @@
 import sys
-from converters.currency import currency
+from converters import currency
+from converters import date
+
 
 class TablePrinterFactory(object):
     """
@@ -21,7 +23,7 @@ class TablePrinterFactory(object):
 
     def date_column(self):
         # TODO Improve
-        self._formatter = lambda value: str(value)
+        self._formatter = date.format
         return self
 
     def string_column(self):

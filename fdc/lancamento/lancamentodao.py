@@ -1,7 +1,7 @@
 from commons.abstract_dao import AbstractDao
 from commons.sqlbuilder import TableDescriptor
 from commons.rowwrapper import RowWrapper
-
+from converters import date
 
 lancamento_table_descriptor = TableDescriptor('lancamento', 'rowid', 'data', 'origem', 'destino', 'valor', 'observacao',
                                               'produto', 'quantidade', 'fornecedor')
@@ -22,7 +22,7 @@ Conta._create_field('propriedades')
 class LancamentoWithContas(RowWrapper):
     pass
 
-LancamentoWithContas._create_field('data')
+LancamentoWithContas._create_field('data', lambda row, offset: date.parse(row[offset]), 1)
 LancamentoWithContas._create_field('origem', Conta)
 LancamentoWithContas._create_field('destino', Conta)
 LancamentoWithContas._create_field('valor')

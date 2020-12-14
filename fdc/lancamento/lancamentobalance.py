@@ -1,6 +1,7 @@
-from commons.tableprinter import TablePrinterFactory, Column, _currency_formatter
+from commons.tableprinter import TablePrinterFactory, Column
 from types import SimpleNamespace
 from decimal import Decimal
+from converters import currency
 
 
 class LancamentoBalance(object):
@@ -28,7 +29,7 @@ class LancamentoBalance(object):
 class _ContaColumn(Column):
 
     def __init__(self, conta):
-        super().__init__(conta, self._getter, _currency_formatter)
+        super().__init__(conta, self._getter, currency.formatter)
 
     def _getter(self, row, data):
         return data[row].get(self.title, None)
@@ -37,7 +38,7 @@ class _ContaColumn(Column):
 class _TotalColumn(Column):
 
     def __init__(self, contas):
-        super().__init__('Total', self._getter, _currency_formatter)
+        super().__init__('Total', self._getter, currency.formatter)
         self._contas = contas
 
     def _getter(self, row, data):
