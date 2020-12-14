@@ -94,52 +94,54 @@ class TablePrinter(object):
         self._columns = columns
 
     def print(self, data, output=sys.stdout):
-        self._load_and_format_data(data)
+        raw_data = self._load_and_format_data(data)
 
-        self._calculate_column_widths()
+        column_widths = self._calculate_column_widths(raw_data)
 
-        self._print(output)
+        self._print(raw_data, column_widths, output)
 
-    def _load_and_format_data(self, _data):
-        title_row = list()
+    def _load_and_format_data(self, data):
+        raw_data = [self._make_title_row()]
 
-        for column in self._columns:
-            title_row.append(column.title)
-
-        self._raw_data = [title_row]
-
-        for row_data in _data:
-            row = []
+        for row in data:
+            raw_row = []
             for column in self._columns:
-                value = column.get_value(row_data, _data)
+                raw_value = column.get_value(row, data)
 
-                row.append(column.format(value))
+                raw_row.append(column.format(raw_value))
 
-            self._raw_data += [row]
+            raw_data.append(raw_row)
 
-    def _calculate_column_widths(self):
-        self._column_widths = [-1] * len(self._raw_data[0])
+        return raw_data
 
-        for row in self._raw_data:
+    def _make_title_row(self):
+        return list([ column.title for column in self._columns ])
+
+    def _calculate_column_widths(self, raw_data):
+        column_widths = [-1] * len(raw_data[0])
+
+        for row in raw_data:
 
             for column, cell in enumerate(row):
                 # import ipdb; ipdb.set_trace()
-                if len(cell) > self._column_widths[column]:
-                    self._column_widths[column] = len(cell)
+                if len(cell) > column_widths[column]:
+                    column_widths[column] = len(cell)
 
-    def _print(self, output):
-        if len(self._raw_data) == 1:
+        return column_widths
+
+    def _print(self, raw_data, column_widths, output):
+        if len(raw_data) == 1:
             print('No data', file=output)
             return
 
         column_mask = []
 
-        for column in range(0, len(self._raw_data[0])):
-            column_mask += ["{{:{}}}".format(self._column_widths[column])]
+        for column in range(0, len(raw_data[0])):
+            column_mask += ["{{:{}}}".format(column_widths[column])]
 
         header_printed = False
 
-        for row in self._raw_data:
+        for row in raw_data:
             column = 0
 
             line = []
