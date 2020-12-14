@@ -51,3 +51,25 @@ class RowWrapperTests(TestCase):
         self.assertEqual(instance.reference.rowid, 2)
         self.assertEqual(instance.reference.nome, 'Reference name')
         self.assertEqual(instance.reference.observacoes, 'Reference observações')
+
+    def test_should_build_reference_with_callable(self):
+        class AnotherClass(object):
+            def __init__(self, id, value):
+                self.id = id
+                self.value = value
+
+        def another_class_builder(row, field):
+            return (2, AnotherClass(row[0], row[1]))
+
+        class ClassWithReference(RowWrapper):
+            pass
+
+        ClassWithReference._create_field('nome')
+        ClassWithReference._create_field('reference', another_class_builder)
+
+        instance = ClassWithReference((1, 'Instance name', 2, 'Reference value'))
+
+        self.assertEqual(instance.rowid, 1)
+        self.assertEqual(instance.nome, 'Instance name')
+        self.assertEqual(instance.reference.rowid, 2)
+        self.assertEqual(instance.reference.nome, 'Reference value')
