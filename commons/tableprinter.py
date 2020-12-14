@@ -108,14 +108,14 @@ class TablePrinter(object):
 
         self._raw_data = [title_row]
 
-        for row in _data:
-            data = []
+        for row_data in _data:
+            row = []
             for column in self._columns:
-                value = column.get_value(row, _data)
+                value = column.get_value(row_data, _data)
 
-                data.append(column.format(value))
+                row.append(column.format(value))
 
-            self._raw_data += [data]
+            self._raw_data += [row]
 
     def _calculate_column_widths(self):
         self._column_widths = [-1] * len(self._raw_data[0])
