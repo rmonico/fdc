@@ -21,3 +21,7 @@ class CurrencyParserTestCase(TestCase):
 
         self.assertEqual(parsed, Decimal('-17.99'))
 
+    def test_simple_value_should_format_it(self):
+        formatted = currency.format(Decimal(17.99))
+
+        self.assertEqual(formatted, '17.99')
