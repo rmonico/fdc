@@ -12,12 +12,12 @@ class RowWrapper(object):
         self._referenced_fields = dict()
 
     @classmethod
-    def _create_field(cls, name, builder = None):
-        logger.debug('creating field "{}" on class "{}" with index {} of class "{}"'.format(name, str(cls), cls._field_count, builder))
+    def _create_field(cls, name, builder = None, consumed_items = None):
+        logger.debug('creating field "{}" on class "{}" with index {} of class "{}", consuming {} items'.format(name, str(cls), cls._field_count, builder, consumed_items))
         field_index = int(cls._field_count)
         p = property(lambda self: self._field_getter(field_index, builder))
         setattr(cls, name, p)
-        cls._field_count += field_class._field_count if field_class else 1
+        cls._field_count += consumed_items if consumed_items else getattr(builder, '_field_count', 1)
 
     def _field_getter(self, field, builder):
         if builder:
