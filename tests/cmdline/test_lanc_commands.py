@@ -19,7 +19,7 @@ class LancCommandsTests(HighLevelCommandTestCase):
 
         # Problema: a data é variável
         # Ideia: substituir com variáveis de ambiente no generator
-        self.assertWithFile(stdout, __file__, 'expected_lanc_list')
+        self.assertWithRegexFile(stdout, __file__, 'expected_lanc_list')
 
 
 if __name__ == '__main__':

@@ -20,7 +20,7 @@ class ContaCommandsTests(HighLevelCommandTestCase):
 
         stdout = self._call_fdc('conta', 'list')
 
-        self.assertWithFile(stdout, __file__, 'expected_conta_list')
+        self.assertWithLiteralFile(stdout, __file__, 'expected_conta_list')
 
 
 if __name__ == '__main__':

@@ -86,13 +86,22 @@ class BaseCommandTestCase(TestCase):
     def clean_sequence_for_comparison(self, data):
         return data if isinstance(data, Sequence) else [line.rstrip('\n') for line in data]
 
-    def assertWithFile(self, stdout, module__file__: str, filename: str, msg=None):
+    def assertWithLiteralFile(self, stdout, module__file__: str, filename: str, msg=None):
+        self._assertWithFile(stdout, module__file__, filename, self.assertEqual, msg)
+
+    def assertWithRegexFile(self, stdout, module__file__: str, filename: str, msg=None):
+        # regex_comparator = lambda actual, expected, msg: self.assertSequenceEqual(actual, [ self.assertRegex(actual)
+
+        self._assertWithFile(stdout, module__file__, filename, self.assertRegex, msg)
+
+    def _assertWithFile(self, stdout, module__file__: str, filename: str, comparator, msg=None):
         with self.load_file(filename, module__file__) as expected_file:
             expected = self.clean_sequence_for_comparison(expected_file)
 
             actual = self.clean_sequence_for_comparison(stdout)
 
-            self.assertSequenceEqual(actual, expected, msg)
+            for actual, expected in zip(actual, expected):
+                comparator(actual, expected, msg)
 
 
 if __name__ == '__main__':
