@@ -170,7 +170,7 @@ class Column(object):
         return self._getter(row, data)
 
     def format(self, value):
-        return self._formatter(value) if value else ''
+        return self._formatter(value) if value != None else ''
 
 def _currency_formatter(value):
-    return '{:.2f}'.format(value) if value else ''
+    return '{:.2f}'.format(value) if value != None else ''
