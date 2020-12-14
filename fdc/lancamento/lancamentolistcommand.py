@@ -29,7 +29,7 @@ class LancamentoListCommand(object):
         factory.date_column().of_attr('data').add()
         factory.string_column().of_attr('origem.nome').add()
         factory.string_column().of_attr('destino.nome').add()
-        factory.currency_column().of_attr('valor').getter(lambda lanc, d: Decimal(lanc.valor) / Decimal(100)).add()
+        factory.currency_column().of_attr('valor').add()
         factory.string_column().of_attr('observacao').title('Observação').add()
 
         printer = factory.create()
