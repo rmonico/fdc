@@ -14,14 +14,14 @@ x Milestone 1
       - fdc db dump #ok
 
       - fdc conta add #ok
-      - Testar mais situação de lanc add e list
       - fdc conta list #ok
 
       - fdc import csv
 
       - fdc lanc add
-      - fdc lanc list
+      - fdc lanc list #ok
       - fdc lanc balance
+      ; Já tem alguma coisa, mas não sei o que está testando na verdade
     - Mudar o jeito que é montado as listagens, passar um sql e parsear manualmente
     - É necessário separar os conversores para lidar com valores monetários em um módulo à parte
     ; Lugares que lidam com valores monetários
