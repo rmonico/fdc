@@ -16,3 +16,8 @@ class CurrencyParserTestCase(TestCase):
         with self.assertRaises(ArgumentTypeError):
           currency.parse('invalid value')
 
+    def test_negative_value_should_parse_to_decimal(self):
+        parsed = currency.parse('-17.99')
+
+        self.assertEqual(parsed, Decimal('-17.99'))
+
