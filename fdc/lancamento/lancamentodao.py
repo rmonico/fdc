@@ -39,9 +39,12 @@ class LancamentoDao(AbstractDao):
         # TODO Support where
         # TODO Move the construction of this select to RowWrapper
         query = 'select\
+    lancamento.rowid as id,\
     lancamento.data as data,\
+    origem.rowid as origem_id,\
     origem.nome as origem_nome,\
     origem.propriedades as origem_propriedades,\
+    destino.rowid as destino_id,\
     destino.nome as destino_nome,\
     destino.propriedades as destino_propriedades,\
     lancamento.valor as valor,\
