@@ -58,18 +58,21 @@ class RowWrapperTests(TestCase):
                 self.id = id
                 self.value = value
 
-        def another_class_builder(row, field):
-            return (2, AnotherClass(row[0], row[1]))
+        def another_class_builder(row, offset):
+            return AnotherClass(row[offset], row[offset + 1])
 
         class ClassWithReference(RowWrapper):
             pass
 
         ClassWithReference._create_field('nome')
-        ClassWithReference._create_field('reference', another_class_builder)
+        ClassWithReference._create_field('reference', another_class_builder, 2)
+        ClassWithReference._create_field('ref', another_class_builder, 2)
 
-        instance = ClassWithReference((1, 'Instance name', 2, 'Reference value'))
+        instance = ClassWithReference((1, 'Instance name', 2, 'Reference value', 4, 'Another reference value'))
 
         self.assertEqual(instance.rowid, 1)
         self.assertEqual(instance.nome, 'Instance name')
-        self.assertEqual(instance.reference.rowid, 2)
-        self.assertEqual(instance.reference.nome, 'Reference value')
+        self.assertEqual(instance.reference.id, 2)
+        self.assertEqual(instance.reference.value, 'Reference value')
+        self.assertEqual(instance.ref.id, 4)
+        self.assertEqual(instance.ref.value, 'Another reference value')
