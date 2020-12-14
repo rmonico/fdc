@@ -1,5 +1,5 @@
 from unittest import TestCase
-from . tableprinter import Column, TablePrinter
+from commons.tableprinter import Column, TablePrinter
 import io
 
 

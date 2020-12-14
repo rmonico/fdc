@@ -1,5 +1,5 @@
 from unittest import TestCase
-from . rowwrapper import RowWrapper
+from commons.rowwrapper import RowWrapper
 
 
 class RowWrapperTests(TestCase):
