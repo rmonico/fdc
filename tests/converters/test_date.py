@@ -1,6 +1,7 @@
 from unittest import TestCase
 from converters import date as date_converter
 from datetime import date
+from argparse import ArgumentTypeError
 
 
 class DateParserTestCase(TestCase):
@@ -12,3 +13,7 @@ class DateParserTestCase(TestCase):
         self.assertEqual(parsed.year, 2020)
         self.assertEqual(parsed.month, 11)
         self.assertEqual(parsed.day, 1)
+
+    def test_invalid_value_should_raise_exception(self):
+        with self.assertRaises(ArgumentTypeError):
+            date_converter.parse('invalid value')
