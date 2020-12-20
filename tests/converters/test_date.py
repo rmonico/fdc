@@ -1,7 +1,8 @@
-from unittest import TestCase
-from converters import date as date_converter
-from datetime import datetime, date
 from argparse import ArgumentTypeError
+from datetime import datetime, date
+from unittest import TestCase
+
+from converters import date as date_converter
 
 
 class DateParserTestCase(TestCase):

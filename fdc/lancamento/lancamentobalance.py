@@ -1,6 +1,6 @@
-from commons.tableprinter import TablePrinterFactory, Column
-from types import SimpleNamespace
 from decimal import Decimal
+
+from commons.tableprinter import TablePrinterFactory, Column
 from converters import currency
 
 

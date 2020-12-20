@@ -1,9 +1,9 @@
+from decimal import Decimal
+from types import SimpleNamespace
 from unittest import TestCase
 from unittest.mock import MagicMock
 
 from fdc.lancamento.lancamentobalancehandler import LancamentoBalanceHandler
-from types import SimpleNamespace
-from decimal import Decimal
 
 
 class LancamentoBalanceTests(TestCase):
@@ -18,26 +18,22 @@ class LancamentoBalanceTests(TestCase):
         self._conta('lanche')
         self._conta('casa')
 
-
     def _conta(self, nome, propriedades=''):
         conta = SimpleNamespace(nome=nome, propriedades=propriedades)
 
         self._contas.append(conta)
-
 
     def setUp(self):
         self._lancamentos = list()
 
         self._command = LancamentoBalanceHandler()
 
-        self._command._lancamento_dao.list_with_contas = MagicMock(return_value = self._lancamentos)
-
+        self._command._lancamento_dao.list_with_contas = MagicMock(return_value=self._lancamentos)
 
     def test_should_lancamento_balance_return_balances(self):
         self._lancamento('2020-09-01', 'itau', 'carteira', 150.00)
         self._lancamento('2020-09-01', 'carteira', 'lanche', 5.00)
         self._lancamento('2020-09-01', 'carteira', 'casa', 50.00)
-
 
         result = self._command.lancamento_balance_command_handler(None)
 
@@ -47,14 +43,12 @@ class LancamentoBalanceTests(TestCase):
         self.assertBalanceIs(diario, 'itau', -150)
         self.assertBalanceIs(diario, 'carteira', 95)
 
-
     def test_should_lancamento_balance_accumulate_throught_the_days(self):
         self._lancamento('2020-09-01', 'itau', 'carteira', 150.00)
         self._lancamento('2020-09-01', 'carteira', 'lanche', 5.00)
         self._lancamento('2020-09-01', 'carteira', 'casa', 50.00)
 
         self._lancamento('2020-09-02', 'carteira', 'itau', 50.00)
-
 
         result = self._command.lancamento_balance_command_handler(None)
 
@@ -68,7 +62,6 @@ class LancamentoBalanceTests(TestCase):
         self.assertBalanceIs(diario, 'itau', -100)
         self.assertBalanceIs(diario, 'carteira', 45)
 
-
     def assertResult(self, result, status):
         self.assertEqual(result[0], status)
         self.assertTrue('saldos' in result[1])
@@ -77,16 +70,13 @@ class LancamentoBalanceTests(TestCase):
 
         return saldos
 
-
     def assertHasData(self, saldos, data):
         self.assertTrue(data in saldos.keys())
         return saldos[data]
 
-
     def assertBalanceIs(self, saldos, nome_conta, saldo):
         self.assertTrue(nome_conta in saldos)
         self.assertEqual(saldos[nome_conta], Decimal(saldo))
-
 
     def _lancamento(self, data, nome_origem, nome_destino, valor):
         origem = self._conta_by_nome(nome_origem)
@@ -97,11 +87,9 @@ class LancamentoBalanceTests(TestCase):
 
         self._lancamentos.append(lancamento)
 
-
     def _conta_by_nome(self, conta_nome):
         for conta in self._contas:
             if conta.nome == conta_nome:
                 return conta
 
         raise Exception('Conta não encontrada: {}'.format(conta_nome))
-

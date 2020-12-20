@@ -1,5 +1,6 @@
 from tests.highlevel_command_testcase import HighLevelCommandTestCase
 
+
 class ContaCommandsTests(HighLevelCommandTestCase):
 
     def test_conta_add_should_create_new_conta(self):

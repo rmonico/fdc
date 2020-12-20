@@ -1,5 +1,6 @@
-from tests.base_command_test_case import BaseCommandTestCase
 import os
+
+from tests.base_command_test_case import BaseCommandTestCase
 
 
 class DBCommandsTestCase(BaseCommandTestCase):
@@ -24,7 +25,8 @@ class DBCommandsTestCase(BaseCommandTestCase):
         self.assertTrue(os.path.exists(self.get_db_file()))
 
         # TODO Check columns of every table
-        self.assert_database_has_tables('Conta', 'Cotacao', 'Orcamento', 'OrcamentoLancamento', 'Lancamento', 'Produto', 'Fornecedor')
+        self.assert_database_has_tables('Conta', 'Cotacao', 'Orcamento', 'OrcamentoLancamento', 'Lancamento', 'Produto',
+                                        'Fornecedor')
 
     def test_db_restore(self):
         file = open(self._env('FDC_FOLDER') + '/main.dump', 'w')

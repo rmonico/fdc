@@ -1,7 +1,8 @@
-from unittest import TestCase
-from converters import currency
-from decimal import Decimal
 from argparse import ArgumentTypeError
+from decimal import Decimal
+from unittest import TestCase
+
+from converters import currency
 
 
 class CurrencyParserTestCase(TestCase):
@@ -14,7 +15,7 @@ class CurrencyParserTestCase(TestCase):
 
     def test_invalid_value_should_raise_exception(self):
         with self.assertRaises(ArgumentTypeError):
-          currency.parse('invalid value')
+            currency.parse('invalid value')
 
     def test_negative_value_should_parse_to_decimal(self):
         parsed = currency.parse('-17.99')

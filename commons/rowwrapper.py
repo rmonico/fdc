@@ -1,7 +1,7 @@
 import logging
 
-
 logger = logging.getLogger(__name__)
+
 
 class RowWrapper(object):
     _field_count = 0
@@ -12,8 +12,12 @@ class RowWrapper(object):
         self._referenced_fields = dict()
 
     @classmethod
-    def create_field(cls, name, builder = None, consumed_items = None):
-        logger.debug('creating field "{}" on class "{}" with index {} of class "{}", consuming {} items'.format(name, str(cls), cls._field_count, builder, consumed_items))
+    def create_field(cls, name, builder=None, consumed_items=None):
+        logger.debug(
+            'creating field "{}" on class "{}" with index {} of class "{}", consuming {} items'.format(name, str(cls),
+                                                                                                       cls._field_count,
+                                                                                                       builder,
+                                                                                                       consumed_items))
         field_index = int(cls._field_count)
         p = property(lambda self: self._field_getter(field_index, builder))
         setattr(cls, name, p)
@@ -21,7 +25,7 @@ class RowWrapper(object):
 
     def _field_getter(self, field, builder):
         if builder:
-            if not field in self._referenced_fields:
+            if field not in self._referenced_fields:
                 self._referenced_fields[field] = builder(self._row, field)
 
             return self._referenced_fields[self._offset + field]
@@ -31,6 +35,7 @@ class RowWrapper(object):
 
     @classmethod
     def load(cls, cursor):
-        return [ cls(row, 0) for row in cursor ]
+        return [cls(row, 0) for row in cursor]
+
 
 RowWrapper.create_field('rowid')

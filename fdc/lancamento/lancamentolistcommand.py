@@ -1,6 +1,5 @@
 from commons.tableprinter import TablePrinterFactory
 from di_container.injector import Inject
-from decimal import Decimal
 
 
 class LancamentoListCommand(object):
@@ -16,7 +15,6 @@ class LancamentoListCommand(object):
         # TODO
         # parser.add_argument('-f', '--filter', type=str, help='Filter to be applied')
         # parser.add_argument('-b', '--balance', action='store_true', help='Calculate the balances for each line')
-
 
     def lancamento_list_command_handler(self, args):
         lancamentos = self._dao.list_with_contas()

@@ -1,7 +1,6 @@
 import os
 
 import pkg_resources
-
 import yaml
 
 from commons.configurations import Configurations

@@ -1,6 +1,6 @@
-from di_container.injector import Inject
 from decimal import Decimal
-from collections import OrderedDict
+
+from di_container.injector import Inject
 
 
 class LancamentoBalanceHandler(object):
@@ -48,4 +48,3 @@ class LancamentoBalanceHandler(object):
             saldo += Decimal(valor) / Decimal(100)
 
             diario[conta.nome] = saldo
-

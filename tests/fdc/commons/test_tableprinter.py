@@ -1,6 +1,7 @@
-from unittest import TestCase
-from commons.tableprinter import Column, TablePrinter
 import io
+from unittest import TestCase
+
+from commons.tableprinter import Column, TablePrinter
 
 
 class TablePrinterTests(TestCase):
@@ -35,7 +36,7 @@ class TablePrinterTests(TestCase):
 
         printer = TablePrinter(columns)
 
-        data = [ (value, ) for value in range(1, 5) ]
+        data = [(value,) for value in range(1, 5)]
 
         output_file = io.StringIO()
 

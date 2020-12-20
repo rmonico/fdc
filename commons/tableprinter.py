@@ -1,4 +1,5 @@
 import sys
+
 from converters import currency
 from converters import date
 
@@ -7,18 +8,25 @@ class TablePrinterFactory(object):
     """
     Creates 'TablePrinter' objects.
 
-    The method 'add' create the new column and return it. Note its possible to add a custom column not created by this class.
+    The method 'add' create the new column and return it. Note its possible to add a custom column not created by this
+    class.
 
     At least 'title' and 'getter' must be specified before call 'add'.
 
     The '<type>_column' methods create column with pre-formatted types.
 
-    The 'of_attr' method assign title and getter for a object property. Its also possible pass 'property.subproperty' to get the value of a property of a embedded object.
+    The 'of_attr' method assign title and getter for a object property. Its also possible pass 'property.subproperty'
+    to get the value of a property of a embedded object.
 
     The 'create' method return the 'TablePrinter' object.
     Instances of this class can be reused.
     """
+
     def __init__(self):
+        self._formatter = None
+        self._title = None
+        self._getter = None
+
         self._reset()
 
     def date_column(self):
@@ -117,7 +125,7 @@ class TablePrinter(object):
         return raw_data
 
     def _make_title_row(self):
-        return list([ column.title for column in self._columns ])
+        return list([column.title for column in self._columns])
 
     def _calculate_column_widths(self, raw_data):
         column_widths = [-1] * len(raw_data[0])
@@ -174,4 +182,4 @@ class Column(object):
         return self._getter(row, data)
 
     def format(self, value):
-        return self._formatter(value) if value != None else ''
+        return self._formatter(value) if value is not None else ''

@@ -1,9 +1,9 @@
-from datetime import datetime
 import re
 from argparse import ArgumentTypeError
-
+from datetime import datetime
 
 _format = '%Y-%m-%d'
+
 
 def parse(s):
     if not re.match('^[0-9]{4}-[0-9]{2}-[0-9]{2}$', s):

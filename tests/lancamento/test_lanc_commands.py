@@ -1,5 +1,6 @@
-from tests.highlevel_command_testcase import HighLevelCommandTestCase
 from datetime import date
+
+from tests.highlevel_command_testcase import HighLevelCommandTestCase
 
 
 class LancCommandsTests(HighLevelCommandTestCase):

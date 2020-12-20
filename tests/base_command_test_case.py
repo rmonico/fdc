@@ -1,10 +1,10 @@
 import os
-import subprocess
-from unittest import TestCase
-import sqlite3
 import shutil
-from contextlib import contextmanager
+import sqlite3
+import subprocess
 from collections.abc import Sequence
+from contextlib import contextmanager
+from unittest import TestCase
 
 
 class BaseCommandTestCase(TestCase):
@@ -43,7 +43,8 @@ class BaseCommandTestCase(TestCase):
         os.remove(self._env('FDCRC'))
 
     def _call_fdc(self, *args):
-        process = subprocess.run(['python', '-m', 'fdc.main'] + list(args), env=self._environment, stdout=subprocess.PIPE)
+        process = subprocess.run(['python', '-m', 'fdc.main'] + list(args), env=self._environment,
+                                 stdout=subprocess.PIPE)
 
         if process.returncode != 0:
             message = '{} failed (returned {})'.format(' '.join(args), process.returncode)
