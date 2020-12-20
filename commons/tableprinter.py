@@ -22,7 +22,6 @@ class TablePrinterFactory(object):
         self._reset()
 
     def date_column(self):
-        # TODO Improve
         self._formatter = date.format
         return self
 

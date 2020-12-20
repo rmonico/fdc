@@ -13,4 +13,5 @@ def parse(s):
 
 
 def format(value):
+    # TODO Improve
     return value.strftime(_format)
