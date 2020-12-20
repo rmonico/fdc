@@ -73,6 +73,7 @@ class AbstractDao(object):
 
         sql = builder.build()
 
+        # TODO Essa recuperação de valores é responsabilidade do InsertBuilder
         values = self._get_field_values(entity)
 
         self._logger.debug('Running "{}" with values "{}"', sql, values)

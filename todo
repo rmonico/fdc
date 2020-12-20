@@ -1,41 +1,30 @@
 :: TODO
-
-x Milestone 1
-  x Importar csv's
-  x Dump do banco
-  x Restaurar dump do banco
-  x lanc add
-
-- Milestone 2
-  - Débitos
-    - Terminar testes da linha de comando
-      - fdc db init #ok
-      - fdc db restore #ok
-      - fdc db dump #ok
+x Milestone 1 x Importar csv's x Dump do banco x Restaurar dump do banco x lanc add - Milestone 2 - Débitos - Terminar testes da linha de comando - fdc db init #ok - fdc db restore #ok - fdc db dump #ok
 
       - fdc conta add #ok
       - fdc conta list #ok
 
       - fdc import csv
 
+      - fdc lanc list #ok
       - fdc lanc add
         - Apenas origem, destino e valor #ok
         - Com data
         - Com observação
         - Para contas inexistentes
-      - fdc lanc list #ok
-      - fdc lanc balance
-      ; Já tem alguma coisa, mas não sei o que está testando na verdade
+      - fdc lanc balance #ok
     - Mudar o jeito que é montado as listagens, passar um sql e parsear manualmente
-    - É necessário separar os conversores para lidar com valores monetários em um módulo à parte
+    ; Continuar esta refatoração no sqlbuilder.
+    ; O SelectBuilder não deve receber um table_descriptor, deve receber a classe da entidade que irá carregar (será possível saber quais propriedades ela tem com __dict__). Fazer usando pattern Builder, abolir o TableDescriptor também.
+    - É necessário separar os conversores para lidar com valores monetários em um módulo à parte #ok
     ; Lugares que lidam com valores monetários
       - commons/sqlite_connection_factory.py:23
       - argparse_helpers/parsers/currency_parser.py:10
       - fdc/import/importcsvimport.py:146
 
-  - lanc ls
+  - lanc ls #ok
 
-- Tratar erro quando nenhum comando é informado
+- Tratar erro quando nenhum comando é informado #ok
 
 - Tratar erro quando pasta de configurações não existe
 
@@ -55,3 +44,4 @@ x Milestone 1
   - Refatorar TablePrinter para ReportBuilder
   - Fazer algum esquema para a estrutura do banco de dados ficar juntos aos comandos que a manipula
   - conta: adicionar os campos data_aquisição e observações à listagem e ao comando add
+  - Fazer autocompletes para bash e zsh

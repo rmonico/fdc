@@ -34,10 +34,9 @@ class LancamentoDao(AbstractDao):
     def __init__(self):
         super().__init__(Lancamento, lancamento_table_descriptor)
 
-
     def list_with_contas(self):
         # TODO Support where
-        # TODO Move the construction of this select to RowWrapper
+        # TODO Move the construction of this select to SelectBuilder
         query = 'select\
     lancamento.rowid as id,\
     lancamento.data as data,\
