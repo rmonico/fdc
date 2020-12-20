@@ -1,6 +1,6 @@
 from commons.abstract_dao import AbstractDao
-from commons.sqlbuilder import TableDescriptor
 from commons.rowwrapper import RowWrapper
+from commons.sqlbuilder import TableDescriptor
 from converters import date
 
 lancamento_table_descriptor = TableDescriptor('lancamento', 'rowid', 'data', 'origem', 'destino', 'valor', 'observacao',
@@ -66,8 +66,7 @@ order by\
 
         cursor = self._connection.execute(query)
 
-        return RowWrapper.load(cursor, LancamentoWithContas)
-
+        return LancamentoWithContas.load(cursor)
 
     @staticmethod
     def injectable_resource():

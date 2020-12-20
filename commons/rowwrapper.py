@@ -29,8 +29,8 @@ class RowWrapper(object):
         logger.debug('getting field index {} with offset {}'.format(field, self._offset))
         return self._row[self._offset + field]
 
-    @staticmethod
-    def load(cursor, row_class):
-        return [ row_class(row, 0) for row in cursor ]
+    @classmethod
+    def load(cls, cursor):
+        return [ cls(row, 0) for row in cursor ]
 
 RowWrapper.create_field('rowid')
