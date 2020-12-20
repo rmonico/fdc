@@ -16,17 +16,20 @@ class Lancamento(object):
 class Conta(RowWrapper):
     pass
 
-Conta._create_field('nome')
-Conta._create_field('propriedades')
+
+Conta.create_field('nome')
+Conta.create_field('propriedades')
+
 
 class LancamentoWithContas(RowWrapper):
     pass
 
-LancamentoWithContas._create_field('data', lambda row, offset: date.parse(row[offset]), 1)
-LancamentoWithContas._create_field('origem', Conta)
-LancamentoWithContas._create_field('destino', Conta)
-LancamentoWithContas._create_field('valor')
-LancamentoWithContas._create_field('observacao')
+
+LancamentoWithContas.create_field('data', lambda row, offset: date.parse(row[offset]), 1)
+LancamentoWithContas.create_field('origem', Conta)
+LancamentoWithContas.create_field('destino', Conta)
+LancamentoWithContas.create_field('valor')
+LancamentoWithContas.create_field('observacao')
 
 
 class LancamentoDao(AbstractDao):

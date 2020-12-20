@@ -8,7 +8,7 @@ class RowWrapperTests(TestCase):
         class SingleClass(RowWrapper):
             pass
 
-        SingleClass._create_field('nome')
+        SingleClass.create_field('nome')
 
         self.assertTrue(hasattr(SingleClass, 'rowid'))
         self.assertTrue(hasattr(SingleClass, 'nome'))
@@ -17,7 +17,7 @@ class RowWrapperTests(TestCase):
         class SingleClass(RowWrapper):
             pass
 
-        SingleClass._create_field('nome')
+        SingleClass.create_field('nome')
 
         instance = SingleClass((1, 'Instance name'))
 
@@ -28,14 +28,14 @@ class RowWrapperTests(TestCase):
         class ReferedClass(RowWrapper):
             pass
 
-        ReferedClass._create_field('nome')
-        ReferedClass._create_field('observacoes')
+        ReferedClass.create_field('nome')
+        ReferedClass.create_field('observacoes')
 
         class ClassWithReference(RowWrapper):
             pass
 
-        ClassWithReference._create_field('nome')
-        ClassWithReference._create_field('reference', ReferedClass)
+        ClassWithReference.create_field('nome')
+        ClassWithReference.create_field('reference', ReferedClass)
 
         self.assertTrue(hasattr(ClassWithReference, 'rowid'))
         self.assertTrue(hasattr(ClassWithReference, 'nome'))
@@ -64,9 +64,9 @@ class RowWrapperTests(TestCase):
         class ClassWithReference(RowWrapper):
             pass
 
-        ClassWithReference._create_field('nome')
-        ClassWithReference._create_field('reference', another_class_builder, 2)
-        ClassWithReference._create_field('ref', another_class_builder, 2)
+        ClassWithReference.create_field('nome')
+        ClassWithReference.create_field('reference', another_class_builder, 2)
+        ClassWithReference.create_field('ref', another_class_builder, 2)
 
         instance = ClassWithReference((1, 'Instance name', 2, 'Reference value', 4, 'Another reference value'))
 

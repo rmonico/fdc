@@ -12,7 +12,7 @@ class RowWrapper(object):
         self._referenced_fields = dict()
 
     @classmethod
-    def _create_field(cls, name, builder = None, consumed_items = None):
+    def create_field(cls, name, builder = None, consumed_items = None):
         logger.debug('creating field "{}" on class "{}" with index {} of class "{}", consuming {} items'.format(name, str(cls), cls._field_count, builder, consumed_items))
         field_index = int(cls._field_count)
         p = property(lambda self: self._field_getter(field_index, builder))
@@ -33,4 +33,4 @@ class RowWrapper(object):
     def load(cursor, row_class):
         return [ row_class(row, 0) for row in cursor ]
 
-RowWrapper._create_field('rowid')
+RowWrapper.create_field('rowid')
