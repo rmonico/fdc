@@ -4,60 +4,38 @@ from commons.rowwrapper import RowWrapper
 from commons.sqlbuilder import SelectBuilder
 
 
-class SQLBuilderTestCase(unittest.TestCase):
+class SelectBuilderTestCase(unittest.TestCase):
+    class Table(RowWrapper):
+        pass
+
+    Table.create_field('field1')
+    Table.create_field('field2')
+    Table.create_field('field3')
 
     def test_select_builder_should_generate_single_table_select(self):
-        class TableName(RowWrapper):
-            pass
-
-        TableName.create_field('field1')
-        TableName.create_field('field2')
-        TableName.create_field('field3')
-
-        builder = SelectBuilder(TableName)
+        builder = SelectBuilder(self.Table)
         sql = builder.build()
 
-        self.assertEqual('select field1, field2, field3 from tablename;', sql)
+        self.assertEqual('select field1, field2, field3 from table;', sql)
 
     def test_select_builder_with_where(self):
-        class TableName(RowWrapper):
-            pass
-
-        TableName.create_field('field1')
-        TableName.create_field('field2')
-        TableName.create_field('field3')
-
-        builder = SelectBuilder(TableName)
+        builder = SelectBuilder(self.Table)
 
         sql = builder.build(where='field1 = ?')
 
-        self.assertEqual('select field1, field2, field3 from tablename where field1 = ?;', sql)
+        self.assertEqual('select field1, field2, field3 from table where field1 = ?;', sql)
 
     def test_select_builder_with_fields(self):
-        class TableName(RowWrapper):
-            pass
-
-        TableName.create_field('field1')
-        TableName.create_field('field2')
-        TableName.create_field('field3')
-
-        builder = SelectBuilder(TableName)
+        builder = SelectBuilder(self.Table)
 
         sql = builder.build(fields=['field1', 'field2'])
 
-        self.assertEqual('select field1, field2 from tablename;', sql)
+        self.assertEqual('select field1, field2 from table;', sql)
 
     def test_row_wrapper_load_row(self):
-        class TableName(RowWrapper):
-            pass
-
-        TableName.create_field('field1')
-        TableName.create_field('field2')
-        TableName.create_field('field3')
-
         row = (99, 'field 1 value', 'value of field 2', 'field 3')
 
-        results = TableName.load([row])
+        results = self.Table.load([row])
 
         entity = results[0]
 
