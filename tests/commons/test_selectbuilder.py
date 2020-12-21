@@ -44,6 +44,29 @@ class SelectBuilderTestCase(unittest.TestCase):
         self.assertEqual('value of field 2', entity.field2)
         self.assertEqual('field 3', entity.field3)
 
+    class Entity(RowWrapper):
+        pass
+
+    Entity.create_field('name')
+    Entity.create_field('referred', Table)
+
+    def test_select_builder_should_generate_multiple_table_select(self):
+        builder = SelectBuilder(self.Entity)
+        sql = builder.build()
+
+        self.assertEqual('select entity.name, table.field1, table.field2, table.field3 from entity;', sql)
+        self.assertEqual('')
+
+    # TODO Teste do load com mais de uma tabela
+    # TODO count(*)
+    # TODO get_single
+    # TODO order by
+    # TODO Create table
+
+    # TODO Depois fazer o mesmo esquema de entidade para o insert
+    # TODO Para o update vai dar mais trabalho pois será necessário estender property
+
+
 
 if __name__ == '__main__':
     unittest.main()
