@@ -1,3 +1,6 @@
+import inspect
+
+
 class TableDescriptor(object):
 
     def __init__(self, table_name, *fields):
@@ -54,12 +57,22 @@ class SelectBuilder(object):
         # TODO Create a method to return this
         table_name = self._entity_class.__name__.lower()
 
-        _fields = fields if fields else self._get_fields()
+        _fields = fields if fields else self._get_fields(table_name)
 
         _where = ' where {}'.format(where) if where else ''
 
         return 'select {} from {}{};'.format(', '.join(_fields), table_name, _where)
 
-    def _get_fields(self):
-        d = self._entity_class.__dict__
+    def _get_fields(self, table_name):
+        mro = inspect.getmro(self._entity_class)
+        fields = list()
+
+        for cls in reversed(mro):
+            fields.extend(SelectBuilder._get_class_fields(cls))
+
+        return [table_name + '.' + field for field in fields]
+
+    @staticmethod
+    def _get_class_fields(cls):
+        d = cls.__dict__
         return [p for p in d if type(d[p]) == property]

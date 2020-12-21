@@ -16,14 +16,14 @@ class SelectBuilderTestCase(unittest.TestCase):
         builder = SelectBuilder(self.Table)
         sql = builder.build()
 
-        self.assertEqual('select field1, field2, field3 from table;', sql)
+        self.assertEqual('select table.rowid, table.field1, table.field2, table.field3 from table;', sql)
 
     def test_select_builder_with_where(self):
         builder = SelectBuilder(self.Table)
 
         sql = builder.build(where='field1 = ?')
 
-        self.assertEqual('select field1, field2, field3 from table where field1 = ?;', sql)
+        self.assertEqual('select table.rowid, table.field1, table.field2, table.field3 from table where field1 = ?;', sql)
 
     def test_select_builder_with_fields(self):
         builder = SelectBuilder(self.Table)
