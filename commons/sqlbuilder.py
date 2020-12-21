@@ -44,24 +44,22 @@ class InsertBuilder(SQLBuilder):
         return fields
 
 
-class SelectBuilder(SQLBuilder):
+class SelectBuilder(object):
 
-    def __init__(self, table_descriptor):
-        super().__init__(table_descriptor)
-        self._fields = tuple()
-        self.where = ''
+    def __init__(self, entity_class):
+        super().__init__()
+        self._entity_class = entity_class
 
-    def build(self):
-        table_name = self._table_descriptor.table_name
+    def build(self, where: str = None, fields: list = None):
+        # TODO Create a method to return this
+        table_name = self._entity_class.__name__.lower()
 
-        where = ' where ' + self.where if self.where and self.where != '' else ''
+        _fields = fields if fields else self._get_fields()
 
-        return 'select {} from {}{};'.format(self._fields_str(), table_name, where)
+        _where = ' where {}'.format(where) if where else ''
 
-    def fields(self, *fields):
-        self._fields = fields
-
-        return self
+        return 'select {} from {}{};'.format(', '.join(_fields), table_name, _where)
 
     def _get_fields(self):
-        return self._fields if len(self._fields) > 0 else self._table_descriptor.fields
+        d = self._entity_class.__dict__
+        return [p for p in d if type(d[p]) == property]
