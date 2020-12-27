@@ -54,8 +54,7 @@ class SelectBuilderTestCase(unittest.TestCase):
         builder = SelectBuilder(self.Entity)
         sql = builder.build()
 
-        self.assertEqual('select entity.name, table.field1, table.field2, table.field3 from entity;', sql)
-        self.assertEqual('')
+        self.assertEqual('select entity.rowid, entity.name, table.rowid, table.field1, table.field2, table.field3 from entity left join table on (entity.rowid = table.rowid);', sql)
 
     # TODO Teste do load com mais de uma tabela
     # TODO count(*)
