@@ -26,24 +26,24 @@ class RowWrapperTests(TestCase):
         self.assertEqual(instance.nome, 'Instance name')
 
     def test_class_with_reference(self):
-        class ReferedClass(RowWrapper):
+        class ReferredClass(RowWrapper):
             pass
 
-        ReferedClass.create_field('nome')
-        ReferedClass.create_field('observacoes')
+        ReferredClass.create_field('nome')
+        ReferredClass.create_field('observacoes')
 
         class ClassWithReference(RowWrapper):
             pass
 
         ClassWithReference.create_field('nome')
-        ClassWithReference.create_field('reference', ReferedClass)
+        ClassWithReference.create_field('reference', ReferredClass)
 
         self.assertTrue(hasattr(ClassWithReference, 'rowid'))
         self.assertTrue(hasattr(ClassWithReference, 'nome'))
         self.assertTrue(hasattr(ClassWithReference, 'reference'))
-        self.assertTrue(hasattr(ReferedClass, 'rowid'))
-        self.assertTrue(hasattr(ReferedClass, 'nome'))
-        self.assertTrue(hasattr(ReferedClass, 'observacoes'))
+        self.assertTrue(hasattr(ReferredClass, 'rowid'))
+        self.assertTrue(hasattr(ReferredClass, 'nome'))
+        self.assertTrue(hasattr(ReferredClass, 'observacoes'))
 
         instance = ClassWithReference((1, 'Instance name', 2, 'Reference name', 'Reference observações'))
 

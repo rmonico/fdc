@@ -66,6 +66,5 @@ class SelectBuilderTestCase(unittest.TestCase):
     # TODO Para o update vai dar mais trabalho pois será necessário estender property
 
 
-
 if __name__ == '__main__':
     unittest.main()
