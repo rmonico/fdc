@@ -24,6 +24,21 @@ x Milestone 1 x Importar csv's x Dump do banco x Restaurar dump do banco x lanc 
 
   - lanc ls #ok
 
+- Testes sendo skipped
+  - tests/conta/test_conta_commands.py
+  - tests/fdc/produto/test_produtodao.py
+  - tests/lancamento/test_lanc_commands.py
+  - tests/lancamento/test_lancamentobalance.py
+
+- Adequar testes para rodar com o discover do unittest
+;  Precisa criar os arquivos __init__.py, assim o python enxerga a pasta como pacote
+; find -type d -not -name __pycache__ -exec touch {}/__init__.py \;
+
+- Testes que não estão passando quando rodado pelo unittest
+  - tests/di_container/test_controller.py
+  - tests/di_container/test_injector.py
+  - tests/di_container/test_methodvisitor.py
+
 - Tratar erro quando nenhum comando é informado #ok
 
 - Tratar erro quando pasta de configurações não existe
