@@ -2,6 +2,7 @@ import unittest
 from tests.highlevel_command_testcase import HighLevelCommandTestCase
 
 
+@unittest.skip
 class ContaCommandsTests(HighLevelCommandTestCase):
 
     def test_conta_add_should_create_new_conta(self):
