@@ -1,3 +1,4 @@
+import unittest
 from tests.highlevel_command_testcase import HighLevelCommandTestCase
 
 
