@@ -2,7 +2,10 @@ from datetime import date
 
 from tests.highlevel_command_testcase import HighLevelCommandTestCase
 
+import unittest
 
+
+@unittest.skip
 class LancCommandsTests(HighLevelCommandTestCase):
 
     def test_lanc_list_should_list_lancs(self):

@@ -7,6 +7,7 @@ from fdc.produto.produtodao import ProdutoDao
 from tests.configurations import TestConfigurations
 
 
+@unittest.skip
 class ProdutoDaoTestCase(unittest.TestCase):
 
     @classmethod
