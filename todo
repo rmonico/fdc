@@ -1,5 +1,16 @@
 :: TODO
-x Milestone 1 x Importar csv's x Dump do banco x Restaurar dump do banco x lanc add - Milestone 2 - Débitos - Terminar testes da linha de comando - fdc db init #ok - fdc db restore #ok - fdc db dump #ok
+x Milestone 1
+  x Importar csv's
+  x Dump do banco
+  x Restaurar dump do banco
+  x lanc add
+
+- Milestone 2
+  - Débitos
+    - Terminar testes da linha de comando
+      - fdc db init #ok
+      - fdc db restore #ok
+      - fdc db dump #ok
 
       - fdc conta add #ok
       - fdc conta list #ok
