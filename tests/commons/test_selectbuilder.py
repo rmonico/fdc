@@ -48,13 +48,25 @@ class SelectBuilderTestCase(unittest.TestCase):
         pass
 
     Entity.create_field('name')
-    Entity.create_field('referred', Table)
+    Entity.create_field('table', Table)
+
+    class MasterEntity(RowWrapper):
+        pass
+
+    MasterEntity.create_field('mastername')
+    MasterEntity.create_field('entity', Entity)
+
 
     def test_select_builder_should_generate_multiple_table_select(self):
-        builder = SelectBuilder(self.Entity)
+        builder = SelectBuilder(self.MasterEntity)
+        # import ipdb; ipdb.set_trace()
         sql = builder.build()
 
-        self.assertEqual('select entity.rowid, entity.name, table.rowid, table.field1, table.field2, table.field3 from entity left join table on (entity.rowid = table.rowid);', sql)
+        fields = sql[:sql.index(' from')]
+        from_clause = sql[sql.index('from '):]
+
+        self.assertEqual('select masterentity.rowid, masterentity.mastername, entity.rowid, entity.name, table.rowid, table.field1, table.field2, table.field3', fields)
+        self.assertEqual('from masterentity left join entity on (masterentity.entityid = entity.rowid) left join table on (entity.tableid = table.rowid);', from_clause)
 
     # TODO Teste do load com mais de uma tabela
     # TODO count(*)

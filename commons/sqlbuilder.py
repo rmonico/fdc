@@ -1,3 +1,4 @@
+# FIXME Acho que não precisa desse import
 import inspect
 from commons.rowwrapper import ColumnWrapper
 
@@ -47,55 +48,70 @@ class InsertBuilder(SQLBuilder):
 
 
 class SelectBuilder(object):
-
     def __init__(self, entity_class):
         super().__init__()
         self._entity_class = entity_class
 
     def build(self, where: str = None, fields: list = None):
-        from_clause = self._get_from_clause()
+        selectFields = fields or self._buildSelectFields(
+            self._entity_class, self._entity_class.fields())
 
-        _fields = fields if fields else self._get_fields(self._entity_class)
+        from_clause = self._build_from_clause()
 
-        _where = ' where {}'.format(where) if where else ''
+        result = f'select {", ".join(selectFields)} from {from_clause}'
 
-        return 'select {} from {}{};'.format(', '.join(_fields), from_clause, _where)
+        if where:
+            result += ' where {}'.format(where)
 
-    def _get_from_clause(self):
-        # TODO Create a method to return this
-        main_table = self._entity_class.__name__.lower()
-        from_clause = main_table
+        return result + ';'
 
-        parent_table = self._entity_class.__name__.lower()
-        for _joined_table in self._get_class_complex_fields(self._entity_class):
-            # FIXME Vai dar problema quando o builder não for RowWrapper
-            # FIXME Prever a situação que houver mais de um nível de join (deve chamar esse bloco recursivamente)
-            joined_table = getattr(self._entity_class, _joined_table)
-            joined_table_name = joined_table._builder.__name__.lower()
-            joined_table_field = joined_table._field_name
+    def _buildSelectFields(self, entity, fields):
+        selectFields = list()
 
-            from_clause += ' left join {0} on ({1}.{2} = {0}.rowid)'.format(joined_table_name, parent_table, joined_table_field)
+        for fieldName, referredFieldNames in fields.items():
+            field = getattr(entity, fieldName)
 
-        return from_clause
+            if type(field) == ColumnWrapper:
+                selectFields.extend(
+                    self._buildSelectFields(field._builder,
+                                            referredFieldNames))
+            else:
+                selectFields.append(
+                    f'{self._getTableNameFromClass(entity)}.{fieldName}')
 
-    @staticmethod
-    def _get_fields(cls):
-        mro = inspect.getmro(cls)
-        fields = list()
+        return selectFields
 
-        for cls in reversed(mro):
-            # TODO Continuar mexendo aqui, precisa chamar o _get_fields recursivamente para montar os fields das tabelas joined
-            fields.extend(SelectBuilder._get_class_fields(cls))
+    def _build_from_clause(self):
+        result = self._getTableNameFromClass(self._entity_class)
 
-        return [cls.__name__.lower() + '.' + field for field in fields]
+        result += self._do_build_from_clause(self._entity_class)
 
-    @staticmethod
-    def _get_class_fields(cls):
-        d = cls.__dict__
-        return [p for p in d if type(d[p]) == property]
+        return result
 
-    @staticmethod
-    def _get_class_complex_fields(cls):
-        d = cls.__dict__
-        return [p for p in d if type(d[p]) == ColumnWrapper]
+    def _do_build_from_clause(self, entityClass):
+        result = ''
 
+        entityName = self._getTableNameFromClass(entityClass)
+
+        for fieldName, referredFieldnames in entityClass.fields().items():
+            field = getattr(entityClass, fieldName)
+
+            if type(field) == ColumnWrapper:
+                # FIXME Vai dar problema quando o builder não for RowWrapper
+                # FIXME Prever a situação que houver mais de um nível de join (deve chamar esse bloco recursivamente)
+                referencedEntityClass = field._builder
+                referencedEntityName = self._getTableNameFromClass(
+                    referencedEntityClass)
+
+                result += f' left join {referencedEntityName} on ({entityName}.{fieldName}id = {referencedEntityName}.rowid)'
+                result += self._do_build_from_clause(referencedEntityClass)
+
+        return result
+
+    def _getTableNameFromClass(self, clss):
+        if hasattr(clss, 'alias'):
+            tableName = getattr(clss, 'alias')
+        else:
+            tableName = clss.__name__.lower()
+
+        return tableName

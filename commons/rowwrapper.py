@@ -7,18 +7,14 @@ class ColumnWrapper(property):
 
     def __init__(self, row_class, field_name, field_index, builder, consumed_itens):
         super().__init__(self)
-        # self._row_class = row_class
+        # self.row_class = row_class
         self._field_name = field_name
         self._field_index = field_index
         self._builder = builder
         # self._consumed_itens = consumed_itens
 
     def __call__(self, row_wrapper):
-        # TODO Tem muitas referências à row_wrapper, mudar chamar um método de lá seja melhor
-        if self._field_index not in row_wrapper._referenced_fields:
-            row_wrapper._referenced_fields[self._field_index] = self._builder(row_wrapper._row, self._field_index)
-
-        return row_wrapper._referenced_fields[row_wrapper._offset + self._field_index]
+        return row_wrapper._get_property_value(self)
 
 
 class RowWrapper(object):
@@ -47,6 +43,44 @@ class RowWrapper(object):
     @classmethod
     def load(cls, cursor):
         return [cls(row, 0) for row in cursor]
+
+    @classmethod
+    def fields(clss):
+        # FIXME Will have a problem when creating fields after call this
+        if not hasattr(clss, '_fields_cache'):
+            clss._fields_cache = clss._fields()
+
+        return clss._fields_cache
+
+    @classmethod
+    def _fields(cls):
+        fields = dict()
+
+        fields.update(cls._fields_from_super_class())
+
+        for name, prop in cls.__dict__.items():
+            if not isinstance(prop, property):
+                continue
+
+            fields[name] = None
+
+            if type(prop) == ColumnWrapper:
+                # FIXME Avoid recursion on self-referred entities
+                fields[name] = prop._builder._fields()
+
+        return fields
+
+    @classmethod
+    def _fields_from_super_class(current_class):
+        super_class = current_class.mro()[1]
+
+        return [] if super_class == object else super_class._fields()
+
+    def _get_property_value(self, property):
+        if property._field_index not in self._referenced_fields:
+            self._referenced_fields[property._field_index] = property._builder(self._row, property._field_index)
+
+        return self._referenced_fields[self._offset + property._field_index]
 
 
 RowWrapper.create_field('rowid')

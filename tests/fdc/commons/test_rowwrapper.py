@@ -1,9 +1,9 @@
-from unittest import TestCase
+import unittest
 
 from commons.rowwrapper import RowWrapper
 
 
-class RowWrapperTests(TestCase):
+class RowWrapperTests(unittest.TestCase):
 
     def test_should_create_property_for_row_id_and_fields(self):
         class SingleClass(RowWrapper):
@@ -55,6 +55,7 @@ class RowWrapperTests(TestCase):
 
     def test_should_build_reference_with_callable(self):
         class AnotherClass(object):
+
             def __init__(self, id, value):
                 self.id = id
                 self.value = value
@@ -77,3 +78,89 @@ class RowWrapperTests(TestCase):
         self.assertEqual(instance.reference.value, 'Reference value')
         self.assertEqual(instance.ref.id, 4)
         self.assertEqual(instance.ref.value, 'Another reference value')
+
+    def zip_with_range_for_greater(self, expected, actual):
+        len_expected = len(expected)
+        len_actual = len(actual)
+
+        longest = len_expected if len_expected > len_actual else len_actual
+
+        return zip(range(longest), expected, actual)
+
+    def assertFieldListEqual(self, entity_class, expected_list):
+        actual_list = entity_class.fields()
+
+        for i, expected, actual in self.zip_with_range_for_greater(expected_list, actual_list):
+            for j, expected_referrence, actual_referrence in self.zip_with_range_for_greater(expected[0], actual[0]):
+                self.assertEqual(expected_referrence, actual_referrence, f'Item {i}, reference {j}, expected: {expected_referrence.__name__}, actual: {actual_referrence.__name__}')
+            self.assertEqual(expected_referrence, actual_referrence, 'Item {i}, reference list size')
+
+            self.assertEqual(expected[1], actual[1], f'Item {i}, field name')
+
+        self.assertEqual(len(expected_list), len(actual_list), 'Lists size')
+
+    # FIXME
+    def test_should_return_fields_for_class_with_fields(self):
+        class ClassWithFields(RowWrapper):
+            pass
+
+        ClassWithFields.create_field('name')
+        ClassWithFields.create_field('age')
+        ClassWithFields.create_field('address')
+
+        expected_list = [([ClassWithFields], 'rowid'),
+                         ([ClassWithFields], 'name'),
+                         ([ClassWithFields], 'age'),
+                         ([ClassWithFields], 'address'), ]
+
+        # import ipdb; ipdb.set_trace()
+        self.assertFieldListEqual(ClassWithFields, expected_list)
+
+    # FIXME
+    def test_should_return_fields_for_class_with_inheritance(self):
+        class SuperClass(RowWrapper):
+            pass
+
+        SuperClass.create_field('name')
+
+        class SubClass(SuperClass):
+            pass
+
+        SubClass.create_field('address')
+
+        expected_list = [
+            ([SubClass], 'rowid'),
+            ([SubClass], 'name'),
+            ([SubClass], 'address'),
+        ]
+
+        self.assertFieldListEqual(SubClass, expected_list)
+
+    # FIXME
+    def test_should_return_fields_for_class_with_reference_and_inheritance(self):
+        class SuperClass(RowWrapper):
+            pass
+
+        SuperClass.create_field('superclassfield')
+
+        class SubClass(SuperClass):
+            pass
+
+        SubClass.create_field('subclassfield')
+
+        class ReferrencerClass(RowWrapper):
+            pass
+
+        ReferrencerClass.create_field('subclassid', SubClass)
+        ReferrencerClass.create_field('referrencerfield')
+
+        expected_list = [
+            ([ReferrencerClass], 'rowid'),
+            ([ReferrencerClass], 'subclassid'),
+            ([ReferrencerClass, SubClass], 'rowid'),
+            ([ReferrencerClass, SubClass], 'superclassfield'),
+            ([ReferrencerClass, SubClass], 'subclassfield'),
+            ([ReferrencerClass], 'referrencerfield'),
+        ]
+
+        self.assertFieldListEqual(ReferrencerClass, expected_list)
