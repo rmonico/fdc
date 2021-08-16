@@ -2,12 +2,25 @@ from .methodvisitor import MethodVisitor
 
 
 class Inject(object):
-
     def __init__(self, name):
+        """
+        Mark a field to be injected
+        """
         self.dependency_name = name
 
 
 class Injector(object):
+    """
+    Responsible for inject members into class.
+    A dependency provider class must either provide a static method injectable_resource or get_external_resources.
+    injectable_resource receives no parameters and must return the name of the resource created.
+    get_external_resources receives no parameters and must return an array whose items are dicts with the keys "name", "instance", "factory" and "creator".
+    "name" is the name of the dependency. Required.
+    "instance" is the pre-created instance, defaults to None.
+    "factory" is a method or class reference that will be passed as parameter to "creator". Defaults to class who defined the method.
+    "creator" is a method reference that will create the  dependency instance if "instance" is None. Required.
+    client object may have a "before_inject" method.
+    """
 
     def __init__(self):
         self._resource_classes = []
