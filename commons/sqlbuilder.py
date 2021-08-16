@@ -3,7 +3,6 @@ from commons.rowwrapper import ColumnWrapper
 
 
 class TableDescriptor(object):
-
     def __init__(self, table_name, *fields):
         self.table_name = table_name
         self.fields = list(fields)
@@ -14,7 +13,6 @@ class TableDescriptor(object):
 
 
 class SQLBuilder(object):
-
     def __init__(self, table_descriptor):
         self._table_descriptor = table_descriptor
 
@@ -26,7 +24,6 @@ class SQLBuilder(object):
 
 
 class InsertBuilder(SQLBuilder):
-
     def __init__(self, table_descriptor):
         super().__init__(table_descriptor)
 
@@ -34,7 +31,8 @@ class InsertBuilder(SQLBuilder):
         table_name = self._table_descriptor.table_name
         values_mask = ', '.join('?' * len(self._get_fields()))
 
-        return 'insert into {} ({}) values ({});'.format(table_name, self._fields_str(), values_mask)
+        return 'insert into {} ({}) values ({});'.format(
+            table_name, self._fields_str(), values_mask)
 
     def _get_fields(self):
         fields = tuple()
